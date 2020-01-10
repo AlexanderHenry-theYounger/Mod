@@ -6034,7 +6034,7 @@ int CvPlot::calculatePotentialCityYield(YieldTypes eYield, const CvCity *pCity) 
 		return 0;
 	}
 
-	if (eYield == YIELD_FOOD || eYield == YIELD_LUMBER || eYield == YIELD_STONE || eYield == YIELD_HEMP)
+	if (eYield == YIELD_FOOD || eYield == YIELD_LUMBER || eYield == YIELD_STONE)
 	{
 		return 0;
 	}
