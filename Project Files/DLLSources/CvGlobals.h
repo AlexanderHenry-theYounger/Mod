@@ -120,8 +120,6 @@ class CvTradeScreenInfo; // trade screen type - Nightinggale
 
 class CivEffectInfo;
 
-#include "InfoCacheArray.h"
-#include "EnumTypeCacheArray.h"
 #include "Profile.h"
 
 class CvGlobals
@@ -686,6 +684,12 @@ public:
 	int getWILD_ANIMAL_REWARD_RANDOM_BASE();
 	// Max Cross Limit
 	int getIMMIGRATION_MAX_CROSS_LIMIT();
+	// WTP, ray, new Harbour System - START
+	int getENABLE_NEW_HARBOUR_SYSTEM();
+	int getBASE_HARBOUR_SPACES_WITHOUT_BUILDINGS();
+	// WTP, ray, new Barracks System - START
+	int getENABLE_NEW_BARRACKS_SYSTEM();
+	int getBASE_BARRACKS_SPACES_WITHOUT_BUILDINGS();
 	// NBMOD REF
 	int getNBMOD_REF_ENABLE();
 	int getNBMOD_REF_RANDOM_SHIPS();
@@ -833,6 +837,13 @@ public:
 	int getLOWEST_CITY_HEALTH();
 	// R&R, ray, Health - END
 
+	// WTP, ray, Health Overhaul - START
+	int getSWEET_WATER_CITY_LOCATION_HEALTH_BONUS();
+	int getCOASTAL_CITY_LOCATION_HEALTH_BONUS();
+	int getHILL_CITY_LOCATION_HEALTH_BONUS();
+	int getBAD_CITY_LOCATION_HEALTH_MALUS();
+	// WTP, ray, Health Overhaul - END
+
 	// WTP, ray, Happiness - START
 	int getMIN_POP_NEG_HAPPINESS();
 	int getPOP_DIVISOR_HAPPINESS();
@@ -855,6 +866,14 @@ public:
 	// softcoding enum values
 
 	void postXMLLoad(bool bFirst);
+
+	/// GameFont XML control - start - Nightinggale
+	int getSymbolID(FontSymbols eSymbol) const;
+
+	void setupGameFontChars();
+	int getFontSymbolBonusOffset() const;
+	int getFontSymbolCustomOffset() const;
+	/// GameFont XML control - end - Nightinggale
 
 	DllExport float getCAMERA_MIN_YAW();
 	DllExport float getCAMERA_MAX_YAW();
@@ -957,7 +976,7 @@ public:
 
 	void cleanInfoStrings();
 	
-	const YieldTypeArray& getUnitYieldDemandTypes() const { return m_acUnitYieldDemandTypes; }
+	const InfoArray<YieldTypes>& getDomesticDemandYieldTypes() const { return m_iaDomesticDemandYieldTypes; }
 
 	void setCityCatchmentRadius(int iSetting);
 
@@ -1231,6 +1250,12 @@ protected:
 	int m_WILD_ANIMAL_REWARD_RANDOM_BASE;
 	// Max Cross Limit
 	int m_IMMIGRATION_MAX_CROSS_LIMIT;
+	// WTP, ray, new Harbour System - START
+	int m_ENABLE_NEW_HARBOUR_SYSTEM;
+	int m_BASE_HARBOUR_SPACES_WITHOUT_BUILDINGS;
+	// WTP, ray, new Barracks System - START
+	int m_ENABLE_NEW_BARRACKS_SYSTEM;
+	int m_BASE_BARRACKS_SPACES_WITHOUT_BUILDINGS;
 	// NBMOD REF
 	int m_NBMOD_REF_ENABLE;
 	int m_NBMOD_REF_RANDOM_SHIPS;
@@ -1375,7 +1400,14 @@ protected:
 	int m_LOWEST_CITY_HEALTH;
 	// R&R, ray, Health - END
 
-	YieldTypeArray m_acUnitYieldDemandTypes;
+	// WTP, ray, Health Overhaul - START
+	int m_SWEET_WATER_CITY_LOCATION_HEALTH_BONUS;
+	int m_COASTAL_CITY_LOCATION_HEALTH_BONUS;
+	int m_HILL_CITY_LOCATION_HEALTH_BONUS;
+	int m_BAD_CITY_LOCATION_HEALTH_MALUS;
+	// WTP, ray, Health Overhaul - END
+
+	InfoArray<YieldTypes> m_iaDomesticDemandYieldTypes;
 
 	// WTP, ray, Happiness - START
 	int m_MIN_POP_NEG_HAPPINESS;
@@ -1392,6 +1424,11 @@ protected:
 	int m_FOUNDING_FAHTER_POINTS_FESTIVITIES_HAPPINESS;
 	int m_TIMER_FESTIVITIES_OR_UNRESTS;
 	// WTP, ray, Happiness - END
+
+	/// GameFont XML control - start - Nightinggale
+	int  m_iFontSymbolBonusOffset;
+	int  m_iFontSymbolCustomOffset;
+	/// GameFont XML control - end - Nightinggale
 
 	int m_MAX_TREASURE_AMOUNT; // WTP, merge Treasures, of Raubwuerger
 	int m_TRADE_POST_GOLD_PER_NATIVE; // WTP, ray, Native Trade Posts - START
@@ -1801,6 +1838,26 @@ inline int CvGlobals::getIMMIGRATION_MAX_CROSS_LIMIT()
 {
 	return m_IMMIGRATION_MAX_CROSS_LIMIT;
 }
+// WTP, ray, new Harbour System - START
+inline int CvGlobals::getENABLE_NEW_HARBOUR_SYSTEM()
+{
+	return m_ENABLE_NEW_HARBOUR_SYSTEM;
+}
+inline int CvGlobals::getBASE_HARBOUR_SPACES_WITHOUT_BUILDINGS()
+{
+	return m_BASE_HARBOUR_SPACES_WITHOUT_BUILDINGS;
+}
+// WTP, ray, new Harbour System - END
+// WTP, ray, new Barracks System - START
+inline int CvGlobals::getENABLE_NEW_BARRACKS_SYSTEM()
+{
+	return m_ENABLE_NEW_BARRACKS_SYSTEM;
+}
+inline int CvGlobals::getBASE_BARRACKS_SPACES_WITHOUT_BUILDINGS()
+{
+	return m_BASE_BARRACKS_SPACES_WITHOUT_BUILDINGS;
+}
+// WTP, ray, new Barracks System - END
 // NBMOD REF
 inline int CvGlobals::getNBMOD_REF_ENABLE()
 {
@@ -2314,6 +2371,30 @@ inline int CvGlobals::getLOWEST_CITY_HEALTH()
 	return m_LOWEST_CITY_HEALTH;
 }
 // R&R, ray, Health - END
+
+
+// WTP, ray, Health Overhaul - START
+inline int CvGlobals::getSWEET_WATER_CITY_LOCATION_HEALTH_BONUS()
+{
+	return m_SWEET_WATER_CITY_LOCATION_HEALTH_BONUS;
+}
+
+inline int CvGlobals::getCOASTAL_CITY_LOCATION_HEALTH_BONUS()
+{
+	return m_COASTAL_CITY_LOCATION_HEALTH_BONUS;
+}
+
+inline int CvGlobals::getHILL_CITY_LOCATION_HEALTH_BONUS()
+{
+	return m_HILL_CITY_LOCATION_HEALTH_BONUS;
+}
+
+inline int CvGlobals::getBAD_CITY_LOCATION_HEALTH_MALUS()
+{
+	return m_BAD_CITY_LOCATION_HEALTH_MALUS;
+}
+// WTP, ray, Health Overhaul - END
+
 
 // WTP, ray, Happiness - START
 inline int CvGlobals::getMIN_POP_NEG_HAPPINESS()

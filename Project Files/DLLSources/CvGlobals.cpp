@@ -144,6 +144,12 @@ m_WILD_ANIMAL_SEA_UNIT_VARIATION_WEIGHT(0),
 m_WILD_ANIMAL_REWARD_RANDOM_BASE(0),
 // Max Cross Limit
 m_IMMIGRATION_MAX_CROSS_LIMIT(0),
+// WTP, ray, new Harbour System - START
+m_ENABLE_NEW_HARBOUR_SYSTEM(0),
+m_BASE_HARBOUR_SPACES_WITHOUT_BUILDINGS(0),
+// WTP, ray, new Barracks System - START
+m_ENABLE_NEW_BARRACKS_SYSTEM(0),
+m_BASE_BARRACKS_SPACES_WITHOUT_BUILDINGS(0),
 // NBMOD REF
 m_NBMOD_REF_ENABLE(0),
 m_NBMOD_REF_RANDOM_SHIPS(0),
@@ -291,6 +297,13 @@ m_MAX_CITY_HEALTH(0),
 m_LOWEST_CITY_HEALTH(0),
 // R&R, ray, Health - END
 
+// WTP, ray, Health Overhaul - START
+m_SWEET_WATER_CITY_LOCATION_HEALTH_BONUS(0),
+m_COASTAL_CITY_LOCATION_HEALTH_BONUS(0),
+m_HILL_CITY_LOCATION_HEALTH_BONUS(0),
+m_BAD_CITY_LOCATION_HEALTH_MALUS(0),
+// WTP, ray, Health Overhaul - END
+
 // WTP, ray, Happiness - START
 m_MIN_POP_NEG_HAPPINESS(0),
 m_POP_DIVISOR_HAPPINESS(0),
@@ -306,6 +319,11 @@ m_TURNS_UNREST_UNHAPPINESS(0),
 m_FOUNDING_FAHTER_POINTS_FESTIVITIES_HAPPINESS(0),
 m_TIMER_FESTIVITIES_OR_UNRESTS(0),
 // WTP, ray, Happiness - END
+
+/// GameFont XML control - start - Nightinggale
+m_iFontSymbolBonusOffset(0),
+m_iFontSymbolCustomOffset(0),
+/// GameFont XML control - end - Nightinggale
 
 m_MAX_TREASURE_AMOUNT(0), // WTP, merge Treasures, of Raubwuerger
 m_TRADE_POST_GOLD_PER_NATIVE(0), // WTP, ray, Native Trade Posts - START
@@ -557,6 +575,7 @@ void CvGlobals::setCityCatchmentRadius(int iRadius)
 		UserSettings settings;
 		setCityCatchmentRadius(settings.getColonyRadius());
 	}
+	LAST_CITY_PLOT = NUM_CITY_PLOTS - static_cast<CityPlotTypes>(1);
 #endif
 }
 
@@ -2630,6 +2649,12 @@ void CvGlobals::cacheGlobals()
 	m_WILD_ANIMAL_REWARD_RANDOM_BASE= getDefineINT("WILD_ANIMAL_REWARD_RANDOM_BASE");
 	// Max Cross Limit
 	m_IMMIGRATION_MAX_CROSS_LIMIT = getDefineINT("IMMIGRATION_MAX_CROSS_LIMIT");
+	// WTP, ray, new Harbour System - START
+	m_ENABLE_NEW_HARBOUR_SYSTEM = getDefineINT("ENABLE_NEW_HARBOUR_SYSTEM");
+	m_BASE_HARBOUR_SPACES_WITHOUT_BUILDINGS = getDefineINT("BASE_HARBOUR_SPACES_WITHOUT_BUILDINGS");
+	// WTP, ray, new Barracks System - START
+	m_ENABLE_NEW_BARRACKS_SYSTEM = getDefineINT("ENABLE_NEW_BARRACKS_SYSTEM");
+	m_BASE_BARRACKS_SPACES_WITHOUT_BUILDINGS = getDefineINT("BASE_BARRACKS_SPACES_WITHOUT_BUILDINGS");
 	// NBMOD REF
 	m_NBMOD_REF_ENABLE = getDefineINT("NBMOD_REF_ENABLE");
 	m_NBMOD_REF_RANDOM_SHIPS = getDefineINT("NBMOD_REF_RANDOM_SHIPS");
@@ -2764,6 +2789,12 @@ void CvGlobals::cacheGlobals()
 	m_MAX_CITY_HEALTH = getDefineINT("MAX_CITY_HEALTH");
 	m_LOWEST_CITY_HEALTH = getDefineINT("LOWEST_CITY_HEALTH");
 	// R&R, ray, caching globals from Global Defines Alt - END
+	// WTP, ray, Health Overhaul - START
+	m_SWEET_WATER_CITY_LOCATION_HEALTH_BONUS = getDefineINT("SWEET_WATER_CITY_LOCATION_HEALTH_BONUS");
+	m_COASTAL_CITY_LOCATION_HEALTH_BONUS = getDefineINT("COASTAL_CITY_LOCATION_HEALTH_BONUS");
+	m_HILL_CITY_LOCATION_HEALTH_BONUS = getDefineINT("HILL_CITY_LOCATION_HEALTH_BONUS");
+	m_BAD_CITY_LOCATION_HEALTH_MALUS = getDefineINT("BAD_CITY_LOCATION_HEALTH_MALUS");
+	// WTP, ray, Health Overhaul - END
 
 	// WTP, ray, Happiness - START
 	m_MIN_POP_NEG_HAPPINESS = getDefineINT("MIN_POP_NEG_HAPPINESS");
@@ -2780,6 +2811,11 @@ void CvGlobals::cacheGlobals()
 	m_FOUNDING_FAHTER_POINTS_FESTIVITIES_HAPPINESS = getDefineINT("FOUNDING_FAHTER_POINTS_FESTIVITIES_HAPPINESS");
 	m_TIMER_FESTIVITIES_OR_UNRESTS = getDefineINT("TIMER_FESTIVITIES_OR_UNRESTS");
 	// WTP, ray, Happiness - END
+
+	/// GameFont XML control - start - Nightinggale
+	m_iFontSymbolBonusOffset = getDefineINT("FONT_SYMBOL_BONUS_OFFSET");
+	m_iFontSymbolCustomOffset = getDefineINT("FONT_SYMBOL_CUSTOM_OFFSET");
+	/// GameFont XML control - end - Nightinggale
 
 	m_MAX_TREASURE_AMOUNT = getDefineINT("MAX_TREASURE_AMOUNT"); // WTP, merge Treasures, of Raubwuerger
 	m_TRADE_POST_GOLD_PER_NATIVE = getDefineINT("TRADE_POST_GOLD_PER_NATIVE"); // WTP, ray, Native Trade Posts - START
@@ -3084,3 +3120,37 @@ void CvGlobals::cleanInfoStrings()
 		}
 	}
 }
+
+/// GameFont XML control - start - Nightinggale
+
+// Replace the vanilla getSymbolID with this function.
+// Vanilla wants to map modded symbol IDs to IDs outside of the range, which works on billboards.
+// This function allows mapping our own symbols to IDs, which works on billboards.
+int CvGlobals::getSymbolID(FontSymbols eSymbol) const
+{
+	if (eSymbol < 0 || eSymbol >= MAX_NUM_SYMBOLS)
+	{
+		return -1;
+	}
+	if (eSymbol <= ATTITUDE_FRIENDLY_CHAR)
+	{
+		// use vanilla code for vanilla symbols.
+		// the exe hardcodes IDs for vanilla symbols, hence no way to move them.
+		// do not use gDLL in the call as the error detection script will trigger on it and cause an error.
+		return GC.getDLLIFace()->getSymbolID(eSymbol);
+	}
+
+	// non-vanilla symbols are placed before the vanilla symbols to avoid hitting the ID limit in billboards.
+	return eSymbol - (ATTITUDE_FRIENDLY_CHAR + 1) // Index relative to first custom symbol.
+		+ getFontSymbolCustomOffset();         // use xml defined ID of first custom symbol.
+}
+
+int CvGlobals::getFontSymbolBonusOffset() const
+{
+	return m_iFontSymbolBonusOffset;
+}
+int CvGlobals::getFontSymbolCustomOffset() const
+{
+	return m_iFontSymbolCustomOffset;
+}
+/// GameFont XML control - end - Nightinggale

@@ -1769,6 +1769,10 @@
                 <UnitType>UNIT_SHIP_OF_THE_LINE</UnitType>
                 <iNumber>1</iNumber>
             </NumUnits>
+            <NumUnits>
+                <UnitType>UNIT_ROYAL_SHIP_OF_THE_LINE</UnitType>
+                <iNumber>1</iNumber>
+            </NumUnits>
         </NumUnits>
         <NumProfessions/>
         <YieldProduced/>
@@ -1859,7 +1863,11 @@
         <NumBuildings/>
         <NumUnits>
             <NumUnits>
-                <UnitType>UNIT_MAN_O_WAR</UnitType>
+                <UnitType>UNIT_COLONIAL_MAN_O_WAR</UnitType>
+                <iNumber>1</iNumber>
+            </NumUnits>
+            <NumUnits>
+                <UnitType>UNIT_ROYAL_MAN_O_WAR</UnitType>
                 <iNumber>1</iNumber>
             </NumUnits>
         </NumUnits>

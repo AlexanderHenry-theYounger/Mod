@@ -91,21 +91,21 @@
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_LIGHT_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_LIGHT_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DANISH_LIGHT_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_HEAVY_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_HEAVY_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DANISH_HEAVY_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_ROYAL_ARTILLERY</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_ROYAL_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DANISH_ROYAL_ARTILLERY</ArtDefineTag>
                     </UnitMeshGroup>
@@ -167,10 +167,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_NAVAL_BRIG</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_NAVAL_BRIG</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_GALLEON</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DANISH_GALLEON</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_TROOP_GALLEON</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_ROYAL_TROOP_GALLEON</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -188,6 +202,13 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_ROYAL_FRIGATE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_ROYAL_FRIGATE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
@@ -195,10 +216,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
-                    <UnitType>UNIT_MAN_O_WAR</UnitType>
+                    <UnitType>UNIT_ROYAL_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_DANISH_MAN_O_WAR</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_ROYAL_SHIP_OF_THE_LINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_COLONIAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_COLONIAL_MAN_O_WAR</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_ROYAL_MAN_O_WAR</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -206,6 +241,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DANISH_SLOOP</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SCHOONER</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_SCHOONER</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -220,6 +262,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DANISH_BRIGANTINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SLAVE_BARQUE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_SLAVE_BARQUE</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -391,21 +440,21 @@
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_LIGHT_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_LIGHT_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DUTCH_LIGHT_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_HEAVY_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_HEAVY_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DUTCH_HEAVY_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_ROYAL_ARTILLERY</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_ROYAL_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DUTCH_ROYAL_ARTILLERY</ArtDefineTag>
                     </UnitMeshGroup>
@@ -467,10 +516,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_NAVAL_BRIG</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DUTCH_NAVAL_BRIG</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_GALLEON</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DUTCH_GALLEON</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_TROOP_GALLEON</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DUTCH_ROYAL_TROOP_GALLEON</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -488,6 +551,13 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_ROYAL_FRIGATE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DUTCH_ROYAL_FRIGATE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
@@ -495,10 +565,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
-                    <UnitType>UNIT_MAN_O_WAR</UnitType>
+                    <UnitType>UNIT_ROYAL_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_DUTCH_MAN_O_WAR</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_DUTCH_ROYAL_SHIP_OF_THE_LINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_COLONIAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DUTCH_COLONIAL_MAN_O_WAR</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DUTCH_ROYAL_MAN_O_WAR</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -506,6 +590,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DUTCH_SLOOP</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SCHOONER</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DUTCH_SCHOONER</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -520,6 +611,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_DUTCH_BRIGANTINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SLAVE_BARQUE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_DUTCH_SLAVE_BARQUE</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -691,21 +789,21 @@
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_LIGHT_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_LIGHT_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_ENGLAND_LIGHT_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_HEAVY_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_HEAVY_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_ENGLAND_HEAVY_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_ROYAL_ARTILLERY</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_ROYAL_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_ENGLAND_ROYAL_ARTILLERY</ArtDefineTag>
                     </UnitMeshGroup>
@@ -767,10 +865,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_NAVAL_BRIG</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_ENGLAND_NAVAL_BRIG</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_GALLEON</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_ENGLAND_GALLEON</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_TROOP_GALLEON</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_ENGLAND_ROYAL_TROOP_GALLEON</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -788,6 +900,13 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_ROYAL_FRIGATE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_ENGLAND_ROYAL_FRIGATE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
@@ -795,10 +914,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
-                    <UnitType>UNIT_MAN_O_WAR</UnitType>
+                    <UnitType>UNIT_ROYAL_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_ENGLAND_MAN_O_WAR</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_ENGLAND_ROYAL_SHIP_OF_THE_LINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_COLONIAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_ENGLAND_COLONIAL_MAN_O_WAR</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_ENGLAND_ROYAL_MAN_O_WAR</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -806,6 +939,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_ENGLAND_SLOOP</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SCHOONER</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_ENGLAND_SCHOONER</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -820,6 +960,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_ENGLAND_BRIGANTINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SLAVE_BARQUE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_ENGLAND_SLAVE_BARQUE</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -991,21 +1138,21 @@
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_LIGHT_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_LIGHT_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_FRANCE_LIGHT_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_HEAVY_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_HEAVY_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_FRANCE_HEAVY_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_ROYAL_ARTILLERY</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_ROYAL_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_FRANCE_ROYAL_ARTILLERY</ArtDefineTag>
                     </UnitMeshGroup>
@@ -1067,10 +1214,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_NAVAL_BRIG</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_FRANCE_NAVAL_BRIG</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_GALLEON</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_FRANCE_GALLEON</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_TROOP_GALLEON</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_FRANCE_ROYAL_TROOP_GALLEON</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1088,6 +1249,13 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_ROYAL_FRIGATE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_FRANCE_ROYAL_FRIGATE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
@@ -1095,10 +1263,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
-                    <UnitType>UNIT_MAN_O_WAR</UnitType>
+                    <UnitType>UNIT_ROYAL_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_FRANCE_MAN_O_WAR</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_FRANCE_ROYAL_SHIP_OF_THE_LINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_COLONIAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_FRANCE_COLONIAL_MAN_O_WAR</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_FRANCE_ROYAL_MAN_O_WAR</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1106,6 +1288,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_FRANCE_SLOOP</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SCHOONER</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_FRANCE_SCHOONER</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1120,6 +1309,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_FRANCE_BRIGANTINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SLAVE_BARQUE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_FRANCE_SLAVE_BARQUE</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1291,21 +1487,21 @@
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_LIGHT_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_LIGHT_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_LIGHT_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_HEAVY_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_HEAVY_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_HEAVY_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_ROYAL_ARTILLERY</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_ROYAL_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_ROYAL_ARTILLERY</ArtDefineTag>
                     </UnitMeshGroup>
@@ -1367,10 +1563,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_NAVAL_BRIG</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_NAVAL_BRIG</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_GALLEON</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_GALLEON</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_TROOP_GALLEON</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_ROYAL_TROOP_GALLEON</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1388,6 +1598,13 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_ROYAL_FRIGATE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_ROYAL_FRIGATE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
@@ -1395,10 +1612,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
-                    <UnitType>UNIT_MAN_O_WAR</UnitType>
+                    <UnitType>UNIT_ROYAL_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_MAN_O_WAR</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_ROYAL_SHIP_OF_THE_LINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_COLONIAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_COLONIAL_MAN_O_WAR</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_ROYAL_MAN_O_WAR</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1406,6 +1637,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_SLOOP</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SCHOONER</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_SCHOONER</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1420,6 +1658,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_BRIGANTINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SLAVE_BARQUE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_PORTUGAL_SLAVE_BARQUE</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1591,21 +1836,21 @@
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_LIGHT_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_LIGHT_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_RUSSIA_LIGHT_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_HEAVY_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_HEAVY_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_RUSSIA_HEAVY_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_ROYAL_ARTILLERY</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_ROYAL_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_RUSSIA_ROYAL_ARTILLERY</ArtDefineTag>
                     </UnitMeshGroup>
@@ -1667,10 +1912,31 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_NAVAL_BRIG</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_NAVAL_BRIG</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_NAVAL_BRIG</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_NAVAL_BRIG</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_GALLEON</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_RUSSIA_GALLEON</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_TROOP_GALLEON</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_ROYAL_TROOP_GALLEON</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1688,6 +1954,13 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_ROYAL_FRIGATE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_ROYAL_FRIGATE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
@@ -1695,10 +1968,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
-                    <UnitType>UNIT_MAN_O_WAR</UnitType>
+                    <UnitType>UNIT_ROYAL_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_MAN_O_WAR</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_ROYAL_SHIP_OF_THE_LINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_COLONIAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_COLONIAL_MAN_O_WAR</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_ROYAL_MAN_O_WAR</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1706,6 +1993,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_RUSSIA_SLOOP</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SCHOONER</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_SCHOONER</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1720,6 +2014,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_RUSSIA_BRIGANTINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SLAVE_BARQUE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_RUSSIA_SLAVE_BARQUE</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1891,23 +2192,23 @@
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_LIGHT_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_LIGHT_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_LIGHT_ARTILLERY_VETERAN</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_LIGHT_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_HEAVY_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_HEAVY_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_HEAVY_ARTILLERY_VETERAN</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_HEAVY_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_ROYAL_ARTILLERY</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_ROYAL_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_ROYAL_ARTILLERY</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_DANISH_ROYAL_ARTILLERY</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1967,10 +2268,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_NAVAL_BRIG</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_NAVAL_BRIG</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_GALLEON</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_SPAIN_GALLEON</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_TROOP_GALLEON</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_ROYAL_TROOP_GALLEON</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -1988,6 +2303,13 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_ROYAL_FRIGATE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_ROYAL_FRIGATE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
@@ -1995,10 +2317,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
-                    <UnitType>UNIT_MAN_O_WAR</UnitType>
+                    <UnitType>UNIT_ROYAL_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_MAN_O_WAR</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_ROYAL_SHIP_OF_THE_LINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_COLONIAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_COLONIAL_MAN_O_WAR</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_ROYAL_MAN_O_WAR</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -2006,6 +2342,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_SPAIN_SLOOP</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SCHOONER</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_SCHOONER</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -2020,6 +2363,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_SPAIN_BRIGANTINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SLAVE_BARQUE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SPAIN_SLAVE_BARQUE</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -2191,21 +2541,21 @@
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_LIGHT_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_LIGHT_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_SWEDISH_LIGHT_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_HEAVY_ARTILLERY_VETERAN</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_HEAVY_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_SWEDISH_HEAVY_ARTILLERY_VETERAN</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
                     <UnitType>UNIT_ROYAL_ARTILLERY</UnitType>
-                    <ProfessionType>NONE</ProfessionType>
+                    <ProfessionType>PROFESSION_ROYAL_ARTILLERY</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_SWEDISH_ROYAL_ARTILLERY</ArtDefineTag>
                     </UnitMeshGroup>
@@ -2267,10 +2617,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_NAVAL_BRIG</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SWEDISH_NAVAL_BRIG</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_GALLEON</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_SWEDISH_GALLEON</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_TROOP_GALLEON</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SWEDISH_ROYAL_TROOP_GALLEON</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -2288,6 +2652,13 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
+                    <UnitType>UNIT_ROYAL_FRIGATE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SWEDISH_ROYAL_FRIGATE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
                     <UnitType>UNIT_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
@@ -2295,10 +2666,24 @@
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
-                    <UnitType>UNIT_MAN_O_WAR</UnitType>
+                    <UnitType>UNIT_ROYAL_SHIP_OF_THE_LINE</UnitType>
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
-                        <ArtDefineTag>ART_DEF_UNIT_SWEDISH_MAN_O_WAR</ArtDefineTag>
+                        <ArtDefineTag>ART_DEF_UNIT_SWEDISH_ROYAL_SHIP_OF_THE_LINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_COLONIAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SWEDISH_COLONIAL_MAN_O_WAR</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_ROYAL_MAN_O_WAR</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SWEDISH_ROYAL_MAN_O_WAR</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -2306,6 +2691,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_SWEDISH_SLOOP</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SCHOONER</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SWEDISH_SCHOONER</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>
@@ -2320,6 +2712,13 @@
                     <ProfessionType>NONE</ProfessionType>
                     <UnitMeshGroup>
                         <ArtDefineTag>ART_DEF_UNIT_SWEDISH_BRIGANTINE</ArtDefineTag>
+                    </UnitMeshGroup>
+                </StyleUnit>
+                <StyleUnit>
+                    <UnitType>UNIT_SLAVE_BARQUE</UnitType>
+                    <ProfessionType>NONE</ProfessionType>
+                    <UnitMeshGroup>
+                        <ArtDefineTag>ART_DEF_UNIT_SWEDISH_SLAVE_BARQUE</ArtDefineTag>
                     </UnitMeshGroup>
                 </StyleUnit>
                 <StyleUnit>

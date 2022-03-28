@@ -43,6 +43,16 @@
         <English>????</English>
     </TEXT>
     <TEXT>
+        <Tag>TXT_KEY_BUILD_DRAIN_WETLAND</Tag>
+        <English>Drain wetland</English>
+        <French>Drainer les marais</French>
+        <German>Moor trockenlegen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_DRAIN_WETLAND_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
         <Tag>TXT_KEY_BUILD_FARM</Tag>
         <English>Build a [LINK=IMPROVEMENT_FARM]farm[\LINK]</English>
         <French>Construire une [LINK=IMPROVEMENT_FARM]ferme[\LINK]</French>
@@ -52,6 +62,46 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_BUILD_FARM_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_WINDMILL</Tag>
+        <English>Build a [LINK=IMPROVEMENT_WIND_MILL]windmill[\LINK]</English>
+        <German>[LINK=IMPROVEMENT_WIND_MILL]Windmühle[\LINK] bauen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_WINDMILL_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_IRONMILL</Tag>
+        <English>Build an [LINK=IMPROVEMENT_IRON_MILL]ironmill[\LINK]</English>
+        <German>[LINK=IMPROVEMENT_IRON_MILL]Eisenmühle[\LINK] bauen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_IRONMILL_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_SAWMILL</Tag>
+        <English>Build a [LINK=IMPROVEMENT_LUMBERMILL]sawmill[\LINK]</English>
+        <German>[LINK=IMPROVEMENT_LUMBERMILL]Sägewerk[\LINK] bauen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_SAWMILL_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_WINDMILL_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_CANAL</Tag>
+        <English>Build an [LINK=IMPROVEMENT_CANAL]canal[\LINK]</English>
+        <German>[LINK=IMPROVEMENT_CANAL]Kanal[\LINK] bauen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_CANAL_HELP</Tag>
         <English>????</English>
     </TEXT>
     <TEXT>
@@ -168,7 +218,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_BUILD_REFORESTATION_MARSH</Tag>
-        <English>Plant jungle</English>
+        <English>Plant a jungle</English>
         <French>Planter une jungle</French>
         <German>Dschungel aufforsten</German>
     </TEXT>
@@ -182,6 +232,22 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_BUILD_REFORESTATION_PLAINS_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REFORESTATION_PLAINS_FERTILE</Tag>
+        <English>TXT_KEY_BUILD_REFORESTATION_GRASS</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REFORESTATION_PLAINS_FERTILE_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REFORESTATION_SHRUBLAND</Tag>
+        <English>TXT_KEY_BUILD_REFORESTATION_GRASS</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REFORESTATION_SHRUBLAND_HELP</Tag>
         <English>????</English>
     </TEXT>
     <TEXT>
@@ -201,6 +267,26 @@
     <TEXT>
         <Tag>TXT_KEY_BUILD_REFORESTATION_TUNDRA_HELP</Tag>
         <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REFORESTATION_TAIGA</Tag>
+        <English>Plant taiga</English>
+        <French>Planter une taïga</French>
+        <German>Taiga aufforsten</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REFORESTATION_TAIGA_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_DESERT_IRRIGATION</Tag>
+        <English>Irrigate Desert</English>
+        <German>Wüste bewässern</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_DESERT_IRRIGATION_HELP</Tag>
+        <English>Needs River to create Flood Plains.</English>
+        <German>Benötigt einen Fluss um fruchtbares Schwemmland zu erzeugen.</German>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_BUILD_REMOVE_FOREST</Tag>
@@ -232,6 +318,33 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_BUILD_REMOVE_LIGHT_FOREST_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REMOVE_LUSHGRASS</Tag>
+        <English>Cut down the [LINK=FEATURE_LUSHGRASS]grass[\LINK]</English>
+        <German>[LINK=FEATURE_LUSHGRASS]Gras[\LINK] entfernen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REMOVE_LUSHGRASS_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REMOVE_CACTUS</Tag>
+        <English>Chop down the [LINK=FEATURE_BARREL_CACTUS]cactus field[\LINK]</English>
+        <German>[LINK=FEATURE_BARREL_CACTUS]Kaktusfeld[\LINK] entfernen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REMOVE_CACTUS_HELP</Tag>
+        <English>????</English>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REMOVE_ROCK_FORMATION</Tag>
+        <English>Destroy the [LINK=FEATURE_BARREL_CACTUS]rock formation[\LINK]</English>
+        <German>[LINK=FEATURE_BARREL_CACTUS]Felsformation[\LINK] zerstören</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_REMOVE_ROCK_FORMATION_HELP</Tag>
         <English>????</English>
     </TEXT>
     <TEXT>
@@ -275,8 +388,38 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_BUILD_RAFT_STATION_HELP</Tag>
-        <English>Allows to cross [LINK=TERRAIN_LARGE_RIVERS]large rivers[\LINK]</English>
+        <English>Allows [LINK=TERRAIN_LARGE_RIVERS]large rivers[\LINK] to be crossed </English>
         <German>Erlaubt die Überquerung eines [LINK=TERRAIN_LARGE_RIVERS]Großen Flusses[\LINK]</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_FISHING_NETS</Tag>
+        <English>Build [LINK=IMPROVEMENT_FISHING_NETS]fishing nets[\LINK]</English>
+        <German>[LINK=IMPROVEMENT_FISHING_NETS]Fischernetze[\LINK] auslegen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_FISHING_NETS_HELP</Tag>
+        <English>Increases fishing yields</English>
+        <German>Erhöht Erträge aus Fischfang</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_HUNTERS_STAGE</Tag>
+        <English>Build [LINK=IMPROVEMENT_HUNTERS_STAGE]hunters' blind[\LINK]</English>
+        <German>[LINK=IMPROVEMENT_HUNTERS_STAGE]Jagdpier[\LINK] bauen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_HUNTERS_STAGE_HELP</Tag>
+        <English>Increases hunting yields on water</English>
+        <German>Erhöht Erträge der Jagd auf dem Wasser</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_SALINA</Tag>
+        <English>Build [LINK=IMPROVEMENT_HUNTERS_STAGE]Salina[\LINK]</English>
+        <German>[LINK=IMPROVEMENT_HUNTERS_STAGE]Saline[\LINK] bauen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_SALINA_HELP</Tag>
+        <English>Yields raw salt from coastal terrain.</English>
+        <German>Erbringt Salzerträge auf Küstengebiet</German>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_REMOVE_ROAD</Tag>

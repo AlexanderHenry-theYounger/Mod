@@ -396,6 +396,16 @@ void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &w
 		parseHelp(widgetDataStruct, szBuffer);
 		break;
 
+	// WTP, ray, Widgets for Harbour System and Barracks System - START
+	case WIDGET_HELP_HARBOUR_SYSTEM:
+		parseCityHarbourSystemHelp(widgetDataStruct, szBuffer);
+		break;
+
+	case WIDGET_HELP_BARRACKS_SYSTEM:
+		parseCityBarracksSystemHelp(widgetDataStruct, szBuffer);
+		break;
+	// WTP, ray, Widgets for Harbour System and Barracks System - END
+
 	}
 }
 
@@ -1955,7 +1965,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 						szBuffer.append(NEWLINE);
 						if (GET_PLAYER(pHeadSelectedUnit->getOwnerINLINE()).getGold() < iCost)
 						{
-							szBuffer.append(gDLL->getText("TXT_KEY_BUILD_CANNOT_AFFORD", iCost, gDLL->getSymbolID(GOLD_CHAR)));
+							szBuffer.append(gDLL->getText("TXT_KEY_BUILD_CANNOT_AFFORD", iCost, GC.getSymbolID(GOLD_CHAR)));
 						}
 						else
 						{
@@ -2213,7 +2223,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 					}
 				}
 
-				szTempBuffer.Format(L"%s%d %c", NEWLINE, iPrice, gDLL->getSymbolID(GOLD_CHAR));
+				szTempBuffer.Format(L"%s%d %c", NEWLINE, iPrice, GC.getSymbolID(GOLD_CHAR));
 				szBuffer.append(szTempBuffer);
 			}
 			else if (GC.getActionInfo(widgetDataStruct.m_iData1).getCommandType() == COMMAND_GIFT)
@@ -2511,7 +2521,7 @@ void CvDLLWidgetData::parseContactCivHelp(CvWidgetDataStruct &widgetDataStruct, 
 		CvPlayerAI& player = GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1);
 		
 		szBuffer.append(CvWString::format(L"\nPlayer %d, Team %d", player.getID(), player.getTeam()));
-		szBuffer.append(CvWString::format(L"\n%d%c %d%c", player.getGold(), gDLL->getSymbolID(GOLD_CHAR), GET_TEAM(player.getTeam()).getRebelPercent(), gDLL->getSymbolID(POWER_CHAR)));
+		szBuffer.append(CvWString::format(L"\n%d%c %d%c", player.getGold(), GC.getSymbolID(GOLD_CHAR), GET_TEAM(player.getTeam()).getRebelPercent(), GC.getSymbolID(POWER_CHAR)));
 		szBuffer.append(CvWString::format(L"\nCities = %d, Units = %d, Pop = %d, AIPop = %d", player.getNumCities(), player.getNumUnits(), player.getTotalPopulation(), player.AI_getPopulation()));
 		szBuffer.append(CvWString::format(L"\nIncome = %d, Hurry Spending = %d", player.AI_getTotalIncome(), player.AI_getHurrySpending()));
 		for (int i = 0; i < NUM_STRATEGY_TYPES; ++i)
@@ -2766,6 +2776,65 @@ void CvDLLWidgetData::parseCityDefenseHelp(CvWidgetDataStruct &widgetDataStruct,
 		szBuffer.append(gDLL->getText("TXT_KEY_PLOT_BONUS", pHeadSelectedCity->getTotalDefense()));
 	}
 }
+
+// WTP, ray, Widgets for Harbour System and Barracks System - START
+void CvDLLWidgetData::parseCityHarbourSystemHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
+{
+	CvCity* pHeadSelectedCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
+	if (pHeadSelectedCity != NULL)
+	{
+		int iCityHarborSpaceUsed = pHeadSelectedCity->getCityHarbourSpaceUsed();
+		int iCityHarborSpaceMax = pHeadSelectedCity->getCityHarbourSpace();
+
+		// less than 50% of City Harbor Space is used
+		if (iCityHarborSpaceUsed < (iCityHarborSpaceMax/2))
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_CITY_HARBOR_STILL_FREE", iCityHarborSpaceUsed, iCityHarborSpaceMax, GC.getSymbolID(ANCHOR_CHAR)));
+		}
+
+		// more than 50% of City Harbor Space is used - not yet totally full though
+		if (iCityHarborSpaceUsed >= (iCityHarborSpaceMax/2) && iCityHarborSpaceUsed < iCityHarborSpaceMax)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_CITY_HARBOR_ALMOST_FULL", iCityHarborSpaceUsed, iCityHarborSpaceMax, GC.getSymbolID(ANCHOR_CHAR)));
+		}
+
+		// City Harbor Space is totally full
+		if (iCityHarborSpaceUsed >= iCityHarborSpaceMax)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_CITY_HARBOR_TOTALLY_FULL", iCityHarborSpaceUsed, iCityHarborSpaceMax, GC.getSymbolID(NO_ANCHOR_CHAR)));
+		}
+	}
+}
+
+void CvDLLWidgetData::parseCityBarracksSystemHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
+{
+	CvCity* pHeadSelectedCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
+	if (pHeadSelectedCity != NULL)
+	{
+		int iCityBarracksSpaceUsed = pHeadSelectedCity->getCityBarracksSpaceUsed();
+		int iCityBarracksSpaceMax = pHeadSelectedCity->getCityBarracksSpace();
+
+		// less than 50% of City Barracks Space is used
+		if (iCityBarracksSpaceUsed < (iCityBarracksSpaceMax/2))
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_CITY_BARRACKS_STILL_FREE", iCityBarracksSpaceUsed, iCityBarracksSpaceMax, GC.getSymbolID(BARRACKS_CHAR)));
+		}
+
+		// more than 50% of City Harbor Space is used - not yet totally full though
+		if (iCityBarracksSpaceUsed >= (iCityBarracksSpaceMax/2) && iCityBarracksSpaceUsed < iCityBarracksSpaceMax)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_CITY_BARRACKS_ALMOST_FULL", iCityBarracksSpaceUsed, iCityBarracksSpaceMax, GC.getSymbolID(BARRACKS_CHAR)));
+		}
+
+		// City Harbor Space is totally full
+		if (iCityBarracksSpaceUsed >= iCityBarracksSpaceMax)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_CITY_BARRACKS_TOTALLY_FULL", iCityBarracksSpaceUsed, iCityBarracksSpaceMax, GC.getSymbolID(NO_BARRACKS_CHAR)));
+		}
+	}
+}
+
+// WTP, ray, Widgets for Harbour System and Barracks System - END
 
 
 void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)

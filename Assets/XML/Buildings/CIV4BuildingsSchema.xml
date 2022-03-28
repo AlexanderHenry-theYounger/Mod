@@ -74,18 +74,22 @@
 	<ElementType name="iAsset" content="textOnly" dt:type="int"/>
 	<ElementType name="iPower" content="textOnly" dt:type="int"/>
 	<ElementType name="iYieldStorage" content="textOnly" dt:type="int"/>
+	<ElementType name="iMaxHarbourSpaceProvided" content="textOnly" dt:type="int"/>
+	<ElementType name="iMaxBarracksSpaceProvided" content="textOnly" dt:type="int"/>
 	<ElementType name="iStorageLossSellPercentage" content="textOnly" dt:type="int"/><!-- The percentage of the price in europe, at which the loss of goods in a cities storage is sold. -->
 	<ElementType name="bIgnoresBoycott" content="textOnly" dt:type="boolean"/><!-- If this building allows a city to ignore european boycotts, when selling lost goods from the storage. -->
 	<ElementType name="bUnlocksStorageLossTradeSettings" content="textOnly" dt:type="boolean"/><!-- If this building unlocks the trade settings for the storage loss (aka "Customs house popup") -->
 	<ElementType name="iSpecialBuildingPriority" content="textOnly" dt:type="int"/>
 	<ElementType name="fVisibilityPriority" content="textOnly"/>
 	<ElementType name="FreePromotion" content="textOnly"/>
+	<ElementType name="RouteTypeCreated" content="textOnly"/>
 	<ElementType name="iYield" content="textOnly" dt:type="int"/>
 	<ElementType name="YieldType" content="textOnly"/>
 	<ElementType name="iModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iYieldChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iYieldDemand" content="textOnly" dt:type="int"/>
 	<ElementType name="iDomesticMarketModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iEntertainmentGoldModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iProfessionOutput" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaxWorkers" content="textOnly" dt:type="int"/>
 	<ElementType name="LandPlotYieldChange" content="eltOnly">
@@ -243,6 +247,7 @@
 		<element type="MaxStartEra"/>
 		<element type="ProductionTraits"/>
 		<element type="FreePromotion"/>
+		<element type="RouteTypeCreated" minOccurs="0"/>
 		<element type="bGraphicalOnly"/>
 		<element type="bWorksWater"/>
 		<element type="bWater"/>
@@ -274,6 +279,8 @@
 		<element type="iAsset"/>
 		<element type="iPower"/>
 		<element type="iYieldStorage"/>
+		<element type="iMaxHarbourSpaceProvided" minOccurs="0"/>
+		<element type="iMaxBarracksSpaceProvided" minOccurs="0"/>
 		<element type="iStorageLossSellPercentage"/>
 		<element type="bIgnoresBoycott" minOccurs="0"/>
 		<element type="bUnlocksStorageLossTradeSettings" minOccurs="0"/>
@@ -284,6 +291,7 @@
 		<element type="YieldChanges"/>
 		<element type="YieldModifiers" minOccurs="0"/>
 		<element type="iDomesticMarketModifier" minOccurs="0"/>
+		<element type="iEntertainmentGoldModifier" minOccurs="0"/>
 		<element type="YieldDemands" minOccurs="0"/>
 		<element type="ConstructSound"/>
 		<element type="UnitCombatFreeExperiences"/>

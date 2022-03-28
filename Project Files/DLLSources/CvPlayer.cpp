@@ -1815,6 +1815,54 @@ int CvPlayer::getMercantileFactor() const
 	return iMercantileFactor - 100;
 }
 
+// WTP, Africa and Port Royal Profit Modifiers - START
+int CvPlayer::getTotalPlayerAfricaSellProfitModifierInPercent() const
+{
+	int iAfricaProfitModifierTotal = 0;
+	for (TraitTypes eTrait = FIRST_TRAIT; eTrait < NUM_TRAIT_TYPES; ++eTrait)
+	{
+		if (hasTrait(eTrait))
+		{
+			iAfricaProfitModifierTotal += GC.getTraitInfo(eTrait).getAfricaSellProfitModifierInPercent();
+
+		}
+	}
+	return iAfricaProfitModifierTotal;
+}
+
+int CvPlayer::getTotalPlayerPortRoyalSellProfitModifierInPercent() const
+{
+	int iPortRoyalProfitModifierTotal = 0;
+	for (TraitTypes eTrait = FIRST_TRAIT; eTrait < NUM_TRAIT_TYPES; ++eTrait)
+	{
+		if (hasTrait(eTrait))
+		{
+			iPortRoyalProfitModifierTotal += GC.getTraitInfo(eTrait).getPortRoyalSellProfitModifierInPercent();
+
+		}
+	}
+	return iPortRoyalProfitModifierTotal;
+}
+// WTP, Africa and Port Royal Profit Modifiers - END
+
+
+// WTP, ray, Domestic Market Profit Modifier - START
+int CvPlayer::getTotalPlayerDomesticMarketProfitModifierInPercent() const
+{
+	int iDomesticMarketProfitModifierInPercentTotal = 0;
+	for (TraitTypes eTrait = FIRST_TRAIT; eTrait < NUM_TRAIT_TYPES; ++eTrait)
+	{
+		if (hasTrait(eTrait))
+		{
+			iDomesticMarketProfitModifierInPercentTotal += GC.getTraitInfo(eTrait).getDomesticMarketProfitModifierInPercent();
+
+		}
+	}
+	return iDomesticMarketProfitModifierInPercentTotal;
+}
+// WTP, ray, Domestic Market Profit Modifier - END
+
+
 bool CvPlayer::isHuman() const
 {
 	return m_bHuman;
@@ -3693,7 +3741,7 @@ void CvPlayer::handleDiploEvent(DiploEventTypes eDiploEvent, PlayerTypes ePlayer
 				int iLoop;
 				for (pLoopCity = kPlayer.firstCity(&iLoop); pLoopCity != NULL; pLoopCity = kPlayer.nextCity(&iLoop))
 				{
-					if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
+					if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()) && pLoopCity->plot()->hasDeepWaterCoast())
 					{
 						locationToAppear = pLoopCity;
 						break;
@@ -3822,7 +3870,7 @@ void CvPlayer::handleDiploEvent(DiploEventTypes eDiploEvent, PlayerTypes ePlayer
 				int iLoop;
 				for (pLoopCity = kPlayer.firstCity(&iLoop); pLoopCity != NULL; pLoopCity = kPlayer.nextCity(&iLoop))
 				{
-					if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()) && pLoopCity->plot()->hasAnyOtherWaterPlotsThanJustLargeRivers())
+					if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()) && pLoopCity->plot()->hasDeepWaterCoast())
 					{
 						locationToAppear = pLoopCity;
 						break;
@@ -3831,7 +3879,7 @@ void CvPlayer::handleDiploEvent(DiploEventTypes eDiploEvent, PlayerTypes ePlayer
 
 				if (locationToAppear!= NULL)
 				{
-					//create the smuggling ship
+					//create the Pirate Ship
 					UnitTypes PirateShipType = (UnitTypes)GC.getCivilizationInfo(kPlayer.getCivilizationType()).getCivilizationUnits(GC.getDefineINT("UNITCLASS_PIRATE_FRIGATE"));
 					CvUnit* PirateShipUnit;
 					PirateShipUnit = kPlayer.initUnit(PirateShipType, GC.getUnitInfo(PirateShipType).getDefaultProfession(), locationToAppear->getX_INLINE(), locationToAppear->getY_INLINE(), NO_UNITAI);
@@ -3962,7 +4010,7 @@ void CvPlayer::handleDiploEvent(DiploEventTypes eDiploEvent, PlayerTypes ePlayer
 			int iLoop;
 			for (pLoopCity = kPlayer.firstCity(&iLoop); pLoopCity != NULL; pLoopCity = kPlayer.nextCity(&iLoop))
 			{
-				if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
+				if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()) && pLoopCity->plot()->hasDeepWaterCoast())
 				{
 					locationToAppear = pLoopCity;
 					break;
@@ -4050,7 +4098,7 @@ void CvPlayer::handleDiploEvent(DiploEventTypes eDiploEvent, PlayerTypes ePlayer
 				int iLoop;
 				for (pLoopCity = kPlayer.firstCity(&iLoop); pLoopCity != NULL; pLoopCity = kPlayer.nextCity(&iLoop))
 				{
-					if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
+					if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()) && pLoopCity->plot()->hasDeepWaterCoast())
 					{
 						locationToAppear = pLoopCity;
 						break;
@@ -5087,6 +5135,9 @@ bool CvPlayer::canReceiveGoody(CvPlot* pPlot, GoodyTypes eGoody, const CvUnit* p
 			return false;
 		}
 
+		// WTP, ray, let us remove it - why should MP games play on different rules as SP games?
+		// it was perceived as a bug and I really feel it is overexagerrated anyways
+		/*
 		if ((GC.getUnitInfo(eUnit).getCombat() > 0) && !(GC.getUnitInfo(eUnit).isOnlyDefensive()))
 		{
 			if (GC.getGameINLINE().isGameMultiPlayer())
@@ -5094,6 +5145,7 @@ bool CvPlayer::canReceiveGoody(CvPlot* pPlot, GoodyTypes eGoody, const CvUnit* p
 				return false;
 			}
 		}
+		*/
 
 		if (GC.getGameINLINE().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && isHuman())
 		{
@@ -5122,6 +5174,27 @@ bool CvPlayer::canReceiveGoody(CvPlot* pPlot, GoodyTypes eGoody, const CvUnit* p
 			{
 				return false;
 			}
+			// WTP, ray Slave Ship - START
+			else if (pUnit->getUnitInfo().isSlaveShip())
+			{
+				return false;
+			}
+			// WTP, ray Slave Ship - END
+
+			// WTP, ray Treasure Ship - START
+			else if (pUnit->getUnitInfo().isTreasureShip())
+			{
+				return false;
+			}
+			// WTP, ray Treasure Ship - END
+
+			// WTP, ray Troop Ship - START
+			else if (pUnit->getUnitInfo().isTroopShip())
+			{
+				return false;
+			}
+			// WTP, ray Troop Ship - END
+
 		}
 	}
 
@@ -5564,9 +5637,30 @@ void CvPlayer::doGoody(CvPlot* pPlot, CvUnit* pUnit)
 					for (int iGoody = 0; iGoody < GC.getNumGoodyInfos(); ++iGoody)
 					{
 						aGoodyFactors[iGoody] *= kTraitInfo.getGoodyFactor(iGoody);
+
+						// WTP, ray, Unique Goody Chance Modifiers - START
+						// probably no need to have this stored as attribute on Player by "processTrait"
+						// we are already looping Traits and Goodies anyways for above logic and just plugin
+						CvGoodyInfo& kGoodyInfo = GC.getGoodyInfo((GoodyTypes)iGoody);
+						if (kGoodyInfo.isUnique() && !kGoodyInfo.isBad())
+						{
+							// Water Goodies
+							if (kGoodyInfo.isWaterGoody())
+							{
+								aGoodyFactors[iGoody] = aGoodyFactors[iGoody] * (100 +kTraitInfo.getGoodUniqueGoodyChanceModifierWater()) / 100;
+							}
+							// Land Goodies
+							else
+							{
+								aGoodyFactors[iGoody] = aGoodyFactors[iGoody] * (100 +kTraitInfo.getGoodUniqueGoodyChanceModifierLand()) / 100;
+							}
+						}
+						// WTP, ray, Unique Goody Chance Modifiers - END
 					}
 				}
 			}
+
+
 
 			int iBestValue = -1;
 			GoodyTypes eBestGoody = NO_GOODY;
@@ -5670,6 +5764,9 @@ void CvPlayer::doGoody(CvPlot* pPlot, CvUnit* pUnit)
 								|| pUnit == NULL
 								|| (pUnit->getUnitInfo().getSpecialCargo() != NO_SPECIALUNIT && pUnit->getUnitInfo().getSpecialCargo() != SPECIALUNIT_COLONIST_UNIT)
 								|| (pUnit->cargoSpace() - pUnit->getCargo() <= 0)
+								|| (pUnit->getUnitInfo().isSlaveShip()) // WTP, ray Slave Ship
+								|| (pUnit->getUnitInfo().isTreasureShip()) // WTP, ray Treasure Ship
+								|| (pUnit->getUnitInfo().isTroopShip()) // WTP, ray Troop Ship
 								))
 							{
 								bValid = true;
@@ -6269,6 +6366,10 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	m_iMaxTaxRate = m_iMaxTaxRate - maxtaxdecrease;
 	// R&R, ray, max tax decrease trait, END
 
+	// WTP, ray, Improvement Growth Modifier - START
+	changeImprovementUpgradeDurationModifier(kTrait.getImprovementGrowthTimeModifier() * iChange);
+	// WTP, ray, Improvement Growth Modifier - END
+
 	int iLoop;
 	std::vector<CvUnit*> apUnits;
 	for (CvUnit* pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
@@ -6603,7 +6704,6 @@ int CvPlayer::getBuildCost(const CvPlot* pPlot, BuildTypes eBuild) const
 
 	return iCost;
 }
-
 
 RouteTypes CvPlayer::getBestRoute(CvPlot* pPlot) const
 {
@@ -7148,7 +7248,6 @@ int CvPlayer::getFreeExperience() const
 	return m_iFreeExperience;
 }
 
-
 void CvPlayer::changeFreeExperience(int iChange)
 {
 	m_iFreeExperience += iChange;
@@ -7159,30 +7258,37 @@ int CvPlayer::getWorkerSpeedModifier() const
 	return m_iWorkerSpeedModifier;
 }
 
-
 void CvPlayer::changeWorkerSpeedModifier(int iChange)
 {
 	m_iWorkerSpeedModifier += iChange;
 }
-
 
 int CvPlayer::getImprovementUpgradeRateModifier() const
 {
 	return m_iImprovementUpgradeRateModifier;
 }
 
-
 void CvPlayer::changeImprovementUpgradeRateModifier(int iChange)
 {
 	m_iImprovementUpgradeRateModifier += iChange;
 }
 
+// WTP, ray, Improvement Growth Modifier - START
+int CvPlayer::getImprovementUpgradeDurationModifier() const
+{
+	return m_iImprovementUpgradeDurationModifier;
+}
+
+void CvPlayer::changeImprovementUpgradeDurationModifier(int iChange)
+{
+	m_iImprovementUpgradeDurationModifier += iChange;
+}
+// WTP, ray, Improvement Growth Modifier - END
 
 int CvPlayer::getMilitaryProductionModifier() const
 {
 	return m_iMilitaryProductionModifier;
 }
-
 
 void CvPlayer::changeMilitaryProductionModifier(int iChange)
 {
@@ -7207,7 +7313,6 @@ int CvPlayer::getHighestUnitLevel()	const
 {
 	return m_iHighestUnitLevel;
 }
-
 
 void CvPlayer::setHighestUnitLevel(int iNewValue)
 {
@@ -9271,7 +9376,7 @@ int CvPlayer::getImprovementYieldChange(ImprovementTypes eIndex1, YieldTypes eIn
 	FAssertMsg(eIndex1 < GC.getNumImprovementInfos(), "eIndex1 is expected to be within maximum bounds (invalid Index)");
 	FAssertMsg(eIndex2 >= 0, "eIndex2 is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex2 < NUM_YIELD_TYPES, "eIndex2 is expected to be within maximum bounds (invalid Index)");
-	return m_em_iImprovementYieldChange.get(eIndex1, eIndex2);
+	return m_em_iImprovementYieldChange[eIndex1].get(eIndex2);
 }
 
 
@@ -9284,7 +9389,7 @@ void CvPlayer::changeImprovementYieldChange(ImprovementTypes eIndex1, YieldTypes
 
 	if (iChange != 0)
 	{
-		m_em_iImprovementYieldChange.add(eIndex1, eIndex2, iChange);
+		m_em_iImprovementYieldChange[eIndex1].add(eIndex2, iChange);
 		FAssert(getImprovementYieldChange(eIndex1, eIndex2) >= 0);
 
 		updateYield();
@@ -9297,7 +9402,7 @@ int CvPlayer::getBuildingYieldChange(BuildingClassTypes eBuildingClass, YieldTyp
 	FAssert(eBuildingClass < GC.getNumBuildingClassInfos());
 	FAssert(eYield >= 0);
 	FAssert(eYield < NUM_YIELD_TYPES);
-	return m_em_iBuildingYieldChange.get(eBuildingClass, eYield);
+	return m_em_iBuildingYieldChange[eBuildingClass].get(eYield);
 }
 
 void CvPlayer::changeBuildingYieldChange(BuildingClassTypes eBuildingClass, YieldTypes eYield, int iChange)
@@ -9309,7 +9414,7 @@ void CvPlayer::changeBuildingYieldChange(BuildingClassTypes eBuildingClass, Yiel
 
 	if (iChange != 0)
 	{
-		m_em_iBuildingYieldChange.add(eBuildingClass, eYield, iChange);
+		m_em_iBuildingYieldChange[eBuildingClass].add(eYield, iChange);
 		FAssert(getBuildingYieldChange(eBuildingClass, eYield) >= 0);
 
 		updateYield();
@@ -9503,6 +9608,12 @@ const CvWString& CvPlayer::getCityName(int iIndex) const
 CvCity* CvPlayer::firstCity(int *pIterIdx, bool bRev) const
 {
 	return !bRev ? m_cities.beginIter(pIterIdx) : m_cities.endIter(pIterIdx);
+}
+
+CvCity* CvPlayer::firstCity() const
+{
+	int iUnused = 0;
+	return firstCity(&iUnused);
 }
 
 CvCity* CvPlayer::nextCity(int *pIterIdx, bool bRev) const
@@ -10545,6 +10656,14 @@ int CvPlayer::NBMOD_GetEuropeMilitaryValue() const
                     fThisStrength += (float)GC.getProfessionInfo(getRevolutionEuropeProfession(iI)).getCombatChange();
                 }
 
+				// WTP, ray, Cannons to Professions - START
+				// let the Unit be more valuable if it has a Profession that can bombard
+				if (getRevolutionEuropeProfession(iI) != NO_PROFESSION)
+                {
+                    fThisStrength += (float)GC.getProfessionInfo(getRevolutionEuropeProfession(iI)).getBombardRateChangeProfession();
+                }
+				// WTP, ray, Cannons to Professions - END
+
                 // Die St�rke mit einem Gewicht versehen
                 fThisStrength = fThisStrength * GC.getUnitInfo(getRevolutionEuropeUnit(iI)).NBMOD_GetStrengthWeight();
 
@@ -10948,6 +11067,14 @@ int CvPlayer::NBMOD_GetEuropeShipStrength() const
                     fThisStrength += (float)GC.getProfessionInfo(getRevolutionEuropeProfession(iI)).getCombatChange();
                 }
 
+				// WTP, ray, Cannons to Professions - START
+				// let the Unit be more valuable if it has a Profession that can bombard
+				if (getRevolutionEuropeProfession(iI) != NO_PROFESSION)
+                {
+                    fThisStrength += (float)GC.getProfessionInfo(getRevolutionEuropeProfession(iI)).getBombardRateChangeProfession();
+                }
+				// WTP, ray, Cannons to Professions - END
+
                 // Die St�rke mit einem Gewicht versehen
                 fThisStrength = fThisStrength * GC.getUnitInfo(getRevolutionEuropeUnit(iI)).NBMOD_GetStrengthWeight();
 
@@ -11193,7 +11320,6 @@ void CvPlayer::doCrosses()
 	// WTP, ray, Happiness - START
 	int iHappinessRate = getHappinessRate();
 	int iUnHappinessRate = getUnHappinessRate();
-
 	iCrossRate = (iCrossRate * (100 + iHappinessRate - iUnHappinessRate)) / 100; // this is percentage modifcation
 	// WTP, ray, Happiness - EMD
 
@@ -15647,7 +15773,11 @@ int CvPlayer::getYieldAfricaBuyPrice(YieldTypes eYield) const
 {
 	FAssert(eYield >= 0);
 	FAssert(eYield < NUM_YIELD_TYPES);
-	return m_em_iYieldAfricaBuyPrice.get(eYield);
+
+	// WTP, Africa and Port Royal Profit Modifiers - START
+	int iModifierFromTraits = getTotalPlayerAfricaSellProfitModifierInPercent();
+	int iModifiedPrice = m_em_iYieldAfricaBuyPrice.get(eYield) * (100 + iModifierFromTraits) / 100;
+	return iModifiedPrice;
 }
 
 void CvPlayer::setYieldAfricaBuyPrice(YieldTypes eYield, int iPrice, bool bMessage)
@@ -15921,13 +16051,13 @@ CvUnit* CvPlayer::buyYieldUnitFromAfrica(YieldTypes eYield, int iAmount, CvUnit*
 		changeGold(-iPrice);
 		// R&R, vetiarvind, Price dependent tax rate change - Start
 		int iBuyValue = kPlayerEurope.getYieldAfricaSellPrice(eYield) >> 1; //buying should only contribute 50% of sell to tax incr. score
-		changeYieldTradedTotal(eYield, iAmount, iBuyValue);
-		kPlayerEurope.changeYieldTradedTotal(eYield, iAmount, iBuyValue);
+		changeYieldTradedTotalAfrica(eYield, iAmount, iBuyValue); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
+		kPlayerEurope.changeYieldTradedTotalAfrica(eYield, iAmount, iBuyValue); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 		//changeYieldTradedTotal(eYield, iAmount);
 		//kPlayerEurope.changeYieldTradedTotal(eYield, iAmount);
 		// R&R, vetiarvind, Price dependent tax rate change - End		
-		GC.getGameINLINE().changeYieldBoughtTotal(kPlayerEurope.getID(), eYield, iAmount);
-
+		GC.getGameINLINE().changeYieldBoughtTotalAfrica(kPlayerEurope.getID(), eYield, iAmount); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
+		 
 		CvWStringBuffer szMessage;
 		GAMETEXT.setEuropeYieldBoughtHelp(szMessage, *this, eYield, iAmount);
 		m_aszTradeMessages.push_back(szMessage.getCString());
@@ -16012,13 +16142,13 @@ void CvPlayer::sellYieldUnitToAfrica(CvUnit* pUnit, int iAmount, int iCommission
 				// R&R, ray, Smuggling - END
 				changeGold(iProfit * getExtraTradeMultiplier(kPlayerEurope.getID()) / 100);
 				// R&R, vetiarvind, Price dependent tax rate change - Start				
-				changeYieldTradedTotal(eYield, iAmount, iSellPrice);
-				kPlayerEurope.changeYieldTradedTotal(eYield, iAmount, iSellPrice);
+				changeYieldTradedTotalAfrica(eYield, iAmount, iSellPrice); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
+				kPlayerEurope.changeYieldTradedTotalAfrica(eYield, iAmount, iSellPrice); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 				//changeYieldTradedTotal(eYield, iAmount);
 				//kPlayerEurope.changeYieldTradedTotal(eYield, iAmount);
 				// R&R, vetiarvind, Price dependent tax rate change - End
 				
-				GC.getGameINLINE().changeYieldBoughtTotal(kPlayerEurope.getID(), eYield, -iAmount);
+				GC.getGameINLINE().changeYieldBoughtTotalAfrica(kPlayerEurope.getID(), eYield, -iAmount); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 
 				pUnit->setYieldStored(pUnit->getYieldStored() - iAmount);
 				if (pUnit->getYieldStored() <= 0)
@@ -16038,11 +16168,11 @@ void CvPlayer::sellYieldUnitToAfrica(CvUnit* pUnit, int iAmount, int iCommission
 				// R&R, ray, Smuggling - START
 				if (bSmuggling)
 				{
-					GAMETEXT.setEuropeYieldSoldHelp(szMessage, *this, eYield, iAmount, iBribe);
+					GAMETEXT.setAfricaYieldSoldHelp(szMessage, *this, eYield, iAmount, iBribe);
 				}
 				else
 				{
-					GAMETEXT.setEuropeYieldSoldHelp(szMessage, *this, eYield, iAmount, iCommission);
+					GAMETEXT.setAfricaYieldSoldHelp(szMessage, *this, eYield, iAmount, iCommission);
 				}
 				// R&R, ray, Smuggling - END
 				m_aszTradeMessages.push_back(szMessage.getCString());
@@ -16073,7 +16203,7 @@ void CvPlayer::sellYieldUnitToAfrica(CvUnit* pUnit, int iAmount, int iCommission
 			pUnit->kill(bDelayedDeath);
 
 			CvWStringBuffer szMessage;
-			GAMETEXT.setEuropeYieldSoldHelp(szMessage, *this, eYield, iAmount, iCommission);
+			GAMETEXT.setAfricaYieldSoldHelp(szMessage, *this, eYield, iAmount, iCommission);
 			m_aszTradeMessages.push_back(szMessage.getCString());
 
 			// TAC - Trade Messages - koma13 - START
@@ -16109,7 +16239,11 @@ int CvPlayer::getYieldPortRoyalBuyPrice(YieldTypes eYield) const
 {
 	FAssert(eYield >= 0);
 	FAssert(eYield < NUM_YIELD_TYPES);
-	return m_em_iYieldPortRoyalBuyPrice.get(eYield);
+
+	// WTP, Africa and Port Royal Profit Modifiers - START
+	int iModifierFromTraits = getTotalPlayerPortRoyalSellProfitModifierInPercent();
+	int iModifiedPrice = m_em_iYieldPortRoyalBuyPrice.get(eYield) * (100 + iModifierFromTraits) / 100;
+	return iModifiedPrice;
 }
 
 void CvPlayer::setYieldPortRoyalBuyPrice(YieldTypes eYield, int iPrice, bool bMessage)
@@ -16383,12 +16517,12 @@ CvUnit* CvPlayer::buyYieldUnitFromPortRoyal(YieldTypes eYield, int iAmount, CvUn
 		changeGold(-iPrice);
 		// R&R, vetiarvind, Price dependent tax rate change - Start
 		int iBuyValue = kPlayerEurope.getYieldPortRoyalSellPrice(eYield) >> 1; //buying should contribute only 50% of sell value to tax score
-		changeYieldTradedTotal(eYield, iAmount, iBuyValue);
-		kPlayerEurope.changeYieldTradedTotal(eYield, iAmount, iBuyValue);
+		changeYieldTradedTotalPortRoyal(eYield, iAmount, iBuyValue); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
+		kPlayerEurope.changeYieldTradedTotalPortRoyal(eYield, iAmount, iBuyValue); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 		//changeYieldTradedTotal(eYield, iAmount);
 		//kPlayerEurope.changeYieldTradedTotal(eYield, iAmount);
 		// R&R, vetiarvind, Price dependent tax rate change - End
-		GC.getGameINLINE().changeYieldBoughtTotal(kPlayerEurope.getID(), eYield, iAmount);
+		GC.getGameINLINE().changeYieldBoughtTotalPortRoyal(kPlayerEurope.getID(), eYield, iAmount); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 
 		CvWStringBuffer szMessage;
 		GAMETEXT.setEuropeYieldBoughtHelp(szMessage, *this, eYield, iAmount);
@@ -16428,60 +16562,18 @@ void CvPlayer::sellYieldUnitToPortRoyal(CvUnit* pUnit, int iAmount, int iCommiss
 		YieldTypes eYield = pUnit->getYield();
 		if (NO_YIELD != eYield)
 		{
-			// R&R, ray, Smuggling - START
-			bool bSmuggling = false;
-			// no smuggling in Port Royal
-			//CvUnit* Transport = pUnit->getTransportUnit();
-			//if (Transport != NULL)
-			//{
-			//	if(GC.getYieldInfo(eYield).isCargo() && Transport->getUnitClassType() == (UnitClassTypes)GC.getDefineINT("UNITCLASS_SMUGGLING_SHIP"))
-			//	{
-			//		bSmuggling = true;
-			//	}
-			//}
-
-			//if (isYieldEuropeTradable(eYield))
-			if (isYieldPortRoyalTradable(eYield) || bSmuggling)
-			// R&R, ray, Smuggling - END
+			// no smuggling in Port Royal, that is why we do not check it here
+			if (isYieldPortRoyalTradable(eYield))
 			{
 				iAmount = std::min(iAmount, pUnit->getYieldStored());
 
-				// R&R, ray, Smuggling - START
-				// int iProfit = getSellToEuropeProfit(eYield, iAmount * (100 - iCommission) / 100);
-				int iProfit = 0;
-				int iBribe = GC.getDefineINT("SMUGGLING_BRIBE_RATE");
-				int iSellPrice = 0; // R&R, vetiarvind, Price dependent tax rate change
-				if (bSmuggling)
-				{
-					if (!isYieldPortRoyalTradable(eYield))
-					{
-						int minPrice = GC.getYieldInfo(eYield).getMinimumBuyPrice();
-						iProfit = iAmount * minPrice * (100 - iBribe) / 100;
-						iSellPrice = minPrice; // R&R, vetiarvind, Price dependent tax rate change
-					}
-					else
-					{
-						CvPlayer& kPlayerEurope = GET_PLAYER(getParent());
-						int price = kPlayerEurope.getYieldPortRoyalBuyPrice(eYield);
-						iProfit = iAmount * price  * (100 - iBribe) / 100;
-						iSellPrice = price; // R&R, vetiarvind, Price dependent tax rate change
-					}
-				}
-				else
-				{
-					iProfit = getSellToPortRoyalProfit(eYield, iAmount * (100 - iCommission) / 100);
-					iSellPrice = kPlayerEurope.getYieldPortRoyalBuyPrice(eYield); // R&R, vetiarvind, Price dependent tax rate change
-				}
-				// R&R, ray, Smuggling - END
-				changeGold(iProfit * getExtraTradeMultiplier(kPlayerEurope.getID()) / 100);
-				
-				// R&R, vetiarvind, Price dependent tax rate change - Start				
-				changeYieldTradedTotal(eYield, iAmount, iSellPrice);
-				kPlayerEurope.changeYieldTradedTotal(eYield, iAmount, iSellPrice);
-				//changeYieldTradedTotal(eYield, iAmount);
-				//kPlayerEurope.changeYieldTradedTotal(eYield, iAmount);
-				// R&R, vetiarvind, Price dependent tax rate change - End
-				GC.getGameINLINE().changeYieldBoughtTotal(kPlayerEurope.getID(), eYield, -iAmount);
+				int iProfit = getSellToPortRoyalProfit(eYield, iAmount * (100 - iCommission) / 100);
+				int iSellPrice = kPlayerEurope.getYieldPortRoyalBuyPrice(eYield); 	
+				changeGold(iProfit * getExtraTradeMultiplier(kPlayerEurope.getID()) / 100);	
+
+				changeYieldTradedTotalPortRoyal(eYield, iAmount, iSellPrice);
+				kPlayerEurope.changeYieldTradedTotalPortRoyal(eYield, iAmount, iSellPrice);
+				GC.getGameINLINE().changeYieldBoughtTotalPortRoyal(kPlayerEurope.getID(), eYield, -iAmount);
 
 				pUnit->setYieldStored(pUnit->getYieldStored() - iAmount);
 				if (pUnit->getYieldStored() <= 0)
@@ -16493,21 +16585,11 @@ void CvPlayer::sellYieldUnitToPortRoyal(CvUnit* pUnit, int iAmount, int iCommiss
 				for (int i = 0; i < GC.getNumFatherPointInfos(); ++i)
 				{
 					FatherPointTypes ePointType = (FatherPointTypes) i;
-
 					changeFatherPoints(ePointType, iProfit * GC.getFatherPointInfo(ePointType).getEuropeTradeGoldPointPercent() / 100);
 				}
 
 				CvWStringBuffer szMessage;
-				// R&R, ray, Smuggling - START
-				if (bSmuggling)
-				{
-					GAMETEXT.setEuropeYieldSoldHelp(szMessage, *this, eYield, iAmount, iBribe);
-				}
-				else
-				{
-					GAMETEXT.setEuropeYieldSoldHelp(szMessage, *this, eYield, iAmount, iCommission);
-				}
-				// R&R, ray, Smuggling - END
+				GAMETEXT.setPortRoyalYieldSoldHelp(szMessage, *this, eYield, iAmount, iCommission);
 				m_aszTradeMessages.push_back(szMessage.getCString());
 
 				// TAC - Trade Messages - koma13 - START
@@ -16518,9 +16600,7 @@ void CvPlayer::sellYieldUnitToPortRoyal(CvUnit* pUnit, int iAmount, int iCommiss
 				// TAC - Trade Messages - koma13 - END
 
 				gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(), szMessage.getCString(), "AS2D_BUILD_BANK", MESSAGE_TYPE_LOG_ONLY);
-
 				gDLL->getInterfaceIFace()->setDirty(PortRoyalScreen_DIRTY_BIT, true);
-
 				gDLL->getEventReporterIFace()->yieldSoldToEurope(getID(), eYield, iAmount); // was this the problem ?
 			}
 		}
@@ -16528,7 +16608,7 @@ void CvPlayer::sellYieldUnitToPortRoyal(CvUnit* pUnit, int iAmount, int iCommiss
 		{
 			int iAmount = pUnit->getYieldStored();
 			int iNetAmount = iAmount * (100 - iCommission) / 100;
-			iNetAmount -= (iNetAmount * getTaxRate()) / 100;
+			iNetAmount -= (iNetAmount * GC.getDefineINT("PORT_ROYAL_PORT_TAX")) / 100;
 			changeGold(iNetAmount * getExtraTradeMultiplier(kPlayerEurope.getID()) / 100);
 
 			pUnit->setYieldStored(0);
@@ -16536,7 +16616,7 @@ void CvPlayer::sellYieldUnitToPortRoyal(CvUnit* pUnit, int iAmount, int iCommiss
 			pUnit->kill(bDelayedDeath);
 
 			CvWStringBuffer szMessage;
-			GAMETEXT.setEuropeYieldSoldHelp(szMessage, *this, eYield, iAmount, iCommission);
+			GAMETEXT.setPortRoyalYieldSoldHelp(szMessage, *this, eYield, iAmount, iCommission);
 			m_aszTradeMessages.push_back(szMessage.getCString());
 
 			// TAC - Trade Messages - koma13 - START
@@ -16634,15 +16714,16 @@ int CvPlayer::getAfricaUnitBuyPrice(UnitTypes eUnit) const
 	iCost *= GC.getEraInfo(GC.getGameINLINE().getStartEra()).getTrainPercent();
 	iCost /= 100;
 
-	/*
+	// WTP, ray, Recruit Price Discounts Africa and Port Royal - START
 	for (int iTrait = 0; iTrait < GC.getNumTraitInfos(); ++iTrait)
 	{
 		if (hasTrait((TraitTypes) iTrait))
 		{
-			iCost *= std::max(0, (100 - GC.getTraitInfo((TraitTypes) iTrait).getRecruitPriceDiscount()));
+			iCost *= std::max(0, (100 - GC.getTraitInfo((TraitTypes) iTrait).getRecruitPriceDiscountAfrica()));
 			iCost /= 100;
 		}
-	}*/
+	}
+	// WTP, ray, Recruit Price Discounts Africa and Port Royal - START
 
 	if (!isHuman())
 	{
@@ -16733,15 +16814,16 @@ int CvPlayer::getPortRoyalUnitBuyPrice(UnitTypes eUnit) const
 	iCost *= GC.getEraInfo(GC.getGameINLINE().getStartEra()).getTrainPercent();
 	iCost /= 100;
 
-	/*
+	// WTP, ray, Recruit Price Discounts Africa and Port Royal - START
 	for (int iTrait = 0; iTrait < GC.getNumTraitInfos(); ++iTrait)
 	{
 		if (hasTrait((TraitTypes) iTrait))
 		{
-			iCost *= std::max(0, (100 - GC.getTraitInfo((TraitTypes) iTrait).getRecruitPriceDiscount()));
+			iCost *= std::max(0, (100 - GC.getTraitInfo((TraitTypes) iTrait).getRecruitPriceDiscountPortRoyal()));
 			iCost /= 100;
 		}
-	}*/
+	}
+	// WTP, ray, Recruit Price Discounts Africa and Port Royal - END
 
 	if (!isHuman())
 	{
@@ -16864,6 +16946,47 @@ void CvPlayer::setYieldTradedTotal(YieldTypes eYield, int iValue)
 	}
 }
 
+// WTP, ray, Yields Traded Total for Africa and Port Royal - START
+int CvPlayer::getYieldTradedTotalAfrica(YieldTypes eYield) const
+{
+	FAssert(eYield >= 0);
+	FAssert(eYield < NUM_YIELD_TYPES);
+
+	return m_em_iYieldTradedTotalAfrica.get(eYield);
+}
+
+void CvPlayer::setYieldTradedTotalAfrica(YieldTypes eYield, int iValue)
+{
+	FAssert(eYield >= 0);
+	FAssert(eYield < NUM_YIELD_TYPES);
+
+	if(iValue != getYieldTradedTotalAfrica(eYield))
+	{
+		m_em_iYieldTradedTotalAfrica.set(eYield, iValue);
+	}
+}
+
+int CvPlayer::getYieldTradedTotalPortRoyal(YieldTypes eYield) const
+{
+	FAssert(eYield >= 0);
+	FAssert(eYield < NUM_YIELD_TYPES);
+
+	return m_em_iYieldTradedTotalPortRoyal.get(eYield);
+}
+
+void CvPlayer::setYieldTradedTotalPortRoyal(YieldTypes eYield, int iValue)
+{
+	FAssert(eYield >= 0);
+	FAssert(eYield < NUM_YIELD_TYPES);
+
+	if(iValue != getYieldTradedTotalPortRoyal(eYield))
+	{
+		m_em_iYieldTradedTotalPortRoyal.set(eYield, iValue);
+	}
+}
+// WTP, ray, Yields Traded Total for Africa and Port Royal - END
+
+
 // R&R, vetiarvind, Price dependent tax rate change - Start
 int CvPlayer::getYieldScoreTotal(YieldTypes eYield) const
 {
@@ -16900,6 +17023,44 @@ void CvPlayer::changeYieldTradedTotal(YieldTypes eYield, int iChange, int iUnitP
 	setYieldTradedTotal(eYield, getYieldTradedTotal(eYield) + iChange);
 }
 
+// WTP, ray, Yields Traded Total for Africa and Port Royal - START
+void CvPlayer::changeYieldTradedTotalAfrica(YieldTypes eYield, int iChange, int iUnitPrice)
+{
+	if(iUnitPrice == -1)	//default parameter declared in header
+	{		
+			iUnitPrice = 10;//default score functionality 
+			if (getParent() != NO_PLAYER)
+			{
+				CvPlayer& kEurope = GET_PLAYER(getParent());		
+				if (kEurope.isEurope())
+					iUnitPrice = kEurope.getYieldAfricaBuyPrice(eYield); 
+			}		
+	}
+	
+	double iMultiplier = iUnitPrice*0.1;
+	setYieldScoreTotal(eYield, getYieldScoreTotal(eYield) + (int)(iChange*iMultiplier));
+	setYieldTradedTotalAfrica(eYield, getYieldTradedTotalAfrica(eYield) + iChange);
+}
+
+void CvPlayer::changeYieldTradedTotalPortRoyal(YieldTypes eYield, int iChange, int iUnitPrice)
+{
+	if(iUnitPrice == -1)	//default parameter declared in header
+	{		
+			iUnitPrice = 10;//default score functionality 
+			if (getParent() != NO_PLAYER)
+			{
+				CvPlayer& kEurope = GET_PLAYER(getParent());		
+				if (kEurope.isEurope())
+					iUnitPrice = kEurope.getYieldPortRoyalBuyPrice(eYield); 
+			}		
+	}
+	
+	double iMultiplier = iUnitPrice*0.1;
+	setYieldScoreTotal(eYield, getYieldScoreTotal(eYield) + (int)(iChange*iMultiplier));
+	setYieldTradedTotalPortRoyal(eYield, getYieldTradedTotalPortRoyal(eYield) + iChange);
+}
+// WTP, ray, Yields Traded Total for Africa and Port Royal - END
+
 /*
 void CvPlayer::changeYieldTradedTotal(YieldTypes eYield, int iChange)
 {
@@ -16908,11 +17069,6 @@ void CvPlayer::changeYieldTradedTotal(YieldTypes eYield, int iChange)
 */
 
 // R&R, vetiarvind, Price dependent tax rate change - END
-void CvPlayer::changeYieldBoughtTotal(YieldTypes eYield, int iChange)
-{
-	setYieldBoughtTotal(eYield, getYieldBoughtTotal(eYield) + iChange);
-}
-
 YieldTypes CvPlayer::getHighestTradedYield() const
 {
 	YieldTypes eBestYield = NO_YIELD;
@@ -16952,6 +17108,11 @@ int CvPlayer::getHighestStoredYieldCityId(YieldTypes eYield) const
 	return iBestCityId;
 }
 
+void CvPlayer::changeYieldBoughtTotal(YieldTypes eYield, int iChange)
+{
+	setYieldBoughtTotal(eYield, getYieldBoughtTotal(eYield) + iChange);
+}
+
 int CvPlayer::getYieldBoughtTotal(YieldTypes eYield) const
 {
 	FAssert(eYield >= 0 && eYield < NUM_YIELD_TYPES);
@@ -16963,6 +17124,43 @@ void CvPlayer::setYieldBoughtTotal(YieldTypes eYield, int iValue)
 	FAssert(eYield >= 0 && eYield < NUM_YIELD_TYPES);
 	m_em_iYieldBoughtTotal.set(eYield, iValue);
 }
+
+// WTP, ray, Yields Traded Total for Africa and Port Royal - START
+void CvPlayer::changeYieldBoughtTotalAfrica(YieldTypes eYield, int iChange)
+{
+	setYieldBoughtTotalAfrica(eYield, getYieldBoughtTotalAfrica(eYield) + iChange);
+}
+
+int CvPlayer::getYieldBoughtTotalAfrica(YieldTypes eYield) const
+{
+	FAssert(eYield >= 0 && eYield < NUM_YIELD_TYPES);
+	return m_em_iYieldBoughtTotalAfrica.get(eYield);
+}
+
+void CvPlayer::setYieldBoughtTotalAfrica(YieldTypes eYield, int iValue)
+{
+	FAssert(eYield >= 0 && eYield < NUM_YIELD_TYPES);
+	m_em_iYieldBoughtTotalAfrica.set(eYield, iValue);
+}
+
+void CvPlayer::changeYieldBoughtTotalPortRoyal(YieldTypes eYield, int iChange)
+{
+	setYieldBoughtTotalPortRoyal(eYield, getYieldBoughtTotalPortRoyal(eYield) + iChange);
+}
+
+int CvPlayer::getYieldBoughtTotalPortRoyal(YieldTypes eYield) const
+{
+	FAssert(eYield >= 0 && eYield < NUM_YIELD_TYPES);
+	return m_em_iYieldBoughtTotalPortRoyal.get(eYield);
+}
+
+void CvPlayer::setYieldBoughtTotalPortRoyal(YieldTypes eYield, int iValue)
+{
+	FAssert(eYield >= 0 && eYield < NUM_YIELD_TYPES);
+	m_em_iYieldBoughtTotalPortRoyal.set(eYield, iValue);
+}
+// WTP, ray, Yields Traded Total for Africa and Port Royal - END
+
 
 int CvPlayer::getCrossesStored() const
 {
@@ -17941,9 +18139,15 @@ void CvPlayer::doAfricaPrices()
 
 			if (kYield.isCargo())
 			{
+				// WTP, ray, Yields Traded Total for Africa and Port Royal - START
+				// R&R, Androrc Price Recovery
+				GC.getGameINLINE().changeYieldBoughtTotalAfrica(getID(), eYield, kYield.getEuropeVolumeAttrition());
+				//Androrc End
+				// WTP, ray, Yields Traded Total for Africa and Port Royal - END
+
 				int iBaseThreshold = kYield.getPriceChangeThreshold() * GC.getHandicapInfo(getHandicapType()).getEuropePriceThresholdMultiplier() * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGrowthPercent() / 10000;
 				int iNewPrice = kYield.getAfricaBuyPriceLow() + GC.getGameINLINE().getSorenRandNum(kYield.getAfricaBuyPriceHigh() - kYield.getAfricaBuyPriceLow() + 1, "Price selection");
-				iNewPrice += getYieldBoughtTotal(eYield) / std::max(1, iBaseThreshold); // maybe this should be changed
+				iNewPrice += getYieldBoughtTotalAfrica(eYield) / std::max(1, iBaseThreshold); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 
 				if (GC.getGameINLINE().getSorenRandNum(100, "Price correction") < kYield.getPriceCorrectionPercent() * std::abs(iNewPrice - getYieldAfricaBuyPrice(eYield)))
 				{
@@ -17969,9 +18173,15 @@ void CvPlayer::doPortRoyalPrices()
 
 			if (kYield.isCargo())
 			{
+				// WTP, ray, Yields Traded Total for Africa and Port Royal - START
+				// R&R, Androrc Price Recovery
+				GC.getGameINLINE().changeYieldBoughtTotalPortRoyal(getID(), eYield, kYield.getEuropeVolumeAttrition());
+				//Androrc End
+				// WTP, ray, Yields Traded Total for Africa and Port Royal - END
+
 				int iBaseThreshold = kYield.getPriceChangeThreshold() * GC.getHandicapInfo(getHandicapType()).getEuropePriceThresholdMultiplier() * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGrowthPercent() / 10000;
 				int iNewPrice = kYield.getPortRoyalBuyPriceLow() + GC.getGameINLINE().getSorenRandNum(kYield.getPortRoyalBuyPriceHigh() - kYield.getPortRoyalBuyPriceLow() + 1, "Price selection");
-				iNewPrice += getYieldBoughtTotal(eYield) / std::max(1, iBaseThreshold); // maybe this should be changed
+				iNewPrice += getYieldBoughtTotalPortRoyal(eYield) / std::max(1, iBaseThreshold); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 
 				if (GC.getGameINLINE().getSorenRandNum(100, "Price correction") < kYield.getPriceCorrectionPercent() * std::abs(iNewPrice - getYieldPortRoyalBuyPrice(eYield)))
 				{
@@ -19282,10 +19492,12 @@ void CvPlayer::doAIImmigrant(int iIndex)
 
 // TAC - AI Economy - Ray - START
 // R&R, ray improvement redistribution
-void CvPlayer::redistributeWood() {
-
-	// do nothing if Player has no cities
-	if (getNumCities() <1) {
+void CvPlayer::redistributeWood() 
+{
+	// do nothing if Player has no cities or just one
+	int citycount = getNumCities();
+	if (citycount <= 1) 
+	{
 		return;
 	}
 
@@ -19295,71 +19507,75 @@ void CvPlayer::redistributeWood() {
 		return;
 	}
 
-	int citycount = getNumCities();
-
 	//calculate total wood and stone of all cities
 	int totalwood = 0;
 	int totalstone = 0;
-	int iTotalPopulation = 0;
 
+	// Loop through cities first time to get ressources to distribute, but we leave a rest
 	CvCity* pLoopCity;
-
-	// Loop through cities first time to get all wood
 	int iLoop;
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
-		//add wood and stone
-		totalwood += pLoopCity->getYieldStored(YIELD_LUMBER);
-		totalstone += pLoopCity->getYieldStored(YIELD_STONE);
-		//add population
-		iTotalPopulation += pLoopCity->getPopulation();
-		//reset Lumber and Stone to 0 because already added to storage variables
-		pLoopCity->setYieldStored(YIELD_LUMBER, 0);
-		pLoopCity->setYieldStored(YIELD_STONE, 0);
-	}
-
-	int woodToDisbributePerCitizen = totalwood / iTotalPopulation;
-	int stoneToDisbributePerCitizen = totalstone / iTotalPopulation;
-
-	// Loop through cities second time to distribute all wood
-	int iLoop2;
-	for (pLoopCity = firstCity(&iLoop2); pLoopCity != NULL; pLoopCity = nextCity(&iLoop2))
-	{
-		// bigger cities get more
-		int iPopulationOfThisCity = pLoopCity->getPopulation();
-		// R&R, ray, small fix
-		int woodtodistribute = woodToDisbributePerCitizen * iPopulationOfThisCity;
-		int stonetodistribute = stoneToDisbributePerCitizen * iPopulationOfThisCity;
-		pLoopCity->setYieldStored(YIELD_LUMBER, woodtodistribute);
-		pLoopCity->setYieldStored(YIELD_STONE, stonetodistribute);
-		// substract the wood and stone distributed from the total amounts
-		totalwood -= woodtodistribute;
-		totalstone -= stonetodistribute;
-	}
-
-	// for safety, if there is some wood left, give it to the first city
-	if (totalwood > 0)
-	{
-		int iLoop3;
-		for (pLoopCity = firstCity(&iLoop3); pLoopCity != NULL; pLoopCity = nextCity(&iLoop3))
+		// WTP, ray, this may have caused negative storage bug
+		// thus we leave some in the city
+		int iRestToLeave = 50;
+		// for Lumber
+		if (pLoopCity->getYieldStored(YIELD_LUMBER) > iRestToLeave)
 		{
-			int woodalreadydistributed = pLoopCity->getYieldStored(YIELD_LUMBER);
-			pLoopCity->setYieldStored(YIELD_LUMBER, totalwood + woodalreadydistributed);
-			break;
+
+			totalwood += pLoopCity->getYieldStored(YIELD_LUMBER) - iRestToLeave;
+			pLoopCity->setYieldStored(YIELD_LUMBER, iRestToLeave);
 		}
-	}
-	// for safety, if there is some stone left, give it to the first city
-	if (totalstone > 0)
-	{
-		int iLoop4;
-		for (pLoopCity = firstCity(&iLoop4); pLoopCity != NULL; pLoopCity = nextCity(&iLoop4))
+		// for Stone
+		if (pLoopCity->getYieldStored(YIELD_STONE) > iRestToLeave)
 		{
-			int stonealreadydistributed = pLoopCity->getYieldStored(YIELD_STONE);
-			pLoopCity->setYieldStored(YIELD_STONE, totalstone + stonealreadydistributed);
-			break;
+			totalwood += pLoopCity->getYieldStored(YIELD_STONE) - iRestToLeave;
+			pLoopCity->setYieldStored(YIELD_STONE, iRestToLeave);
 		}
 	}
 
+	// now we distribute accordign to population
+	int iTotalPopulation = getTotalPopulation();
+	// should never happen, but let us be safe to avoid division by 0
+	if (iTotalPopulation != 0)
+	{
+		int woodToDisbributePerCitizen = totalwood / iTotalPopulation;
+		int stoneToDisbributePerCitizen = totalstone / iTotalPopulation;
+
+		// Loop through cities second time to distribute all wood
+		int iLoop2;
+		for (pLoopCity = firstCity(&iLoop2); pLoopCity != NULL; pLoopCity = nextCity(&iLoop2))
+		{
+			// bigger cities get more
+			int iPopulationOfThisCity = pLoopCity->getPopulation();
+		
+			// we distribute accordign to the Population Size
+			int woodtodistribute = woodToDisbributePerCitizen * iPopulationOfThisCity;
+			int stonetodistribute = stoneToDisbributePerCitizen * iPopulationOfThisCity;
+
+			// we dsitribte the caclulated ressources on to what it already has
+			pLoopCity->changeYieldStored(YIELD_LUMBER, woodtodistribute);
+			pLoopCity->changeYieldStored(YIELD_STONE, stonetodistribute);
+
+			// substract the distributed ressources from the total amounts
+			totalwood -= woodtodistribute;
+			totalstone -= stonetodistribute;
+		}
+	}
+
+	// for safety, if there are some ressources left, we add it to the first city
+	CvCity* pFirstCity = firstCity();
+	if (pFirstCity != NULL)
+	{
+		if (totalwood > 0)
+		{
+			pFirstCity->changeYieldStored(YIELD_LUMBER, totalwood);
+		}
+		if (totalstone > 0)
+		{
+			pFirstCity->changeYieldStored(YIELD_STONE, totalstone);
+		}
+	}
 }
 // TAC - AI Economy - Ray - END
 
@@ -19478,18 +19694,8 @@ bool CvPlayer::LbD_try_become_expert(CvUnit* convUnit, int base, int increase, i
 		calculatedChance = calculatedChance * ki_modifier / 100;
 	}
 
-	for (int iTrait = 0; iTrait < GC.getNumTraitInfos(); ++iTrait)
-	{
-		TraitTypes eTrait = (TraitTypes) iTrait;
-		if (eTrait != NO_TRAIT)
-		{
-			if (hasTrait(eTrait))
-			{
-				calculatedChance *= GC.getTraitInfo(eTrait).getLearningByDoingModifier() + 100;
-				calculatedChance /= 100;
-			}
-		}
-	}
+	calculatedChance *= CivEffect()->getLearningByDoingModifier() / 100; // CivEffects - Nightinggale
+
 								//Schmiddie, added LbD modifier for Sophisticated Trait ENDE
 
 	//ray Multiplayer Random Fix
@@ -20752,7 +20958,7 @@ void CvPlayer::checkForSmugglers()
 		return;
 	}
 
-	if(GC.getDefineINT("SMUGGLING_BRIBE_RATE") * 2 > getTaxRate())
+	if(GC.getDefineINT("SMUGGLING_BRIBE_RATE") > getTaxRate())
 	{
 		return;
 	}
@@ -21086,7 +21292,7 @@ void CvPlayer::checkForPirates()
 	int iLoop;
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
-		if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()) && pLoopCity->plot()->hasAnyOtherWaterPlotsThanJustLargeRivers())
+		if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()) && pLoopCity->plot()->hasDeepWaterCoast())
 		{
 			locationToAppear = pLoopCity;
 			break;
@@ -21316,6 +21522,12 @@ int CvPlayer::AI_getAttitudeValue(PlayerTypes ePlayer)
 // R&R, ray, Pirates - START
 void CvPlayer::createEnemyPirates()
 {
+	// WTP, ray, for safety 
+	if (GC.getGameINLINE().getBarbarianPlayer() == NO_PLAYER)
+	{
+		return;
+	}
+
 	CvPlayer& barbarianPlayer = GET_PLAYER(GC.getGameINLINE().getBarbarianPlayer());
 
 	// we never want to have too many of these
@@ -21350,7 +21562,8 @@ void CvPlayer::createEnemyPirates()
 	{
 		CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
 
-		if (pLoopPlot->getTeam() == NO_TEAM && pLoopPlot->isWater() && pLoopPlot->getTerrainType() != TERRAIN_LARGE_RIVERS && pLoopPlot->getTerrainType() != TERRAIN_LAKE && pLoopPlot->area()->hasEurope() && pLoopPlot->getNumUnits() == 0)
+		// WTP, ray, fix for Pirates being spawned on ice - we ensure they never spawn on a Terain Feature
+		if (pLoopPlot->getTeam() == NO_TEAM && pLoopPlot->isWater() && pLoopPlot->getTerrainType() != TERRAIN_LARGE_RIVERS && pLoopPlot->getTerrainType() != TERRAIN_LAKE && pLoopPlot->getTerrainType() != TERRAIN_ICE_LAKE && pLoopPlot->area()->hasEurope() && pLoopPlot->getNumUnits() == 0 && pLoopPlot->getFeatureType() == NO_FEATURE)
 		{
 			int iValue = (plotDistance(cityToAttack->getX_INLINE(), cityToAttack->getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE()) * 2);
 			if (pLoopPlot->area() != cityToAttack->area())
@@ -21618,7 +21831,24 @@ void CvPlayer::checkForMilitiaOrUnrest()
 	{
 		if (pLoopCity->getPopulation() >= minCitySize && !pLoopCity->isDisorder()) // check if city big enough and not in disorder
 		{
-			if(pLoopCity->plot()->getNumDefenders(getID()) == 0) // is this city undefended
+			// WTP, ray, now checking only for armed Units - START
+			// read this in the mod of Ramstormp, had fogotten to check that defenders need to be armed
+			// we count now actually only the units that can fight
+
+			bool bCityDefendersFound = false;
+			CvPlot* pPlot = pLoopCity->plot();
+			for (int i = 0; i < pPlot->getNumUnits(); ++i)
+			{
+				CvUnit* pLoopUnit = pPlot->getUnitByIndex(i);
+				// we check for a Land Unit that can fight on that plot and is from our own Player
+				if (pLoopUnit != NULL && pLoopUnit->getDomainType() == DOMAIN_LAND && pLoopUnit->canAttack() && pLoopUnit->getOwnerINLINE() == pLoopCity->getOwnerINLINE())
+				{
+					bCityDefendersFound = true;
+					break;
+				}
+			}
+
+			if(bCityDefendersFound == false) // is this city undefended
 			{
 				int foodQty = gamespeedMod;
 
@@ -21997,8 +22227,8 @@ int CvPlayer::getSellToPortRoyalProfit(YieldTypes eYield, int iAmount) const
 	CvPlayer& kPlayerEurope = GET_PLAYER(getParent());
 
 	int iPrice = iAmount * kPlayerEurope.getYieldPortRoyalBuyPrice(eYield);
-	int iBribe = GC.getDefineINT("SMUGGLING_BRIBE_RATE") * 2; // twice bribe rate of smuggling
-	iPrice -= (iPrice * iBribe) / 100;
+	int iPortRoyalTax = GC.getDefineINT("PORT_ROYAL_PORT_TAX"); // twice bribe rate of smuggling
+	iPrice -= (iPrice * iPortRoyalTax) / 100;
 
 	return iPrice;
 }

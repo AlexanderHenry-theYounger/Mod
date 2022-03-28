@@ -9,7 +9,7 @@
         <Tag>TXT_KEY_CIV_SELECT_RANDOM_CIV</Tag>
         <English>The Nation and Leader will be chosen randomly.</English>
         <French>La nation et son chef seront choisis aléatoirement.</French>
-        <German>Nation und Staatsoberhaupt werden zufällig ausgewählt.</German>
+        <German>Nation und Anführer werden zufällig ausgewählt.</German>
         <Italian>Leader e nazione verranno scelti casualmente.</Italian>
         <Spanish>La nación y el líder se elegirán al azar.</Spanish>
     </TEXT>
@@ -159,7 +159,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_POPUP_EXAMINE_CITY</Tag>
-        <English>Examine Settlement</English>
+        <English>Examine settlement</English>
         <French>Examiner la colonie</French>
         <German>Siedlung untersuchen</German>
         <Italian>Esamina insediamento</Italian>
@@ -167,7 +167,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_SETTLE_NEW_CITY_NAME</Tag>
-        <English>Settlement Name :</English>
+        <English>Settlement name :</English>
         <French>Nom de la colonie :</French>
         <German>Siedlungsname :</German>
         <Italian>Nome insediamento :</Italian>
@@ -329,7 +329,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_MISC_HELP_PROD_FINAL_YIELD</Tag>
-        <English>-----------------------[NEWLINE]Final [COLOR_HIGHLIGHT_TEXT]Production[COLOR_REVERT] = %d1%F2_Icon</English>
+        <English>-----------------------[NEWLINE]Final [COLOR_HIGHLIGHT_TEXT]Production[COLOR_REVERT] : %d1%F2_Icon</English>
         <French>-----------------------[NEWLINE][COLOR_HIGHLIGHT_TEXT]Production[COLOR_REVERT] finale : %d1%F2_Icon</French>
         <German>-----------------------[NEWLINE]Letzte [COLOR_HIGHLIGHT_TEXT]Produktion[COLOR_REVERT]: %d1%F2_Icon</German>
         <Italian>-----------------------[NEWLINE][COLOR_HIGHLIGHT_TEXT]Produzione[COLOR_REVERT] finale: %d1%F2_Icon</Italian>
@@ -369,7 +369,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_NEW_IMMIGRANT_AVAILABLE</Tag>
-        <English>[COLOR_REVERT]A [COLOR_UNIT_TEXT]%s2[COLOR_REVERT] wants to emigrate to the colonies. He has heard that in the New World no sovereign dictates to him which church he should attend and how good life is there.</English>
+        <English>[COLOR_REVERT]A [COLOR_UNIT_TEXT]%s2[COLOR_REVERT] wants to emigrate to the colonies. He has heard how good life is in the New World. There no sovereign will dictate to him which church he should attend.</English>
         <French>[COLOR_REVERT]Des émeutes religieuses ( %s1_europe) ont provoqué un accroissement de l'émigration. Un [COLOR_UNIT_TEXT]%s2[COLOR_REVERT] vous attend en Europe.</French>
         <German>[COLOR_REVERT]Ein [COLOR_UNIT_TEXT]%s2[COLOR_REVERT] wünscht, in die Kolonien auszuwandern. Er hat vernommen, dass ihm in der Neuen Welt kein Landesherr Vorschriften macht, in welche Kirche er zu gehen habe, und wie gut das Leben dort sei.</German>
         <Italian>[COLOR_REVERT]I disordini religiosi in %s1_europe hanno causato un aumento dell'emigrazione. [COLOR_UNIT_TEXT]%s2[COLOR_REVERT] attende in Europa.</Italian>
@@ -456,14 +456,6 @@
         <Spanish>Trabaja en edificios</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_PEDIA_CATEGORY_PROFESSION</Tag>
-        <English>Professions</English>
-        <French>Professions</French>
-        <German>Berufe</German>
-        <Italian>Professioni</Italian>
-        <Spanish>Profesiones</Spanish>
-    </TEXT>
-    <TEXT>
         <Tag>TXT_KEY_UNIT_YIELD_MODIFIER</Tag>
         <English>[ICON_BULLET]%D1_Modifier%% Production of %s2_list_of_icons</English>
         <French>[ICON_BULLET]%D1_Modifier%% Production de %s2_list_of_icons</French>
@@ -539,7 +531,7 @@
         <Tag>TXT_KEY_BUY_AND_SELL_YIELD</Tag>
         <English>Europe     [TAB]Sell : %d1_Price[ICON_GOLD] / Buy : %d2_Price[ICON_GOLD]</English>
         <French>Europe     [TAB]Vendre : %d1_Price[ICON_GOLD] / Acheter : %d2_Price[ICON_GOLD]</French>
-        <German>Europa     [TAB]Verkauf: %d1_Price[ICON_GOLD] / Einkauf: %d2_Price[ICON_GOLD]</German>
+        <German>Europa     [TAB]Verkauf: %d1_Price[ICON_GOLD] / Kauf: %d2_Price[ICON_GOLD]</German>
         <Italian>Europe     [TAB]Vendere: %d1_Price[ICON_GOLD] / Comperare: %d2_Price[ICON_GOLD]</Italian>
         <Spanish>Europe     [TAB]Vender: %d1_Price[ICON_GOLD] / Comprar: %d2_Price[ICON_GOLD]</Spanish>
     </TEXT>
@@ -547,7 +539,7 @@
         <Tag>TXT_KEY_BUY_AND_SELL_YIELD_AFRICA</Tag>
         <English>Africa      [TAB]Sell : %d1_Price[ICON_GOLD] / Buy : %d2_Price[ICON_GOLD]</English>
         <French>Afrique    [TAB]Vendre : %d1_Price[ICON_GOLD] / Acheter : %d2_Price[ICON_GOLD]</French>
-        <German>Afrika      [TAB]Verkauf: %d1_Price[ICON_GOLD] / Einkauf: %d2_Price[ICON_GOLD]</German>
+        <German>Afrika      [TAB]Verkauf: %d1_Price[ICON_GOLD] / Kauf: %d2_Price[ICON_GOLD]</German>
         <Italian>Africa      [TAB]Vendere: %d1_Price[ICON_GOLD] / Comperare: %d2_Price[ICON_GOLD]</Italian>
         <Spanish>África      [TAB]Vender: %d1_Price[ICON_GOLD] / Comprar: %d2_Price[ICON_GOLD]</Spanish>
     </TEXT>
@@ -555,7 +547,7 @@
         <Tag>TXT_KEY_BUY_AND_SELL_YIELD_PORT_ROYAL</Tag>
         <English>Port Royal[TAB]Sell : %d1_Price[ICON_GOLD] / Buy : %d2_Price[ICON_GOLD]</English>
         <French>Port Royal[TAB]Vendre : %d1_Price[ICON_GOLD] / Acheter : %d2_Price[ICON_GOLD]</French>
-        <German>Port Royal[TAB]Verkauf: %d1_Price[ICON_GOLD] / Einkauf: %d2_Price[ICON_GOLD]</German>
+        <German>Port Royal[TAB]Verkauf: %d1_Price[ICON_GOLD] / Kauf: %d2_Price[ICON_GOLD]</German>
         <Italian>Port Royal[TAB]Vendere: %d1_Price[ICON_GOLD] / Comperare: %d2_Price[ICON_GOLD]</Italian>
         <Spanish>Port Royal[TAB]Vender: %d1_Price[ICON_GOLD] / Comprar: %d2_Price[ICON_GOLD]</Spanish>
     </TEXT>
@@ -697,7 +689,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_UNIT_CAN_IMPROVE_LAND</Tag>
-        <English>[ICON_BULLET]Can Improve Land</English>
+        <English>[ICON_BULLET]Can improve land</English>
         <French>[ICON_BULLET]Peut améliorer le terrain</French>
         <German>[ICON_BULLET]Kann Land verbessern</German>
         <Italian>[ICON_BULLET]Può migliorare la terra</Italian>
@@ -705,7 +697,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_UNIT_CAN_ESTABLISH_MISSIONS</Tag>
-        <English>[ICON_BULLET]Can Establish Missions</English>
+        <English>[ICON_BULLET]Can establish missions</English>
         <French>[ICON_BULLET]Peut établir des missions</French>
         <German>[ICON_BULLET]Kann Missionen errichten</German>
         <Italian>[ICON_BULLET]Può fondare missioni</Italian>
@@ -729,12 +721,12 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_UNIT_CAN_ESTABLISH_TRADE_POST</Tag>
-        <English>[ICON_BULLET]Can Establish Trading Posts</English>
+        <English>[ICON_BULLET]Can establish trading posts</English>
         <German>[ICON_BULLET]Kann Handelsposten errichten</German>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_UNIT_BETTER_TRADE_POST_RATE</Tag>
-        <English>[ICON_BULLET]Trading Posts are %D1%% more effective</English>
+        <English>[ICON_BULLET]Trading posts are %D1%% more effective</English>
         <German>[ICON_BULLET]Handelsposten sind %D1%% effektiver</German>
     </TEXT>
     <TEXT>
@@ -812,14 +804,6 @@
         <Spanish>[ICON_BULLET]%D1%% %F2 en todos los asentamientos</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_PEDIA_CATEGORY_FATHERS</Tag>
-        <English>Founding Fathers</English>
-        <French>Pères fondateurs</French>
-        <German>Gründerväter</German>
-        <Italian>Padri Fondatori</Italian>
-        <Spanish>Padres fundadores</Spanish>
-    </TEXT>
-    <TEXT>
         <Tag>TXT_KEY_TAX_RATE_YIELD_INCREASE</Tag>
         <English>[ICON_BULLET]Increases %F1 production by the tax rate</English>
         <French>[ICON_BULLET]Augmente la production de %F1 en fonction du taux d'imposition</French>
@@ -869,7 +853,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CONSTITUTION_POPUP</Tag>
-        <English>Please choose your [COLOR_HIGHLIGHT_TEXT]%s1_civic[COLOR_REVERT] for your new Constitution.</English>
+        <English>Please choose your [COLOR_HIGHLIGHT_TEXT]%s1_civic[COLOR_REVERT] for your new constitution.</English>
         <French>Veuillez choisir votre [COLOR_HIGHLIGHT_TEXT]%s1_civic[COLOR_REVERT] pour votre nouvelle Constitution.</French>
         <German>Wählt die Staatsform [COLOR_HIGHLIGHT_TEXT]%s1_civic[COLOR_REVERT] für Eure neue Verfassung.</German>
         <Italian>Scegli [COLOR_HIGHLIGHT_TEXT]%s1_civic[COLOR_REVERT] per la nuova costituzione.</Italian>
@@ -877,7 +861,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CIVIC_EXTRA_POPULATION</Tag>
-        <English>[ICON_BULLET]%D1 Population per Settlement</English>
+        <English>[ICON_BULLET]%D1 population per settlement</English>
         <French>[ICON_BULLET]Population par colonie %D1</French>
         <German>[ICON_BULLET]%D1 Bevölkerung pro Siedlung</German>
         <Italian>[ICON_BULLET]%D1 popolazione per insediamento</Italian>
@@ -893,7 +877,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CIVIC_IMMIGRATION_CONVERSION</Tag>
-        <English>[ICON_BULLET]Converts Emigration %F1_yield into %F2_yield</English>
+        <English>[ICON_BULLET]Converts emigration %F1_yield into %F2_yield</English>
         <French>[ICON_BULLET]Convertit l'immigration %F1_yield en %F2_yield</French>
         <German>[ICON_BULLET]Wandelt %F1_yield für Auswanderung in %F2_yield um</German>
         <Italian>[ICON_BULLET]Converte %F1_yield d'immigrazione in %F2_yield</Italian>
@@ -901,7 +885,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CIVIC_WORKER_SPEED</Tag>
-        <English>[ICON_BULLET]Pioneers Build Improvements %D1_Mod%% Faster</English>
+        <English>[ICON_BULLET]Pioneers build improvements %D1_Mod%% faster</English>
         <French>[ICON_BULLET]Les pionniers construisent les améliorations %D1_Mod%% plus vite.</French>
         <German>[ICON_BULLET]Pioniere errichten Modernisierungen %D1_Mod%% schneller</German>
         <Italian>[ICON_BULLET]I pionieri costruiscono i miglioramenti del %D1_Mod%% più velocemente</Italian>
@@ -941,7 +925,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CIVIC_IMPROVEMENT_UPGRADE</Tag>
-        <English>[ICON_BULLET]%D1_Mod%% Growth for[SPACE]</English>
+        <English>[ICON_BULLET]%D1_Mod%% growth for[SPACE]</English>
         <French>[ICON_BULLET]%D1_Mod%% de croissance pour[SPACE]</French>
         <German>[ICON_BULLET]%D1_Mod%% Wachstum für[SPACE]</German>
         <Italian>[ICON_BULLET]%D1_Mod%% miglioramento sulla crescita[SPACE]</Italian>
@@ -949,7 +933,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CIVIC_MILITARY_PRODUCTION</Tag>
-        <English>[ICON_BULLET]%D1_Mod%% Military Unit Production</English>
+        <English>[ICON_BULLET]%D1_Mod%% military unit production</English>
         <French>[ICON_BULLET]%D1_Mod%% de production d'unités militaires</French>
         <German>[ICON_BULLET]%D1_Mod%% Produktion von Militäreinheiten</German>
         <Italian>[ICON_BULLET]%D1_Mod%% di produzione nelle unità militari</Italian>
@@ -957,7 +941,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CIVIC_IN_CAPITAL</Tag>
-        <English>[SPACE]in Capital</English>
+        <English>[SPACE]in capital</English>
         <French>[SPACE]dans la capitale</French>
         <German>[SPACE]in der Hauptstadt</German>
         <Italian>[SPACE]nella capitale</Italian>
@@ -997,7 +981,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_PEDIA_FATHER_CATEGORY</Tag>
-        <English>Founding Father Type</English>
+        <English>Founding Father type</English>
         <French>Type Père fondateur</French>
         <German>Gründervater-Typ</German>
         <Italian>Tipo di Padre Fondatore</Italian>
@@ -1120,6 +1104,22 @@
         <Spanish>[ICON_BULLET]%D1%% de coste al reclutamiento de unidades en Europa</Spanish>
     </TEXT>
     <TEXT>
+        <Tag>TXT_KEY_FATHER_RECRUIT_DISCOUNT_AFRICA</Tag>
+        <English>[ICON_BULLET]%D1%% cost of recruiting units in Africa</English>
+        <French>[ICON_BULLET]Coût de recrutement d'unités africains %D1%%</French>
+        <German>[ICON_BULLET]%D1%% Kosten für Rekrutierung von Einheiten in Afrika</German>
+        <Italian>[ICON_BULLET]%D1%% costo di reclutamento unità in Africa</Italian>
+        <Spanish>[ICON_BULLET]%D1%% de coste al reclutamiento de unidades en Africa</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_FATHER_RECRUIT_DISCOUNT_PORT_ROYAL</Tag>
+        <English>[ICON_BULLET]%D1%% cost of recruiting units in Port Royal</English>
+        <French>[ICON_BULLET]Coût de recrutement d'unités du Port Royal %D1%%</French>
+        <German>[ICON_BULLET]%D1%% Kosten für Rekrutierung von Einheiten in Port Royal</German>
+        <Italian>[ICON_BULLET]%D1%% costo di reclutamento unità in Port Royal</Italian>
+        <Spanish>[ICON_BULLET]%D1%% de coste al reclutamiento de unidades en Port Royal</Spanish>
+    </TEXT>
+    <TEXT>
         <Tag>TXT_KEY_FATHER_EXTRA_MISSIONARY_RATE</Tag>
         <English>[ICON_BULLET]%D1%% Native conversion rate from missions</English>
         <French>[ICON_BULLET]Taux de conversion des indigènes dû aux missions %D1%% </French>
@@ -1192,12 +1192,29 @@
         <Spanish>[ICON_BULLET]%D1%% Cost of Pioneer Actions</Spanish>
     </TEXT>
     <TEXT>
+        <Tag>TXT_KEY_FATHER_IMPROVEMENT_GROWTH_TIME_MODIFIER</Tag>
+        <English>[ICON_BULLET]%D1%% time for improvements to upgrade to next level</English>
+        <German>[ICON_BULLET]%D1%% Zeit für Wachstum von Geländeverbesserungen</German>
+    </TEXT>
+    <TEXT>
         <Tag>TXT_KEY_FATHER_LEARNING_BY_DOING_MODIFIER</Tag>
         <English>[ICON_BULLET]%D1%% chance colonists learn a specialization by hard work</English>
-        <French>[ICON_BULLET]%D1%% chance Colonists learn Specialisms by hard work</French>
         <German>[ICON_BULLET]%D1%% Chance für Kolonisten durch harte Arbeit zum Spezialisten zu werden</German>
-        <Italian>[ICON_BULLET]%D1%% chance Colonists learn Specialisms by hard work</Italian>
-        <Spanish>[ICON_BULLET]%D1%% chance Colonists learn Specialisms by hard work</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_FATHER_LEARNING_BY_DOING_FREE_MODIFIER</Tag>
+        <English>[ICON_BULLET]%D1%% chance for unfree to become free colonists by hard work</English>
+        <German>[ICON_BULLET]%D1%% Chance für Unfreie durch harte Arbeit zum freien Kolonisten zu werden</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_FATHER_LEARNING_BY_DOING_RUNAWAY_MODIFIER</Tag>
+        <English>[ICON_BULLET]%D1%% chance for unfree to try to run away</English>
+        <German>[ICON_BULLET]%D1%% Chance für Unfreie eine Flucht zu vesuchen</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_FATHER_LEARNING_BY_DOING_REVOLT_MODIFIER</Tag>
+        <English>[ICON_BULLET]%D1%% chance for unfree to start a revolt</English>
+        <German>[ICON_BULLET]%D1%% Chance für Unfreie eine Revolte zu starten</German>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_FATHER_SPECIALIST_PRICE_MODIFIER</Tag>
@@ -1649,11 +1666,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_TRAIT_MERCANTILE_HELP</Tag>
-        <English>[ICON_BULLET]Market prices are less sensitive</English>
-        <French>[ICON_BULLET]Les prix du marché sont moins fluctuants</French>
-        <German>[ICON_BULLET]Marktpreise verändern sich nur halb so schnell</German>
-        <Italian>[ICON_BULLET]I prezzi di mercato sono meno instabili</Italian>
-        <Spanish>[ICON_BULLET]Los precios del mercado son menos sensibles</Spanish>
+        <English>[ICON_BULLET]Market prices are less sensitive and the maximum tax rate is lower</English>
+        <French>[ICON_BULLET]Les prix du marché sont moins fluctuants et le taux d'imposition maximal est plus faible</French>
+        <German>[ICON_BULLET]Marktpreise verändern sich nur halb so schnell und die Steuerobergrenze ist niedriger</German>
+        <Italian>[ICON_BULLET]I prezzi di mercato sono meno instabili e l'aliquota fiscale massima è più bassa</Italian>
+        <Spanish>[ICON_BULLET]Los precios del mercado son menos sensibles y el tipo impositivo máximo es menor</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_TRAIT_MARKET_SENSITIVE_HELP</Tag>
@@ -1662,6 +1679,36 @@
         <German>[ICON_BULLET]Marktpreise sind instabiler</German>
         <Italian>[ICON_BULLET]I prezzi di mercato sono più instabili</Italian>
         <Spanish>[ICON_BULLET]Los precios del mercado son más sensibles</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_TRAIT_AFRICA_PROFIT_MODIFER_POSITIVE</Tag>
+        <English>[ICON_BULLET]Profits for sales in Africa are %D1%% higher.</English>
+        <German>[ICON_BULLET]Gewinne für Verkäufe in Afrika sind %D1%% höher.</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_TRAIT_AFRICA_PROFIT_MODIFER_NEGATIVE</Tag>
+        <English>[ICON_BULLET]Profits for all sales in Africa are %D1%% lower.</English>
+        <German>[ICON_BULLET]Gewinne für Verkäufe in Afrika sind %D1%% niedriger.</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_TRAIT_PORT_ROYAL_PROFIT_MODIFER_POSITIVE</Tag>
+        <English>[ICON_BULLET]Profits for sales in Port Royal are %D1%% higher.</English>
+        <German>[ICON_BULLET]Gewinne für Verkäufe in Port Royal sind %D1%% höher.</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_TRAIT_PORT_ROYAL_PROFIT_MODIFER_NEGATIVE</Tag>
+        <English>[ICON_BULLET]Profits for sales in Port Royal are %D1%% lower.</English>
+        <German>[ICON_BULLET]Gewinne für Verkäufe in Port Royal sind %D1%% niedriger.</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_TRAIT_DOMESTIC_PROFIT_MODIFER_POSITIVE</Tag>
+        <English>[ICON_BULLET]Profits for sales of Domestic Market are %D1%% higher.</English>
+        <German>[ICON_BULLET]Gewinne für Verkäufe des heimischen Marktes sind %D1%% höher.</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_TRAIT_DOMESTIC_PROFIT_MODIFER_NEGATIVE</Tag>
+        <English>[ICON_BULLET]Profits for sales of Domestic Market  are %D1%% lower.</English>
+        <German>[ICON_BULLET]Gewinne für Verkäufe des heimischen Marktes sind %D1%% niedriger.</German>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_TRAIT_PROFESSION_YIELD_EQUIPMENT_MOD</Tag>
@@ -1721,11 +1768,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_PROMOTION_BOMBARD_TEXT</Tag>
-        <English>[ICON_BULLET]%D1_DmgChange%% settlement bombard damage</English>
-        <French>[ICON_BULLET]Dégâts de bombardements %D1_DmgChange%%</French>
-        <German>[ICON_BULLET]%D1_DmgChange%% Siedlungs-Bombardierungsschaden</German>
-        <Italian>[ICON_BULLET]%D1_DmgChange%% di danno da bombardamento sull'insediamento</Italian>
-        <Spanish>[ICON_BULLET]%D1_DmgChange%% al daño al cañonear asentamientos</Spanish>
+        <English>[ICON_BULLET]%D1_DmgChange%%%F2_Icon settlement bombard damage</English>
+        <French>[ICON_BULLET]Dégâts de bombardements %D1_DmgChange%%%F2_Icon </French>
+        <German>[ICON_BULLET]%D1_DmgChange%%%F2_Icon Siedlungs-Bombardierungsschaden</German>
+        <Italian>[ICON_BULLET]%D1_DmgChange%%%F2_Icon di danno da bombardamento sull'insediamento</Italian>
+        <Spanish>[ICON_BULLET]%D1_DmgChange%%%F2_Icon al daño al cañonear asentamientos</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_PROMOTION_CITY_ATTACK_TEXT</Tag>
@@ -1769,19 +1816,19 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_UNIT_BOMBARD_RATE</Tag>
-        <English>[ICON_BULLET]Can bombard settlement defenses (-%d1_Mod%%/Turn)</English>
-        <French>[ICON_BULLET]Peut bombarder les défenses de la colonie (-%d1_Mod%%/Tour)</French>
-        <German>[ICON_BULLET]Kann Siedlungsverteidigungen bombardieren (-%d1_Mod%%/Runde)</German>
-        <Italian>[ICON_BULLET]Può bombardare le difese degli insediamenti (-%d1_Mod%%/turno)</Italian>
-        <Spanish>[ICON_BULLET]Puede cañonear las defensas de los asentamientos (-%d1_Mod%%/turno)</Spanish>
+        <English>[ICON_BULLET]Can bombard settlement defenses : (-%d1_Mod%%/Turn)%F2_Icon</English>
+        <French>[ICON_BULLET]Peut bombarder les défenses de la colonie : (-%d1_Mod%%/Tour)%F2_Icon</French>
+        <German>[ICON_BULLET]Kann Siedlungsverteidigungen bombardieren : (-%d1_Mod%%/Runde)%F2_Icon</German>
+        <Italian>[ICON_BULLET]Può bombardare le difese degli insediamenti : (-%d1_Mod%%/turno)%F2_Icon</Italian>
+        <Spanish>[ICON_BULLET]Puede cañonear las defensas de los asentamientos : (-%d1_Mod%%/turno)%F2_Icon</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_UNIT_BOMBARD_RATE_SHORT</Tag>
-        <English>[ICON_BULLET]Bombard settlement : -%d1_Mod%%/Turn</English>
-        <French>[ICON_BULLET]Bombarder colonie : -%d1_Mod%%/Tour</French>
-        <German>[ICON_BULLET]Siedlung bombardieren : -%d1_Mod%%/Runde</German>
-        <Italian>[ICON_BULLET]Bombarda insediamento : -%d1_Mod%%/turno</Italian>
-        <Spanish>[ICON_BULLET]Cañonear asentamiento : -%d1_Mod%%/turno</Spanish>
+        <English>[ICON_BULLET]Bombard settlement : -%d1_Mod%%/Turn%F2_Icon</English>
+        <French>[ICON_BULLET]Bombarder colonie : -%d1_Mod%%/Tour%F2_Icon</French>
+        <German>[ICON_BULLET]Siedlung bombardieren : -%d1_Mod%%/Runde%F2_Icon</German>
+        <Italian>[ICON_BULLET]Bombarda insediamento : -%d1_Mod%%/turno%F2_Icon</Italian>
+        <Spanish>[ICON_BULLET]Cañonear asentamiento : -%d1_Mod%%/turno%F2_Icon</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CITY_OF</Tag>
@@ -1801,11 +1848,21 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_TRAIT_TREASURE_MODIFIER</Tag>
-        <English>[ICON_BULLET]Yields %D1%% treasure when Native settlements are captured</English>
-        <French>[ICON_BULLET]Confère %D1%% trésor(s) quand des villages sont capturés</French>
-        <German>[ICON_BULLET]Bringt %D1%% an Schätzen bei Eroberung von Siedlungen der Ureinwohner</German>
-        <Italian>[ICON_BULLET]Rende %D1%% tesoro quando vengono conquistati i villaggi</Italian>
-        <Spanish>[ICON_BULLET]Rinde %D1%% de tesoro cuando se capturan aldeas</Spanish>
+        <English>[ICON_BULLET]%D1%% more [ICON_GOLD] when villages are captured</English>
+        <French>[ICON_BULLET]Confère %D1%% [ICON_GOLD] quand des villages sont capturés</French>
+        <German>[ICON_BULLET]%D1%% mehr [ICON_GOLD] bei Eroberung von Siedlungen der Ureinwohner</German>
+        <Italian>[ICON_BULLET]Rende %D1%% [ICON_GOLD] quando vengono conquistati i villaggi</Italian>
+        <Spanish>[ICON_BULLET]Rinde %D1%% [ICON_GOLD] cuando se capturan aldeas</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_TRAIT_GOODY_CHANCE_MODIFIER_LAND</Tag>
+        <English>[ICON_BULLET]%D1%% chances for unique events (Goody Huts land)</English>
+        <German>[ICON_BULLET]%D1%% Chancen für einzigartige Ereignisse (Goody Huts an Land)</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_TRAIT_GOODY_CHANCE_MODIFIER_WATER</Tag>
+        <English>[ICON_BULLET]%D1%% chances for unique events (Goody Huts water)</English>
+        <German>[ICON_BULLET]%D1%% Chancen für einzigartige Ereignisse (Goody Huts im Wasser)</German>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_TRAIT_CHIEF_GOLD_MODIFIER</Tag>
@@ -1872,6 +1929,21 @@
         <Spanish>[ICON_BULLET]Aquí no se pueden construir asentamientos[SPACE]</Spanish>
     </TEXT>
     <TEXT>
+        <Tag>TXT_KEY_TERRAIN_BAD_CITY_LOCATION</Tag>
+        <English>[ICON_BULLET]Unhealthy terrain to found settlements[SPACE]</English>
+        <German>[ICON_BULLET]Ungesundes Terrain für Stadgründungen[SPACE]</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_PLOT_FRESHWATER</Tag>
+        <English>[ICON_BULLET]Plot with direct fresh water access[SPACE]</English>
+        <German>[ICON_BULLET]Feld mit direktem Süßwasserzugang[SPACE]</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_TERRAIN_PROVIDES_FRESHWATER</Tag>
+        <English>[ICON_BULLET]Provides fresh water access to adjacent plots[SPACE]</English>
+        <German>[ICON_BULLET]Gibt angrenzenden Feldern Süßwasserzugang[SPACE]</German>
+    </TEXT>
+    <TEXT>
         <Tag>TXT_KEY_MISC_HELP_PROD_TRAIT</Tag>
         <English>[ICON_BULLET]%D1%%%F4_Icon[TAB][TAB]for %s2_unit_or_building ([COLOR_HIGHLIGHT_TEXT]%s3_trait[COLOR_REVERT])</English>
         <French>[ICON_BULLET]%D1%%%F4_Icon[TAB][TAB]pour : %s2_unit_or_building ([COLOR_HIGHLIGHT_TEXT]%s3_trait[COLOR_REVERT])</French>
@@ -1931,7 +2003,7 @@
         <Tag>TXT_KEY_NEW_TREASURE</Tag>
         <English>You have obtained your first [COLOR_UNIT_TEXT]%s1_unit[COLOR_REVERT].[NEWLINE][NEWLINE]This unit can only be transported by a galleon. If you do not have a galleon, your King can transport the unit for you (for a trifling fee!). Just move it to a coastal city with a [COLOR_HIGHLIGHT_TEXT]dock[COLOR_REVERT] and click on the appropriate command button.[NEWLINE][NEWLINE]</English>
         <French>Vous avez acquis une nouvelle unité : [COLOR_UNIT_TEXT]%s1_unit[COLOR_REVERT]. Cette unité ne peut être transportée que par galion. Si vous n'en possédez pas, votre roi peut la transporter pour vous. Pour cela, il vous suffit de la déplacer dans une colonie côtière puis de cliquer sur le bouton approprié.</French>
-        <German>Sie haben Ihren ersten [COLOR_UNIT_TEXT]%s1_unit[COLOR_REVERT] erhalten.[NEWLINE][NEWLINE]Diese Einheit kann nur von einer Galeone transportiert werden. Wenn Sie keine Galeone haben, kann Ihr König die Einheit für Sie transportieren. Bewegen Sie sie einfach in eine Küstenstadt mit einem [COLOR_HIGHLIGHT_TEXT]Dock[COLOR_REVERT] und klicken Sie auf den entsprechenden Button.</German>
+        <German>Sie haben Ihren ersten [COLOR_UNIT_TEXT]%s1_unit[COLOR_REVERT] erhalten.[NEWLINE][NEWLINE]Diese Einheit kann nur von einer Galeone transportiert werden. Wenn Sie keine Galeone haben, kann Ihr König den Schatz für Sie nach Europa transportieren. Bewegen Sie ihn einfach in eine Küstenstadt mit einem [COLOR_HIGHLIGHT_TEXT]Dock[COLOR_REVERT] und klicken Sie auf den entsprechenden Button.</German>
         <Italian>Hai ottenuto un [COLOR_UNIT_TEXT]%s1_unit[COLOR_REVERT]. Può essere trasportato esclusivamente da un galeone. Se non hai un galeone puoi chiedere al re di farlo trasportare per te. Spostati in un insediamento costiero e clicca sul pulsante relativo.</Italian>
         <Spanish>Habéis logrado [NUM1:un nuevo:una nueva:unos nuevos:unas nuevas] [COLOR_UNIT_TEXT]%s1_unit[COLOR_REVERT]. Esta unidad solamente puede ser transportada por un Galeón. Si carecéis de él, vuestro rey os ofrecerá transporte. Basta con llevarla a una ciudad costera y hacer clic en el botón correspondiente.</Spanish>
     </TEXT>
@@ -1962,7 +2034,7 @@
     <TEXT>
         <Tag>TXT_KEY_MISC_HELP_STUDENT</Tag>
         <English>Graduation in %d1 [NUM1:turn:turns]</English>
-        <French>Diplôme dans %d1 [NUM1:turn:tours]</French>
+        <French>Diplôme dans %d1 [NUM1:tour:tours]</French>
         <German>Abschluss in %d1 [NUM1:Runde:Runden]</German>
         <Italian>Diploma fra %d1 [NUM1:turno:turni]</Italian>
         <Spanish>Graduación en %d1 [NUM1:turno:turnos]</Spanish>
@@ -2008,6 +2080,16 @@
         <Spanish>[ICON_BULLET]Captura el cargamento de los transportes derrotados.</Spanish>
     </TEXT>
     <TEXT>
+        <Tag>TXT_KEY_UNIT_CAPTURES_SHIPS</Tag>
+        <English>[ICON_BULLET]Has a chance to capture defeated ships</English>
+        <German>[ICON_BULLET]Kann potentiell besiegte Schiffe kapern</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_CAPTURES_SHIPS_CHANCE_INCREASE</Tag>
+        <English>[ICON_BULLET]%d1%% higher chance to capture defeated ships</English>
+        <German>[ICON_BULLET]%d1%% höhere Chance besiegte Schiffe zu kapern</German>
+    </TEXT>
+    <TEXT>
         <Tag>TXT_KEY_BUILD_CANNOT_AFFORD</Tag>
         <English>[COLOR_WARNING_TEXT]Requires %d1%F2_yield[COLOR_REVERT]</English>
         <French>[COLOR_WARNING_TEXT]Requiert %d1%F2_yield[COLOR_REVERT]</French>
@@ -2017,9 +2099,9 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_MINIMIZED_CHOOSE_EDUCATION</Tag>
-        <English>%s2_city : A [COLOR_HIGHLIGHT_TEXT]%s1_profession[COLOR_REVERT] has graduated from the %s3_building.</English>
-        <French>Un [COLOR_HIGHLIGHT_TEXT]%s1_profession[COLOR_REVERT] a été formé dans le bâtiment : %s2_building de la ville : %s3_city</French>
-        <German>%s2_city : Ein [COLOR_HIGHLIGHT_TEXT]%s1_profession[COLOR_REVERT] wurde in %s3_building ausgebildet.</German>
+        <English>%s2_City : A [COLOR_HIGHLIGHT_TEXT]%s1_profession[COLOR_REVERT] has graduated from the %s3_building.</English>
+        <French>Un [COLOR_HIGHLIGHT_TEXT]%s1_profession[COLOR_REVERT] a été formé dans le bâtiment : %s3_building de la ville : %s2_City</French>
+        <German>%s2_City : Ein [COLOR_HIGHLIGHT_TEXT]%s1_profession[COLOR_REVERT] wurde in %s3_building ausgebildet.</German>
         <Italian>Dal(la) %s3_building di %s2_City si è diplomata un'unità [COLOR_HIGHLIGHT_TEXT]%s1_profession[COLOR_REVERT]</Italian>
         <Spanish>En [NUM3:el:la:los:las] %s3_building de %s2_City se ha graduado [NUM1:un nuevo:una nueva:unos nuevos:unas nuevas] [COLOR_HIGHLIGHT_TEXT]%s1_profession[COLOR_REVERT].</Spanish>
     </TEXT>
@@ -2027,7 +2109,7 @@
         <Tag>TXT_KEY_CHOOSE_SPECIALTY</Tag>
         <English>[COLOR_SELECTED_TEXT]%s2_city[COLOR_REVERT][NEWLINE][NEWLINE]Choose a specialty for the graduating %s1_profession :</English>
         <French>Choisissez une spécialité pour l'unité : %s1_profession formée dans la ville : %s2_city</French>
-        <German>[COLOR_SELECTED_TEXT]%s2_city[COLOR_REVERT][NEWLINE][NEWLINE]Ein %s1_profession hat seine Lehrzeit beendet. Welche Spezialfähigkeit soll er erlernt haben :</German>
+        <German>[COLOR_SELECTED_TEXT]%s2_city[COLOR_REVERT][NEWLINE][NEWLINE]Ein %s1_profession hat seine Lehrzeit beendet. Welchen Beruf soll er erlernt haben :</German>
         <Italian>Scegli una specializzazione per l'unità %s1_profession che si diploma a %s2_city</Italian>
         <Spanish>Elegir una especialidad para [NUM1:el:la:los:las] %s1_profession a graduar en %s2_city.</Spanish>
     </TEXT>
@@ -2304,6 +2386,16 @@
         <Spanish>Los ciudadanos abandonan [COLOR_SELECTED_TEXT]%s1_city[COLOR_REVERT] en busca de Alimentos.</Spanish>
     </TEXT>
     <TEXT>
+        <Tag>TXT_KEY_CITY_STARVING_AND_REVOLTING</Tag>
+        <English>[COLOR_REVERT]%s1_city : [COLOR_WARNING_TEXT]Citizens are starving. The lack of support from the government has caused them to rebel[COLOR_REVERT]</English>
+        <German>[COLOR_REVERT]%s1_city : [COLOR_WARNING_TEXT]Die Bürger verhunger. Die ausbleibende Unterstützung durch die Regierung hat zu Revolten geführt.[COLOR_REVERT]</German>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CITY_STARVING_BUT_COLONIES_PAID</Tag>
+        <English>[COLOR_REVERT]%s1_city : [COLOR_WARNING_TEXT]Citizens are starving. The government however has granted emergency funding of %d2_gold[ICON_GOLD] to deliver %d3_food[ICON_FOOD] to the city.[COLOR_REVERT]</English>
+        <German>[COLOR_REVERT]%s1_city : [COLOR_WARNING_TEXT]Die Bürger verhunger. Die Regierung hat jedoch eine Notfallzahlung von %d2_gold[ICON_GOLD] gestattet, um %d3_food[ICON_FOOD] in die Stadt zu liefern.[COLOR_REVERT]</German>
+    </TEXT>
+    <TEXT>
         <Tag>TXT_KEY_BELOW_MIN_SPECS_MESSAGE</Tag>
         <English>Your machine is below minimum specifications. Colonization will not run on this hardware setup.</English>
         <French>Votre ordinateur ne répond pas à la configuration minimale requise. Colonization ne peut pas fonctionner avec cette configuration matérielle.</French>
@@ -2448,14 +2540,6 @@
         <Spanish>El asentamiento %s1:1_adjective de %s2_city ahora quiere %s3_goods.</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_PEDIA_CATEGORY_YIELDS</Tag>
-        <English>Goods and Materials</English>
-        <French>Marchandises et matériaux</French>
-        <German>Rohstoffe und Waren</German>
-        <Italian>Beni e materiali</Italian>
-        <Spanish>Mercancías y materias primas</Spanish>
-    </TEXT>
-    <TEXT>
         <Tag>TXT_KEY_MISC_HURRY_YIELD</Tag>
         <English>[ICON_BULLET]Consumes %d1%F2_icon</English>
         <French>[ICON_BULLET]Consomme %d1%F2_icon</French>
@@ -2466,16 +2550,16 @@
     <TEXT>
         <Tag>TXT_KEY_MISC_UNPRODUCED_CITY_YIELD_SPECIFIC</Tag>
         <English>[ICON_BULLET]%D1%F2[TAB]from lack of %s3_symbol_list</English>
-        <French>[ICON_BULLET]%D1%F2 par manque de %s3_symbol_list</French>
+        <French>[ICON_BULLET]%D1%F2[TAB]par manque de %s3_symbol_list</French>
         <German>[ICON_BULLET]%D1%F2[TAB]aufgrund von Mangel an %s3_symbol_list</German>
-        <Italian>[ICON_BULLET]%D1%F2 per mancanza di %s3_symbol_list</Italian>
-        <Spanish>[ICON_BULLET]%D1%F2 por falta de %s3_symbol_list</Spanish>
+        <Italian>[ICON_BULLET]%D1%F2[TAB]per mancanza di %s3_symbol_list</Italian>
+        <Spanish>[ICON_BULLET]%D1%F2[TAB]por falta de %s3_symbol_list</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_MISC_CONSUMED_CITY_YIELD_SPECIFIC</Tag>
-        <English>[ICON_BULLET][COLOR_WARNING_TEXT]%D1%F2[COLOR_REVERT] converted to : %s3_symbol_list</English>
+        <English>[ICON_BULLET][COLOR_WARNING_TEXT]%D1%F2[COLOR_REVERT] converted to %s3_symbol_list</English>
         <French>[ICON_BULLET]Conversion de [COLOR_WARNING_TEXT]%D1%F2[COLOR_REVERT] en %s3_symbol_list</French>
-        <German>[ICON_BULLET][COLOR_WARNING_TEXT]%D1%F2[COLOR_REVERT] umgewandelt in : %s3_symbol_list</German>
+        <German>[ICON_BULLET][COLOR_WARNING_TEXT]%D1%F2[COLOR_REVERT] umgewandelt in %s3_symbol_list</German>
         <Italian>[ICON_BULLET][COLOR_WARNING_TEXT]%D1%F2[COLOR_REVERT] trasformati in %s3_symbol_list</Italian>
         <Spanish>[ICON_BULLET]Se ha convertido [COLOR_WARNING_TEXT]%D1%F2[COLOR_REVERT] en %s3_symbol_list</Spanish>
     </TEXT>
@@ -2763,7 +2847,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_EMPHASIZED</Tag>
-        <English>%F1_symbol Emphasized</English>
+        <English>%F1_symbol emphasized</English>
         <French>%F1_symbol privilégié(e)</French>
         <German>%F1_symbol Schwerpunkt gesetzt</German>
         <Italian>%F1_symbol accentuato</Italian>
@@ -2771,7 +2855,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_DEEMPHASIZED</Tag>
-        <English>%F1_symbol Deemphasized</English>
+        <English>%F1_symbol deemphasized</English>
         <French>%F1_symbol minimisé(e)</French>
         <German>%F1_symbol Schwerpunkt aufgehoben</German>
         <Italian>%F1_symbol de-accentuato</Italian>
@@ -2898,14 +2982,6 @@
         <Spanish>Líneas y señales</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_MAIN_MENU</Tag>
-        <English>[COLOR_HIGHLIGHT_TEXT]Open Main Menu[COLOR_REVERT] [COLOR:140:255:40:255]&lt; Esc &gt;[COLOR_REVERT]</English>
-        <French>[COLOR_HIGHLIGHT_TEXT]Ouvrir le menu principal[COLOR_REVERT] [COLOR:140:255:40:255]&lt; Echap &gt;[COLOR_REVERT]</French>
-        <German>[COLOR_HIGHLIGHT_TEXT]Hauptmenü öffnen[COLOR_REVERT] [COLOR:140:255:40:255]&lt; Esc &gt;[COLOR_REVERT]</German>
-        <Italian>[COLOR_HIGHLIGHT_TEXT]Apri menu principale[COLOR_REVERT] [COLOR:140:255:40:255]&lt; Esc &gt;[COLOR_REVERT]</Italian>
-        <Spanish>[COLOR_HIGHLIGHT_TEXT]Abrir menú principal[COLOR_REVERT] [COLOR:140:255:40:255]&lt; Esc &gt;[COLOR_REVERT]</Spanish>
-    </TEXT>
-    <TEXT>
         <Tag>TXT_KEY_BUILDING_IN_QUEUE</Tag>
         <English>[COLOR_WARNING_TEXT]Already being built[COLOR_REVERT]</English>
         <French>[COLOR_WARNING_TEXT]Construction déjà en cours[COLOR_REVERT]</French>
@@ -2979,11 +3055,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CHANGE_NAME_UNIT</Tag>
-        <English>[NEWLINE][TAB][TAB][COLOR:140:255:40:255]&lt; Click &gt;[COLOR_REVERT] to change the name of the unit</English>
-        <French>[NEWLINE][TAB][TAB][COLOR:140:255:40:255]&lt; Cliquez &gt;[COLOR_REVERT] pour changer le nom</French>
-        <German>[NEWLINE][TAB][TAB][COLOR:140:255:40:255]&lt; Anklicken &gt;[COLOR_REVERT], um den Namen der Einheit zu ändern</German>
-        <Italian>[NEWLINE][TAB][TAB][COLOR:140:255:40:255]&lt; Clicca &gt;[COLOR_REVERT] qui per cambiare il nome</Italian>
-        <Spanish>[NEWLINE][TAB][TAB][COLOR:140:255:40:255]&lt; Haz clic &gt;[COLOR_REVERT] para cambiar el nombre</Spanish>
+        <English>[COLOR:140:255:40:255]&lt; Click &gt;[COLOR_REVERT] to change the name of the unit</English>
+        <French>[COLOR:140:255:40:255]&lt; Cliquez &gt;[COLOR_REVERT] pour changer le nom</French>
+        <German>[COLOR:140:255:40:255]&lt; Anklicken &gt;[COLOR_REVERT], um den Namen der Einheit zu ändern</German>
+        <Italian>[COLOR:140:255:40:255]&lt; Clicca &gt;[COLOR_REVERT] qui per cambiare il nome</Italian>
+        <Spanish>[COLOR:140:255:40:255]&lt; Haz clic &gt;[COLOR_REVERT] para cambiar el nombre</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_NAME_CITY</Tag>

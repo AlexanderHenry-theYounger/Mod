@@ -27,7 +27,6 @@
 			</AllowConqueringCities>
 			<iAllowFoundCity>1</iAllowFoundCity>
 		</TagGroupAllow>
-		
 		<TagGroupCity>
 			<iCanUseDomesticMarket>1</iCanUseDomesticMarket>
 		</TagGroupCity>
@@ -84,11 +83,27 @@
 					<iAllow>-50</iAllow>
 				</AllowBuild>
 				<AllowBuild>
+					<eBuild>BUILD_REFORESTATION_WETLAND</eBuild>
+					<iAllow>-50</iAllow>
+				</AllowBuild>
+				<AllowBuild>
 					<eBuild>BUILD_REFORESTATION_PLAINS</eBuild>
 					<iAllow>-50</iAllow>
 				</AllowBuild>
 				<AllowBuild>
+					<eBuild>BUILD_REFORESTATION_SHRUBLAND</eBuild>
+					<iAllow>-50</iAllow>
+				</AllowBuild>
+				<AllowBuild>
+					<eBuild>BUILD_REFORESTATION_PLAINS_FERTILE</eBuild>
+					<iAllow>-50</iAllow>
+				</AllowBuild>
+				<AllowBuild>
 					<eBuild>BUILD_REFORESTATION_MARSH</eBuild>
+					<iAllow>-50</iAllow>
+				</AllowBuild>
+				<AllowBuild>
+					<eBuild>BUILD_REFORESTATION_WETLAND</eBuild>
 					<iAllow>-50</iAllow>
 				</AllowBuild>
 				<AllowBuild>
@@ -97,6 +112,14 @@
 				</AllowBuild>
 				<AllowBuild>
 					<eBuild>BUILD_REFORESTATION_TUNDRA</eBuild>
+					<iAllow>-50</iAllow>
+				</AllowBuild>
+				<AllowBuild>
+					<eBuild>BUILD_REFORESTATION_TAIGA</eBuild>
+					<iAllow>-50</iAllow>
+				</AllowBuild>
+				<AllowBuild>
+					<eBuild>BUILD_DESERT_IRRIGATION</eBuild>
 					<iAllow>-50</iAllow>
 				</AllowBuild>
 			</AllowBuilds>
@@ -117,5 +140,29 @@
 				</AllowRoute>
 			</AllowRoutes>
 		</TagGroupAllow>
+	</CivEffectInfo>	
+	<CivEffectInfo>
+		<Type>CIV_EFFECT_TRAIT_SOPHISTICATED</Type>
+		<TagGroupGrowth>
+			<iLearningByDoingModifier>50</iLearningByDoingModifier>
+		</TagGroupGrowth>
+	</CivEffectInfo>
+	<CivEffectInfo>
+		<Type>CIV_EFFECT_TRAIT_PIONEER</Type>
+		<TagGroupGrowth>
+			<iLearningByDoingModifier>10</iLearningByDoingModifier>
+		</TagGroupGrowth>
+	</CivEffectInfo>
+	<CivEffectInfo>
+		<Type>CIV_EFFECT_TRAIT_SEAFARERS</Type>
+		<TagGroupGrowth>
+			<iLearningByDoingModifier>10</iLearningByDoingModifier>
+		</TagGroupGrowth>
+	</CivEffectInfo>
+	<CivEffectInfo>
+		<Type>CIV_EFFECT_TRAIT_INDUSTRIOUS</Type>
+		<TagGroupGrowth>
+			<iLearningByDoingModifier>10</iLearningByDoingModifier>
+		</TagGroupGrowth>
 	</CivEffectInfo>
 </Civ4CivEffectInfos>

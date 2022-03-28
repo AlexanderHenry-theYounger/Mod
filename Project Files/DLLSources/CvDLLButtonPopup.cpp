@@ -346,13 +346,17 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 						CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
 						pUnitNode = pPlot->nextUnitNode(pUnitNode);
 
-						if (pLoopUnit->canPromote((PromotionTypes) info.getData1(), info.getData2()))
+						// WTP, fixing Generals and Admirals to lead civilists or small tiny fishing boats - START
+						if ((pLoopUnit->getDomainType() == DOMAIN_LAND && pLoopUnit->canAttack()) || (pLoopUnit->getDomainType() == DOMAIN_SEA && pLoopUnit->baseCombatStr() >= 20))
 						{
-							iCount--;
-							if (iCount == 0)
+							if (pLoopUnit->canPromote((PromotionTypes) info.getData1(), info.getData2()))
 							{
-								gDLL->sendPushMission(info.getData2(), MISSION_LEAD, pLoopUnit->getID(), -1, 0, false);
-								break;
+								iCount--;
+								if (iCount == 0)
+								{
+									gDLL->sendPushMission(info.getData2(), MISSION_LEAD, pLoopUnit->getID(), -1, 0, false);
+									break;
+								}
 							}
 						}
 					}
@@ -401,6 +405,7 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 		}
 		break;
 
+	case BUTTONPOPUP_CHOOSE_YIELD_BUILD:
 // Ramstormp, WtP, Add Examine Settlement option to the no longer lacking yields for building production popup - START 
 		iExamineCityID = 0;
 		iExamineCityID = std::max(iExamineCityID, GC.getNumUnitInfos());
@@ -414,9 +419,19 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 				gDLL->getInterfaceIFace()->selectCity(pCity, true);
 			}
 		}
-
+		
 		else if (pPopupReturn->getButtonClicked() >= GC.getNumUnitInfos())
 // Ramstormp - END
+		{
+			BuildingTypes eBuilding = (BuildingTypes) (pPopupReturn->getButtonClicked() - GC.getNumUnitInfos());
+			gDLL->sendDoTask(info.getData1(), TASK_PUSH_CONSTRUCT_BUILDING, eBuilding, -1, false, false, false, false);
+		}
+		else if (pPopupReturn->getButtonClicked() >= 0)
+		{
+			UnitTypes eUnit = (UnitTypes) pPopupReturn->getButtonClicked();
+			gDLL->sendDoTask(info.getData1(), TASK_PUSH_TRAIN_UNIT, eUnit, NO_UNITAI, false, false, false, false);
+		}
+		break;
 
 	case BUTTONPOPUP_CHOOSE_EDUCATION:
 		if (pPopupReturn->getButtonClicked() == GC.getNumUnitInfos())
@@ -970,7 +985,9 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 				for (int iYield = 0; iYield < NUM_YIELD_TYPES; ++iYield)
 				{
 					YieldTypes eYield = (YieldTypes) iYield;
-					if (GC.getYieldInfo((YieldTypes) iYield).isCargo() && (eYield != YIELD_FOOD) && (eYield != YIELD_LUMBER) && (eYield != YIELD_STONE))
+					// ray, making special storage capacity rules for Yields XML configurable
+					if (GC.getYieldInfo((YieldTypes)iYield).isCargo() && !GC.getYieldInfo((YieldTypes)iYield).isIgnoredForStorageCapacity())
+					// if (GC.getYieldInfo((YieldTypes) iYield).isCargo() && (eYield != YIELD_FOOD) && (eYield != YIELD_LUMBER) && (eYield != YIELD_STONE))
 					{
 						bool bNeverSell = (pPopupReturn->getCheckboxBitfield(iYield) & 0x01);
 						int iLevel = pPopupReturn->getSpinnerWidgetValue(iYield);
@@ -1759,7 +1776,18 @@ bool CvDLLButtonPopup::launchChooseYieldBuildPopup(CvPopup* pPopup, CvPopupInfo 
 	{
 		return false;
 	}
-
+	// Ramstormp, Wtp, Add Examine Settlement option to the 'no longer lacking yields for building production' popup - START 
+	CyCity* pyCity = new CyCity(pCity);
+	CyArgsList argsList;
+	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyCity));	// pass in plot class
+	long lResult = 0;
+	gDLL->getPythonIFace()->callFunction(PYGameModule, "skipProductionPopup", argsList.makeFunctionArgs(), &lResult);
+	delete pyCity;	// python fxn must not hold on to this pointer
+	if (lResult == 1)
+	{
+		return (false);
+	}
+	// Ramstormp - END 
 	FAssertMsg(pCity->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer(), "City must belong to Active Player");
 
 	YieldTypes eYield = (YieldTypes) info.getData2();
@@ -1771,7 +1799,23 @@ bool CvDLLButtonPopup::launchChooseYieldBuildPopup(CvPopup* pPopup, CvPopupInfo 
 	CvWString szBuffer = gDLL->getText("TXT_KEY_POPUP_CHOOSE_COMLPETED_BUILD", GC.getYieldInfo(eYield).getTextKeyWide(), pCity->getNameKey());
 	gDLL->getInterfaceIFace()->popupSetHeaderString(pPopup, szBuffer, DLL_FONT_LEFT_JUSTIFY);
 
+	// Ramstormp, Wtp, Add Examine Settlement option to the no longer lacking yields for building production popup - START 
+	pyCity = new CyCity(pCity);
+	CyArgsList argsList2;
+	argsList2.add(gDLL->getPythonIFace()->makePythonObject(pyCity));	// pass in plot class
+	lResult = 1;
+	gDLL->getPythonIFace()->callFunction(PYGameModule, "showExamineCityButton", argsList2.makeFunctionArgs(), &lResult);
+	delete pyCity;	// python fxn must not hold on to this pointer
+	if (lResult == 1)
+	{
+		int iExamineCityID = 0;
+		iExamineCityID = std::max(iExamineCityID, GC.getNumUnitInfos());
+		iExamineCityID = std::max(iExamineCityID, GC.getNumBuildingInfos());
 
+		gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_POPUP_EXAMINE_CITY").c_str(), ARTFILEMGR.getInterfaceArtInfo("INTERFACE_BUTTONS_CITYSELECTION")->getPath(), iExamineCityID, WIDGET_GENERAL, -1, -1, true, POPUP_LAYOUT_STRETCH, DLL_FONT_LEFT_JUSTIFY);
+	}
+	// Ramstormp - END
+	
 	std::vector< std::pair<OrderTypes, int> > aOrders;
 	pCity->getOrdersWaitingForYield(aOrders, eYield, true, pCity->getYieldStored(eYield) + pCity->getYieldRushed(eYield));
 
@@ -1832,7 +1876,7 @@ bool CvDLLButtonPopup::launchEducationPopup(CvPopup* pPopup, CvPopupInfo &info)
 			szText.Format(L"%s", kUnit.getDescription());
 			if (iPrice > 0)
 			{
-				szText += CvWString::format(L" (%d%c)", iPrice, gDLL->getSymbolID(GOLD_CHAR));
+				szText += CvWString::format(L" (%d%c)", iPrice, GC.getSymbolID(GOLD_CHAR));
 			}
 			gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, szText, kUnit.getButton(), iI, WIDGET_GENERAL, -1, -1, true, POPUP_LAYOUT_STRETCH, DLL_FONT_LEFT_JUSTIFY);
 			++iNumUnits;
@@ -2148,7 +2192,6 @@ bool CvDLLButtonPopup::launchLeadUnitPopup(CvPopup* pPopup, CvPopupInfo &info)
 
 	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_CHOOSE_UNIT_TO_LEAD"));
 
-
 	int iCount = 1;
 	CvUnit* pFirstUnit = NULL;
 	CLLNode<IDInfo>* pUnitNode = pPlot->headUnitNode();
@@ -2157,16 +2200,20 @@ bool CvDLLButtonPopup::launchLeadUnitPopup(CvPopup* pPopup, CvPopupInfo &info)
 		CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
 		pUnitNode = pPlot->nextUnitNode(pUnitNode);
 
-		if (pLoopUnit->canPromote((PromotionTypes) info.getData1(), info.getData2()))
+		// WTP, fixing Generals and Admirals to lead civilists or small tiny fishing boats - START
+		if ((pLoopUnit->getDomainType() == DOMAIN_LAND && pLoopUnit->canAttack()) || (pLoopUnit->getDomainType() == DOMAIN_SEA && pLoopUnit->baseCombatStr() >= 20))
 		{
-			if (!pFirstUnit)
+			if (pLoopUnit->canPromote((PromotionTypes) info.getData1(), info.getData2()))
 			{
-				pFirstUnit = pLoopUnit;
+				if (!pFirstUnit)
+				{
+					pFirstUnit = pLoopUnit;
+				}
+				CvWStringBuffer szBuffer;
+				GAMETEXT.setUnitHelp(szBuffer, pLoopUnit, true);
+				gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, szBuffer.getCString(), NULL, iCount, WIDGET_GENERAL);
+				iCount++;
 			}
-			CvWStringBuffer szBuffer;
-			GAMETEXT.setUnitHelp(szBuffer, pLoopUnit, true);
-			gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, szBuffer.getCString(), NULL, iCount, WIDGET_GENERAL);
-			iCount++;
 		}
 	}
 
@@ -3196,7 +3243,7 @@ bool CvDLLButtonPopup::launchTeacherListPopup(CvPopup* pPopup, CvPopupInfo &info
 			gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, L"", kUnit.getButton(), -1, WIDGET_HELP_TEACHER_UNIT, eUnit);
 			if (iPrice >= 0)
 			{
-				gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, CvWString::format(L" %d%c", iPrice, gDLL->getSymbolID(GOLD_CHAR)));
+				gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, CvWString::format(L" %d%c", iPrice, GC.getSymbolID(GOLD_CHAR)));
 				gDLL->getInterfaceIFace()->popupCreateCheckBoxes(pPopup, 1, eUnit, WIDGET_GENERAL, POPUP_LAYOUT_TOP);
 				gDLL->getInterfaceIFace()->popupSetCheckBoxText(pPopup, 0, gDLL->getText("TXT_KEY_EDIT_TEACHER_LIST_POPUP_REPEAT_TEXT"), eUnit, gDLL->getText("TXT_KEY_EDIT_TEACHER_LIST_POPUP_REPEAT_HELP").getWithoutFormatting());
 				gDLL->getInterfaceIFace()->popupSetCheckBoxState(pPopup, 0, pCity->getOrderedStudentsRepeat(eUnit), eUnit);
@@ -3256,7 +3303,9 @@ bool CvDLLButtonPopup::launchCustomHousePopup(CvPopup* pPopup, CvPopupInfo &info
 		// R&R, ray, finishing Custom House Screen
 		if (kYield.isCargo())
 		{
-			if (eYield == YIELD_FOOD || eYield == YIELD_LUMBER || eYield == YIELD_STONE)
+			// ray, making special storage capacity rules for Yields XML configurable
+			// if (eYield == YIELD_FOOD || eYield == YIELD_LUMBER || eYield == YIELD_STONE)
+			if (GC.getYieldInfo(eYield).isIgnoredForStorageCapacity())
 			{
 				// Write never sell
 				gDLL->getInterfaceIFace()->popupStartHLayout(pPopup, 0);
@@ -3323,25 +3372,18 @@ bool CvDLLButtonPopup::launchDomesticMarketPopup(CvPopup* pPopup, CvPopupInfo &i
 	YieldCargoArray<int> aYields;
 	pCity->getYieldDemands(aYields);
 
-	const YieldTypeArray& kYieldArray = GC.getUnitYieldDemandTypes();
-	for (int i = 0;; ++i)
+	const InfoArray<YieldTypes>& kYieldArray = GC.getDomesticDemandYieldTypes();
+	for (int i = 0; i < kYieldArray.getLength(); ++i)
 	{
 		YieldTypes eYield = kYieldArray.get(i);
-		if (eYield != NO_YIELD)
-		{
-			CvYieldInfo& kYield = GC.getYieldInfo(eYield);
+		const CvYieldInfo& kYield = GC.getYieldInfo(eYield);
 
-			gDLL->getInterfaceIFace()->popupStartHLayout(pPopup, 0);
-			gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, L"", kYield.getButton(), -1, WIDGET_HELP_YIELD, eYield);
-			gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_NUMBER", pCity->getYieldStored(eYield)));
-			gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_NUMBER", pCity->getYieldBuyPrice(eYield)));
-			gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_NUMBER", aYields.get(eYield)));
-			gDLL->getInterfaceIFace()->popupEndLayout(pPopup);
-		}
-		else
-		{
-			break;
-		}
+		gDLL->getInterfaceIFace()->popupStartHLayout(pPopup, 0);
+		gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, L"", kYield.getButton(), -1, WIDGET_HELP_YIELD, eYield);
+		gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_NUMBER", pCity->getYieldStored(eYield)));
+		gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_NUMBER", pCity->getYieldBuyPrice(eYield)));
+		gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_NUMBER", aYields.get(eYield)));
+		gDLL->getInterfaceIFace()->popupEndLayout(pPopup);
 	}
 
 	gDLL->getInterfaceIFace()->popupLaunch(pPopup, true, POPUPSTATE_IMMEDIATE);

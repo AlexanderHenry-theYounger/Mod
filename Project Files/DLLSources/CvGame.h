@@ -87,7 +87,6 @@ public:
 	void verifyDeals();
 
 	DllExport void getGlobeviewConfigurationParameters(TeamTypes eTeam, bool& bStarsVisible, bool& bWorldIsRound);
-	int getSymbolID(int iSymbol);
 
 	int getProductionPerPopulation(HurryTypes eHurry);
 
@@ -368,6 +367,8 @@ public:
 	int getFatherCategoryPosition(FatherTypes eFather) const;
 
 	void changeYieldBoughtTotal(PlayerTypes eMainEurope, YieldTypes eYield, int iChange) const;
+	void changeYieldBoughtTotalAfrica(PlayerTypes eMainEurope, YieldTypes eYield, int iChange) const; // WTP, ray, Yields Traded Total for Africa and Port Royal - START
+	void changeYieldBoughtTotalPortRoyal(PlayerTypes eMainEurope, YieldTypes eYield, int iChange) const; // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 
 	// < JAnimals Mod Start >
 	PlayerTypes getBarbarianPlayer();
@@ -453,8 +454,8 @@ protected:
 	EnumMap<UnitClassTypes, int> m_em_iUnitClassCreatedCount;
 	EnumMap<BuildingClassTypes, int> m_em_iBuildingClassCreatedCount;
 
-	EnumMapDefault<FatherTypes, TeamTypes, NO_TEAM> m_em_eFatherTeam;
-	EnumMapDefault<FatherTypes, int, -1> m_em_iFatherGameTurn;
+	EnumMap<FatherTypes, TeamTypes> m_em_eFatherTeam;
+	EnumMap<FatherTypes, int, -1> m_em_iFatherGameTurn;
 
 	EnumMap<SpecialUnitTypes, bool> m_em_bSpecialUnitValid;
 	EnumMap<SpecialBuildingTypes, bool> m_em_bSpecialBuildingValid;

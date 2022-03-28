@@ -235,7 +235,12 @@
 	<ElementType name="iTaxRateThresholdModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iMaxTaxRateThresholdDecrease" content="textOnly" dt:type="int"/>
 	<ElementType name="iMercantileFactor" content="textOnly" dt:type="int"/>
+	<ElementType name="iAfricaSellProfitModifierInPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iPortRoyalSellProfitModifierInPercent" content="textOnly" dt:type="int"/>
+	<ElementType name="iDomesticMarketProfitModifierInPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iTreasureModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoodUniqueGoodyChanceModifierLand" content="textOnly" dt:type="int"/>
+	<ElementType name="iGoodUniqueGoodyChanceModifierWater" content="textOnly" dt:type="int"/>
 	<ElementType name="iUnhappinessFromSlavesModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iChiefGoldModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iYieldThreshold" content="textOnly" dt:type="int"/>
@@ -344,13 +349,19 @@
 	<ElementType name="iCityDefense" content="textOnly" dt:type="int"/>
 	<ElementType name="iLandPriceDiscount" content="textOnly" dt:type="int"/>
 	<ElementType name="iRecruitPriceDiscount" content="textOnly" dt:type="int"/>
+	<ElementType name="iRecruitPriceDiscountAfrica" content="textOnly" dt:type="int"/>
+	<ElementType name="iRecruitPriceDiscountPortRoyal" content="textOnly" dt:type="int"/>
 	<ElementType name="iEuropeTravelTimeModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iImmigrationThresholdModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iPopGrowthThresholdModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iCultureLevelModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iPioneerSpeedModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iImprovementPriceModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iImprovementGrowthTimeModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iLearningByDoingModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iLearningByDoingFreeModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iLearningByDoingRunawayModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iLearningByDoingRevoltModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iSpecialistPriceModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iStorageCapacityModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="GoodyType" content="textOnly"/>
@@ -380,7 +391,12 @@
 		<element type="iTaxRateThresholdModifier"/>
 		<element type="iMaxTaxRateThresholdDecrease"/>
 		<element type="iMercantileFactor"/>
+		<element type="iAfricaSellProfitModifierInPercent"/>
+		<element type="iPortRoyalSellProfitModifierInPercent"/>
+		<element type="iDomesticMarketProfitModifierInPercent"/>
 		<element type="iTreasureModifier"/>
+		<element type="iGoodUniqueGoodyChanceModifierLand"/>
+		<element type="iGoodUniqueGoodyChanceModifierWater"/>
 		<element type="iUnhappinessFromSlavesModifier"/>
 		<element type="iChiefGoldModifier"/>
 		<element type="iNativeAttitudeChange"/>
@@ -389,13 +405,19 @@
 		<element type="iCityDefense"/>
 		<element type="iLandPriceDiscount"/>
 		<element type="iRecruitPriceDiscount"/>
+		<element type="iRecruitPriceDiscountAfrica"/>
+		<element type="iRecruitPriceDiscountPortRoyal"/>
 		<element type="iEuropeTravelTimeModifier"/>
 		<element type="iImmigrationThresholdModifier"/>
 		<element type="iPopGrowthThresholdModifier"/>
 		<element type="iCultureLevelModifier"/>
 		<element type="iPioneerSpeedModifier"/>
 		<element type="iImprovementPriceModifier"/>
+		<element type="iImprovementGrowthTimeModifier"/>
 		<element type="iLearningByDoingModifier"/>
+		<element type="iLearningByDoingFreeModifier"/>
+		<element type="iLearningByDoingRunawayModifier"/>
+		<element type="iLearningByDoingRevoltModifier"/>
 		<element type="iSpecialistPriceModifier"/>
 		<element type="iStorageCapacityModifier"/>
 		<element type="CityExtraYields"/>

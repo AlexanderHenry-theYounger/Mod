@@ -901,6 +901,10 @@ bool CvXMLLoadUtility::SetPostGlobalsGlobalDefines()
 		SetGlobalDefine("BONUS_WHALE", szVal);
 		idx = FindInInfoClass(szVal);
 		GC.getDefinesVarSystem()->SetValue("BONUS_WHALE", idx);
+
+		SetGlobalDefine("BONUS_WHALE2", szVal);
+		idx = FindInInfoClass(szVal);
+		GC.getDefinesVarSystem()->SetValue("BONUS_WHALE2", idx);
 		//End TAC Whaling, ray
 
 		// R&R, ray, High Sea Fishing - START
@@ -917,6 +921,19 @@ bool CvXMLLoadUtility::SetPostGlobalsGlobalDefines()
 		SetGlobalDefine("BONUS_HIGH_SEA_FISH", szVal);
 		idx = FindInInfoClass(szVal);
 		GC.getDefinesVarSystem()->SetValue("BONUS_HIGH_SEA_FISH", idx);
+
+		// Ray, new High Sea Fish for Diversity
+		SetGlobalDefine("BONUS_HIGH_SEA_FISH2", szVal);
+		idx = FindInInfoClass(szVal);
+		GC.getDefinesVarSystem()->SetValue("BONUS_HIGH_SEA_FISH2", idx);
+
+		SetGlobalDefine("BONUS_HIGH_SEA_FISH3", szVal);
+		idx = FindInInfoClass(szVal);
+		GC.getDefinesVarSystem()->SetValue("BONUS_HIGH_SEA_FISH3", idx);
+
+		SetGlobalDefine("BONUS_HIGH_SEA_FISH4", szVal);
+		idx = FindInInfoClass(szVal);
+		GC.getDefinesVarSystem()->SetValue("BONUS_HIGH_SEA_FISH4", idx);
 		// R&R, ray, High Sea Fishing - END
 
 		// R&R, ray, Entertainment Buildings - START

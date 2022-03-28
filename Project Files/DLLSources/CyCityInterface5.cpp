@@ -32,10 +32,23 @@ void CyCityPythonInterface5(python::class_<CyCity>& x)
 		.def("getPopulationUnitByIndex", &CyCity::getPopulationUnitByIndex, python::return_value_policy<python::manage_new_object>(), "CyUnit* getPopulationUnitByIndex(int)")
 		.def("getPopulationUnitById", &CyCity::getPopulationUnitById, python::return_value_policy<python::manage_new_object>(), "CyUnit* getPopulationUnitById(int)")
 		.def("getPopulationUnitIndex", &CyCity::getPopulationUnitIndex, "int (CyUnit* pUnit)")
+		.def("canTeach", &CyCity::canTeach, "bool (int /*UnitTypes*/ iUnit)")
 		.def("getTeachUnitClass", &CyCity::getTeachUnitClass, "int /*UnitClass*/()")
 		.def("getRebelPercent", &CyCity::getRebelPercent, "int ()")
 		.def("getRebelSentiment", &CyCity::getRebelSentiment, "int ()")
 		.def("setRebelSentiment", &CyCity::setRebelSentiment, "void (int)")
+
+		// WTP, ray, new Harbour System - START
+		.def("getCityHarbourSpace", &CyCity::getCityHarbourSpace, "int ()")
+		.def("getCityHarbourSpaceUsed", &CyCity::getCityHarbourSpaceUsed, "int ()")
+		.def("bShouldShowCityHarbourSystem", &CyCity::bShouldShowCityHarbourSystem, "bool ()")
+		// WTP, ray, new Harbour System - END
+
+		// WTP, ray, new Barracks System - START
+		.def("getCityBarracksSpace", &CyCity::getCityBarracksSpace, "int ()")
+		.def("getCityBarracksSpaceUsed", &CyCity::getCityBarracksSpaceUsed, "int ()")
+		.def("bShouldShowCityBarracksSystem", &CyCity::bShouldShowCityBarracksSystem, "bool ()")
+		// WTP, ray, new Barracks System - END
 
 		// R&R, ray, Health - START
 		.def("getCityHealth", &CyCity::getCityHealth, "int ()")
@@ -43,6 +56,15 @@ void CyCityPythonInterface5(python::class_<CyCity>& x)
 		.def("setCityHealth", &CyCity::setCityHealth, "void (int)")
 		.def("changeCityHealth", &CyCity::changeCityHealth, "void (int)")
 		// R&R, ray, Health - END
+
+		// WTP, ray, helper methods for Python Event System - Spawning Units and Barbarians on Plots - START
+		.def("spawnOwnPlayerUnitOnPlotOfCity", &CyCity::spawnOwnPlayerUnitOnPlotOfCity, "void (int)")
+		.def("spawnBarbarianUnitOnPlotOfCity", &CyCity::spawnBarbarianUnitOnPlotOfCity, "void (int)")
+		.def("spawnOwnPlayerUnitOnAdjacentPlotOfCity", &CyCity::spawnOwnPlayerUnitOnAdjacentPlotOfCity, "void (int)")
+		.def("spawnBarbarianUnitOnAdjacentPlotOfCity", &CyCity::spawnBarbarianUnitOnAdjacentPlotOfCity, "void (int)")
+		.def("isPlayerUnitOnAdjacentPlotOfCity", &CyCity::isPlayerUnitOnAdjacentPlotOfCity, "bool (int)")
+		.def("isBarbarianUnitOnAdjacentPlotOfCity", &CyCity::isBarbarianUnitOnAdjacentPlotOfCity, "bool (int)")
+		// WTP, ray, helper methods for Python Event System - Spawning Units and Barbarians on Plots - END
 
 		// WTP, ray, Happiness - START
 		.def("getCityHappiness", &CyCity::getCityHappiness, "int ()")

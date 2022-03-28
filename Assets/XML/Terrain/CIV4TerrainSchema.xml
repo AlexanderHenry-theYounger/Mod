@@ -25,6 +25,7 @@
 	<ElementType name="bImpassable" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bFound" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bFoundCoast" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bBadCityLocation" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iMovement" content="textOnly" dt:type="int"/>
 	<ElementType name="iSeeFrom" content="textOnly" dt:type="int"/>
 	<ElementType name="iSeeThrough" content="textOnly" dt:type="int"/>
@@ -54,6 +55,7 @@
 		<element type="bImpassable"/>
 		<element type="bFound"/>
 		<element type="bFoundCoast"/>
+		<element type="bBadCityLocation"/>
 		<element type="iMovement"/>
 		<element type="iSeeFrom"/>
 		<element type="iSeeThrough"/>
@@ -69,6 +71,7 @@
 	</ElementType>
 	<ElementType name="Description" content="textOnly"/>
 	<ElementType name="bCargo" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bIgnoredForStorageCapacity" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bIsExportYield" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bLivestock" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iBuyPriceLow" content="textOnly" dt:type="int"/>
@@ -110,6 +113,7 @@
 		<element type="Description"/>
 		<element type="Civilopedia"/>
 		<element type="bCargo"/>
+		<element type="bIgnoredForStorageCapacity" minOccurs="0"/>
 		<element type="bIsExportYield" minOccurs="0"/>
 		<element type="bLivestock" minOccurs="0"/>
 		<element type="iBuyPriceLow"/>
@@ -165,10 +169,21 @@
 	<ElementType name="bGeneratedEveryRound" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iGrowth" content="textOnly" dt:type="int"/>
 	<ElementType name="bNoCoast" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bOnlyCoastalLand" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoRiver" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoAdjacent" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRequiresFlatlands" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bRequiresHills" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bRequiresPeaks" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRequiresRiver" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNorthMovementBonus" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bSouthMovementBonus" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bEastMovementBonus" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bWestMovementBonus" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNorthEastMovementBonus" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNorthWestMovementBonus" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bSouthEastMovementBonus" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bSouthWestMovementBonus" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoCity" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoImprovement" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bVisibleAlways" content="textOnly" dt:type="boolean"/>
@@ -200,11 +215,22 @@
 		<element type="bGeneratedEveryRound"/>
 		<element type="iGrowth"/>
 		<element type="bNoCoast"/>
+		<element type="bOnlyCoastalLand"/>
 		<element type="bNoRiver"/>
 		<element type="bNoAdjacent"/>
 		<element type="bRequiresFlatlands"/>
+		<element type="bRequiresHills"/>
+		<element type="bRequiresPeaks"/>
 		<element type="bRequiresRiver"/>
 		<element type="bImpassable"/>
+		<element type="bNorthMovementBonus" minOccurs="0"/>
+		<element type="bSouthMovementBonus" minOccurs="0"/>
+		<element type="bEastMovementBonus" minOccurs="0"/>
+		<element type="bWestMovementBonus" minOccurs="0"/>
+		<element type="bNorthEastMovementBonus" minOccurs="0"/>
+		<element type="bNorthWestMovementBonus" minOccurs="0"/>
+		<element type="bSouthEastMovementBonus" minOccurs="0"/>
+		<element type="bSouthWestMovementBonus" minOccurs="0"/>
 		<element type="bNoCity"/>
 		<element type="bNoImprovement"/>
 		<element type="bVisibleAlways"/>
@@ -222,6 +248,7 @@
 	<ElementType name="BonusName" content="textOnly"/>
 	<ElementType name="BuildingType" content="textOnly"/>
 	<ElementType name="TerrainType" content="textOnly"/>
+	<ElementType name="iHealthEffectFromRessource" content="textOnly" dt:type="int"/>
 	<ElementType name="iAIObjective" content="textOnly" dt:type="int"/>
 	<ElementType name="iPlacementOrder" content="textOnly" dt:type="int"/>
 	<ElementType name="iConstAppearance" content="textOnly" dt:type="int"/>
@@ -250,6 +277,10 @@
 	<ElementType name="bOcean" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bFlatlands" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoRiverSide" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bRiverSideOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bCoastalLandOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bOnlySouthernHemisphere" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bOnlyNorthernHemisphere" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bFeature" content="textOnly" dt:type="boolean"/>
 	<ElementType name="FeatureBoolean" content="eltOnly">
 		<element type="FeatureType"/>
@@ -277,6 +308,7 @@
 		<element type="ArtDefineTag"/>
 		<element type="BuildingType"/>
 		<element type="YieldChanges"/>
+		<element type="iHealthEffectFromRessource"/>
 		<element type="iAIObjective"/>
 		<element type="iPlacementOrder"/>
 		<element type="iConstAppearance"/>
@@ -296,6 +328,10 @@
 		<element type="bOcean" minOccurs="0"/>
 		<element type="bFlatlands"/>
 		<element type="bNoRiverSide"/>
+		<element type="bRiverSideOnly"/>
+		<element type="bCoastalLandOnly"/>
+		<element type="bOnlySouthernHemisphere" minOccurs="0"/>
+		<element type="bOnlyNorthernHemisphere" minOccurs="0"/>
 		<element type="TerrainBooleans"/>
 		<element type="FeatureBooleans"/>
 		<element type="FeatureTerrainBooleans"/>
@@ -379,6 +415,8 @@
 	<ElementType name="bActsAsCity" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bFort" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bMonastery" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bCanal" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bNotAllowedNextToSameAsItself" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bHillsMakesValid" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRiverSideMakesValid" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bRequiresRiverSide" content="textOnly" dt:type="boolean"/>
@@ -392,6 +430,9 @@
 	<ElementType name="iGoodyRange" content="textOnly" dt:type="int"/>
 	<ElementType name="iFeatureGrowth" content="textOnly" dt:type="int"/>
 	<ElementType name="iDefenseModifier" content="textOnly" dt:type="int"/>
+	<ElementType name="iFoodModifierForCity" content="textOnly" dt:type="int"/>
+	<ElementType name="iHammersModifierForCity" content="textOnly" dt:type="int"/>
+	<ElementType name="iToolsModifierForCity" content="textOnly" dt:type="int"/>
 	<ElementType name="iPillageGold" content="textOnly" dt:type="int"/>
 	<ElementType name="bOutsideBorders" content="textOnly" dt:type="boolean"/>
 	<ElementType name="iAdvancedStartCost" content="textOnly" dt:type="int"/>
@@ -433,6 +474,8 @@
 		<element type="bActsAsCity"/>
 		<element type="bFort" minOccurs="0"/>
 		<element type="bMonastery" minOccurs="0"/>
+		<element type="bCanal" minOccurs="0"/>
+		<element type="bNotAllowedNextToSameAsItself" minOccurs="0"/>
 		<element type="bHillsMakesValid"/>
 		<element type="bRiverSideMakesValid"/>
 		<element type="bRequiresFlatlands"/>
@@ -453,6 +496,9 @@
 		<element type="iFeatureGrowth"/>
 		<element type="iUpgradeTime"/>
 		<element type="iDefenseModifier"/>
+		<element type="iFoodModifierForCity" minOccurs="0"/>
+		<element type="iHammersModifierForCity" minOccurs="0"/>
+		<element type="iToolsModifierForCity" minOccurs="0"/>
 		<element type="iPillageGold"/>
 		<element type="bOutsideBorders"/>
 		<element type="TerrainMakesValids"/>

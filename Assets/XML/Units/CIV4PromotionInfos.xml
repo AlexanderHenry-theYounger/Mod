@@ -121,6 +121,7 @@
             <bShiftDown>0</bShiftDown>
             <bCtrlDown>0</bCtrlDown>
             <bGraphicalOnly>0</bGraphicalOnly>
+            <bNotEarnedByXP>0</bNotEarnedByXP>
             <iHotKeyPriority>0</iHotKeyPriority>
             <Button>,Art/colonization_promotions_atlas.dds,2,9</Button>
         </PromotionInfo>
@@ -2826,12 +2827,28 @@
                     <iFeatureAttack>20</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <iFeatureAttack>20</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <iFeatureAttack>40</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <iFeatureAttack>20</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <iFeatureAttack>40</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_LIGHT_FOREST</FeatureType>
-                    <iFeatureAttack>20</iFeatureAttack>
+                    <iFeatureAttack>10</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
+                    <iFeatureAttack>10</iFeatureAttack>
                 </FeatureAttack>
             </FeatureAttacks>
             <FeatureDefenses>
@@ -2840,12 +2857,28 @@
                     <iFeatureDefense>20</iFeatureDefense>
                 </FeatureDefense>
                 <FeatureDefense>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <iFeatureDefense>20</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <iFeatureDefense>40</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <iFeatureDefense>20</iFeatureDefense>
                 </FeatureDefense>
                 <FeatureDefense>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <iFeatureDefense>40</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
                     <FeatureType>FEATURE_LIGHT_FOREST</FeatureType>
-                    <iFeatureDefense>20</iFeatureDefense>
+                    <iFeatureDefense>10</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
+                    <iFeatureDefense>10</iFeatureDefense>
                 </FeatureDefense>
             </FeatureDefenses>
             <UnitClassAttackMods/>
@@ -2915,12 +2948,28 @@
                     <iFeatureAttack>25</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <iFeatureAttack>25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <iFeatureAttack>50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <iFeatureAttack>25</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <iFeatureAttack>50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_LIGHT_FOREST</FeatureType>
-                    <iFeatureAttack>25</iFeatureAttack>
+                    <iFeatureAttack>15</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
+                    <iFeatureAttack>15</iFeatureAttack>
                 </FeatureAttack>
             </FeatureAttacks>
             <FeatureDefenses>
@@ -2929,12 +2978,28 @@
                     <iFeatureDefense>25</iFeatureDefense>
                 </FeatureDefense>
                 <FeatureDefense>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <iFeatureDefense>25</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <iFeatureDefense>50</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <iFeatureDefense>25</iFeatureDefense>
                 </FeatureDefense>
                 <FeatureDefense>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <iFeatureDefense>50</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
                     <FeatureType>FEATURE_LIGHT_FOREST</FeatureType>
-                    <iFeatureDefense>25</iFeatureDefense>
+                    <iFeatureDefense>15</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
+                    <iFeatureDefense>15</iFeatureDefense>
                 </FeatureDefense>
             </FeatureDefenses>
             <UnitClassAttackMods/>
@@ -2948,11 +3013,27 @@
                     <bFeatureDoubleMove>1</bFeatureDoubleMove>
                 </FeatureDoubleMove>
                 <FeatureDoubleMove>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <bFeatureDoubleMove>1</bFeatureDoubleMove>
+                </FeatureDoubleMove>
+                <FeatureDoubleMove>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <bFeatureDoubleMove>1</bFeatureDoubleMove>
+                </FeatureDoubleMove>
+                <FeatureDoubleMove>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <bFeatureDoubleMove>1</bFeatureDoubleMove>
                 </FeatureDoubleMove>
                 <FeatureDoubleMove>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <bFeatureDoubleMove>1</bFeatureDoubleMove>
+                </FeatureDoubleMove>
+                <FeatureDoubleMove>
                     <FeatureType>FEATURE_LIGHT_FOREST</FeatureType>
+                    <bFeatureDoubleMove>1</bFeatureDoubleMove>
+                </FeatureDoubleMove>
+                <FeatureDoubleMove>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
                     <bFeatureDoubleMove>1</bFeatureDoubleMove>
                 </FeatureDoubleMove>
             </FeatureDoubleMoves>
@@ -3017,12 +3098,28 @@
                     <iFeatureAttack>30</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <iFeatureAttack>30</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <iFeatureAttack>60</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <iFeatureAttack>30</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <iFeatureAttack>60</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_LIGHT_FOREST</FeatureType>
-                    <iFeatureAttack>30</iFeatureAttack>
+                    <iFeatureAttack>20</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
+                    <iFeatureAttack>20</iFeatureAttack>
                 </FeatureAttack>
             </FeatureAttacks>
             <FeatureDefenses>
@@ -3031,12 +3128,28 @@
                     <iFeatureDefense>30</iFeatureDefense>
                 </FeatureDefense>
                 <FeatureDefense>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <iFeatureDefense>30</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <iFeatureDefense>60</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <iFeatureDefense>30</iFeatureDefense>
                 </FeatureDefense>
                 <FeatureDefense>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <iFeatureDefense>60</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
                     <FeatureType>FEATURE_LIGHT_FOREST</FeatureType>
-                    <iFeatureDefense>30</iFeatureDefense>
+                    <iFeatureDefense>20</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
+                    <iFeatureDefense>20</iFeatureDefense>
                 </FeatureDefense>
             </FeatureDefenses>
             <UnitClassAttackMods/>
@@ -3322,10 +3435,18 @@
                     <TerrainType>TERRAIN_MARSH</TerrainType>
                     <iTerrainAttack>20</iTerrainAttack>
                 </TerrainAttack>
+                <TerrainAttack>
+                    <TerrainType>TERRAIN_WETLAND</TerrainType>
+                    <iTerrainAttack>20</iTerrainAttack>
+                </TerrainAttack>
             </TerrainAttacks>
             <TerrainDefenses>
                 <TerrainDefense>
                     <TerrainType>TERRAIN_MARSH</TerrainType>
+                    <iTerrainDefense>20</iTerrainDefense>
+                </TerrainDefense>
+                <TerrainDefense>
+                    <TerrainType>TERRAIN_WETLAND</TerrainType>
                     <iTerrainDefense>20</iTerrainDefense>
                 </TerrainDefense>
             </TerrainDefenses>
@@ -3334,10 +3455,42 @@
                     <FeatureType>FEATURE_JUNGLE</FeatureType>
                     <iFeatureAttack>20</iFeatureAttack>
                 </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <iFeatureAttack>20</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <iFeatureAttack>40</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <iFeatureAttack>40</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_BOG</FeatureType>
+                    <iFeatureAttack>20</iFeatureAttack>
+                </FeatureAttack>
             </FeatureAttacks>
             <FeatureDefenses>
                 <FeatureDefense>
                     <FeatureType>FEATURE_JUNGLE</FeatureType>
+                    <iFeatureDefense>20</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <iFeatureDefense>20</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <iFeatureDefense>40</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <iFeatureDefense>40</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_BOG</FeatureType>
                     <iFeatureDefense>20</iFeatureDefense>
                 </FeatureDefense>
             </FeatureDefenses>
@@ -3405,10 +3558,18 @@
                     <TerrainType>TERRAIN_MARSH</TerrainType>
                     <iTerrainAttack>25</iTerrainAttack>
                 </TerrainAttack>
+                <TerrainAttack>
+                    <TerrainType>TERRAIN_WETLAND</TerrainType>
+                    <iTerrainAttack>25</iTerrainAttack>
+                </TerrainAttack>
             </TerrainAttacks>
             <TerrainDefenses>
                 <TerrainDefense>
                     <TerrainType>TERRAIN_MARSH</TerrainType>
+                    <iTerrainDefense>25</iTerrainDefense>
+                </TerrainDefense>
+                <TerrainDefense>
+                    <TerrainType>TERRAIN_WETLAND</TerrainType>
                     <iTerrainDefense>25</iTerrainDefense>
                 </TerrainDefense>
             </TerrainDefenses>
@@ -3417,10 +3578,42 @@
                     <FeatureType>FEATURE_JUNGLE</FeatureType>
                     <iFeatureAttack>25</iFeatureAttack>
                 </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <iFeatureAttack>25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <iFeatureAttack>50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <iFeatureAttack>50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_BOG</FeatureType>
+                    <iFeatureAttack>25</iFeatureAttack>
+                </FeatureAttack>
             </FeatureAttacks>
             <FeatureDefenses>
                 <FeatureDefense>
                     <FeatureType>FEATURE_JUNGLE</FeatureType>
+                    <iFeatureDefense>25</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <iFeatureDefense>25</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <iFeatureDefense>50</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <iFeatureDefense>50</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_BOG</FeatureType>
                     <iFeatureDefense>25</iFeatureDefense>
                 </FeatureDefense>
             </FeatureDefenses>
@@ -3433,10 +3626,30 @@
                     <TerrainType>TERRAIN_MARSH</TerrainType>
                     <bTerrainDoubleMove>1</bTerrainDoubleMove>
                 </TerrainDoubleMove>
+                <TerrainDoubleMove>
+                    <TerrainType>TERRAIN_WETLAND</TerrainType>
+                    <bTerrainDoubleMove>1</bTerrainDoubleMove>
+                </TerrainDoubleMove>
             </TerrainDoubleMoves>
             <FeatureDoubleMoves>
                 <FeatureDoubleMove>
                     <FeatureType>FEATURE_JUNGLE</FeatureType>
+                    <bFeatureDoubleMove>1</bFeatureDoubleMove>
+                </FeatureDoubleMove>
+                <FeatureDoubleMove>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <bFeatureDoubleMove>1</bFeatureDoubleMove>
+                </FeatureDoubleMove>
+                <FeatureDoubleMove>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <bFeatureDoubleMove>1</bFeatureDoubleMove>
+                </FeatureDoubleMove>
+                <FeatureDoubleMove>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <bFeatureDoubleMove>1</bFeatureDoubleMove>
+                </FeatureDoubleMove>
+                <FeatureDoubleMove>
+                    <FeatureType>FEATURE_BOG</FeatureType>
                     <bFeatureDoubleMove>1</bFeatureDoubleMove>
                 </FeatureDoubleMove>
             </FeatureDoubleMoves>
@@ -3498,10 +3711,18 @@
                     <TerrainType>TERRAIN_MARSH</TerrainType>
                     <iTerrainAttack>30</iTerrainAttack>
                 </TerrainAttack>
+                <TerrainAttack>
+                    <TerrainType>TERRAIN_WETLAND</TerrainType>
+                    <iTerrainAttack>30</iTerrainAttack>
+                </TerrainAttack>
             </TerrainAttacks>
             <TerrainDefenses>
                 <TerrainDefense>
                     <TerrainType>TERRAIN_MARSH</TerrainType>
+                    <iTerrainDefense>30</iTerrainDefense>
+                </TerrainDefense>
+                <TerrainDefense>
+                    <TerrainType>TERRAIN_WETLAND</TerrainType>
                     <iTerrainDefense>30</iTerrainDefense>
                 </TerrainDefense>
             </TerrainDefenses>
@@ -3510,10 +3731,42 @@
                     <FeatureType>FEATURE_JUNGLE</FeatureType>
                     <iFeatureAttack>30</iFeatureAttack>
                 </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <iFeatureAttack>30</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <iFeatureAttack>60</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <iFeatureAttack>60</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_BOG</FeatureType>
+                    <iFeatureAttack>30</iFeatureAttack>
+                </FeatureAttack>
             </FeatureAttacks>
             <FeatureDefenses>
                 <FeatureDefense>
                     <FeatureType>FEATURE_JUNGLE</FeatureType>
+                    <iFeatureDefense>30</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <iFeatureDefense>30</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <iFeatureDefense>60</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <iFeatureDefense>60</iFeatureDefense>
+                </FeatureDefense>
+                <FeatureDefense>
+                    <FeatureType>FEATURE_BOG</FeatureType>
                     <iFeatureDefense>30</iFeatureDefense>
                 </FeatureDefense>
             </FeatureDefenses>
@@ -5069,7 +5322,23 @@
                     <iUnitClassMod>10</iUnitClassMod>
                 </UnitClassAttackMod>
                 <UnitClassAttackMod>
+                    <UnitClassType>UNITCLASS_ROYAL_FRIGATE</UnitClassType>
+                    <iUnitClassMod>10</iUnitClassMod>
+                </UnitClassAttackMod>
+                <UnitClassAttackMod>
                     <UnitClassType>UNITCLASS_SHIP_OF_THE_LINE</UnitClassType>
+                    <iUnitClassMod>10</iUnitClassMod>
+                </UnitClassAttackMod>
+                <UnitClassAttackMod>
+                    <UnitClassType>UNITCLASS_ROYAL_SHIP_OF_THE_LINE</UnitClassType>
+                    <iUnitClassMod>10</iUnitClassMod>
+                </UnitClassAttackMod>
+                <UnitClassAttackMod>
+                    <UnitClassType>UNITCLASS_COLONIAL_MAN_O_WAR</UnitClassType>
+                    <iUnitClassMod>10</iUnitClassMod>
+                </UnitClassAttackMod>
+                <UnitClassAttackMod>
+                    <UnitClassType>UNITCLASS_ROYAL_MAN_O_WAR</UnitClassType>
                     <iUnitClassMod>10</iUnitClassMod>
                 </UnitClassAttackMod>
             </UnitClassAttackMods>
@@ -5079,7 +5348,19 @@
                     <iUnitClassMod>10</iUnitClassMod>
                 </UnitClassDefenseMod>
                 <UnitClassDefenseMod>
+                    <UnitClassType>UNITCLASS_ROYAL_FRIGATE</UnitClassType>
+                    <iUnitClassMod>10</iUnitClassMod>
+                </UnitClassDefenseMod>
+                <UnitClassDefenseMod>
                     <UnitClassType>UNITCLASS_SHIP_OF_THE_LINE</UnitClassType>
+                    <iUnitClassMod>10</iUnitClassMod>
+                </UnitClassDefenseMod>
+                <UnitClassDefenseMod>
+                    <UnitClassType>UNITCLASS_COLONIAL_MAN_O_WAR</UnitClassType>
+                    <iUnitClassMod>10</iUnitClassMod>
+                </UnitClassDefenseMod>
+                <UnitClassDefenseMod>
+                    <UnitClassType>UNITCLASS_ROYAL_MAN_O_WAR</UnitClassType>
                     <iUnitClassMod>10</iUnitClassMod>
                 </UnitClassDefenseMod>
             </UnitClassDefenseMods>
@@ -6002,6 +6283,14 @@
                     <TerrainType>TERRAIN_PLAINS</TerrainType>
                     <iTerrainAttack>15</iTerrainAttack>
                 </TerrainAttack>
+                <TerrainAttack>
+                    <TerrainType>TERRAIN_SHRUBLAND</TerrainType>
+                    <iTerrainAttack>15</iTerrainAttack>
+                </TerrainAttack>
+                <TerrainAttack>
+                    <TerrainType>TERRAIN_PLAINS_FERTILE</TerrainType>
+                    <iTerrainAttack>15</iTerrainAttack>
+                </TerrainAttack>
             </TerrainAttacks>
             <TerrainDefenses/>
             <FeatureAttacks/>
@@ -6087,6 +6376,14 @@
                     <TerrainType>TERRAIN_PLAINS</TerrainType>
                     <iTerrainAttack>30</iTerrainAttack>
                 </TerrainAttack>
+                <TerrainAttack>
+                    <TerrainType>TERRAIN_SHRUBLAND</TerrainType>
+                    <iTerrainAttack>30</iTerrainAttack>
+                </TerrainAttack>
+                <TerrainAttack>
+                    <TerrainType>TERRAIN_PLAINS_FERTILE</TerrainType>
+                    <iTerrainAttack>30</iTerrainAttack>
+                </TerrainAttack>
             </TerrainAttacks>
             <TerrainDefenses/>
             <FeatureAttacks/>
@@ -6167,15 +6464,47 @@
                     <iFeatureAttack>10</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
+                    <iFeatureAttack>10</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_FOREST</FeatureType>
                     <iFeatureAttack>10</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <iFeatureAttack>10</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <iFeatureAttack>20</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <iFeatureAttack>10</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <iFeatureAttack>20</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_JUNGLE</FeatureType>
+                    <iFeatureAttack>10</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <iFeatureAttack>10</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <iFeatureAttack>10</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <iFeatureAttack>10</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_BOG</FeatureType>
                     <iFeatureAttack>10</iFeatureAttack>
                 </FeatureAttack>
             </FeatureAttacks>
@@ -6251,16 +6580,48 @@
                     <iFeatureAttack>-25</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <iFeatureAttack>-25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <iFeatureAttack>-50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <iFeatureAttack>-50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_BOG</FeatureType>
+                    <iFeatureAttack>-25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_FOREST</FeatureType>
                     <iFeatureAttack>-25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <iFeatureAttack>-25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <iFeatureAttack>-50</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <iFeatureAttack>-25</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <iFeatureAttack>-50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_LIGHT_FOREST</FeatureType>
-                    <iFeatureAttack>-25</iFeatureAttack>
+                    <iFeatureAttack>-15</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
+                    <iFeatureAttack>-15</iFeatureAttack>
                 </FeatureAttack>
             </FeatureAttacks>
             <FeatureDefenses/>
@@ -6327,16 +6688,48 @@
                     <iFeatureAttack>-25</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_TROPICAL_GROVES</FeatureType>
+                    <iFeatureAttack>-25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_MANGROVE</FeatureType>
+                    <iFeatureAttack>-50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_SWAMP</FeatureType>
+                    <iFeatureAttack>-50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_BOG</FeatureType>
+                    <iFeatureAttack>-25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_FOREST</FeatureType>
                     <iFeatureAttack>-25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_FOREST_EVERGREEN</FeatureType>
+                    <iFeatureAttack>-25</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_DENSE_FOREST</FeatureType>
+                    <iFeatureAttack>-50</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
                     <FeatureType>FEATURE_FOREST_TUNDRA</FeatureType>
                     <iFeatureAttack>-25</iFeatureAttack>
                 </FeatureAttack>
                 <FeatureAttack>
+                    <FeatureType>FEATURE_ANCIENT_FOREST</FeatureType>
+                    <iFeatureAttack>-50</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
                     <FeatureType>FEATURE_LIGHT_FOREST</FeatureType>
-                    <iFeatureAttack>-25</iFeatureAttack>
+                    <iFeatureAttack>-15</iFeatureAttack>
+                </FeatureAttack>
+                <FeatureAttack>
+                    <FeatureType>FEATURE_THICKET</FeatureType>
+                    <iFeatureAttack>-15</iFeatureAttack>
                 </FeatureAttack>
             </FeatureAttacks>
             <FeatureDefenses/>

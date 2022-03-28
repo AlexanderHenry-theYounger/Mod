@@ -367,6 +367,11 @@
             <DefaultUnit>UNIT_HEAVY_ARTILLERY_VETERAN</DefaultUnit>
         </UnitClassInfo>
         <UnitClassInfo>
+            <Type>UNITCLASS_ROYAL_ARTILLERY</Type>
+            <Description>TXT_KEY_UNITCLASS_HEAVY_ARTILLERY</Description>
+            <DefaultUnit>UNIT_ROYAL_ARTILLERY</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
             <Type>UNITCLASS_MORTAR</Type>
             <Description>TXT_KEY_UNITCLASS_MORTAR</Description>
             <DefaultUnit>UNIT_MORTAR</DefaultUnit>
@@ -437,6 +442,16 @@
             <DefaultUnit>UNIT_MOUNTED_CONQUISTADOR</DefaultUnit>
         </UnitClassInfo>
         <UnitClassInfo>
+            <Type>UNITCLASS_BUCCANNEER</Type>
+            <Description>TXT_KEY_UNITCLASS_BUCCANNEER</Description>
+            <DefaultUnit>UNIT_BUCCANNEER</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
+            <Type>UNITCLASS_SLAVE_HUNTER</Type>
+            <Description>TXT_KEY_UNITCLASS_SLAVE_HUNTER</Description>
+            <DefaultUnit>UNIT_SLAVE_HUNTER</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
             <Type>UNITCLASS_ROYAL_HALBERDIER</Type>
             <Description>TXT_KEY_UNIT_ROYAL_HALBERDIER</Description>
             <DefaultUnit>UNIT_ROYAL_HALBERDIER</DefaultUnit>
@@ -492,6 +507,11 @@
             <DefaultUnit>UNIT_CARAVELA_REDONDA</DefaultUnit>
         </UnitClassInfo>
         <UnitClassInfo>
+            <Type>UNITCLASS_SCHOONER</Type>
+            <Description>TXT_KEY_UNITCLASS_SCHOONER</Description>
+            <DefaultUnit>UNIT_SCHOONER</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
             <Type>UNITCLASS_MERCHANTMAN</Type>
             <Description>TXT_KEY_UNITCLASS_MERCHANTMAN</Description>
             <DefaultUnit>UNIT_MERCHANTMAN</DefaultUnit>
@@ -502,9 +522,19 @@
             <DefaultUnit>UNIT_BRIGANTINE</DefaultUnit>
         </UnitClassInfo>
         <UnitClassInfo>
+            <Type>UNITCLASS_SLAVE_BARQUE</Type>
+            <Description>TXT_KEY_UNITCLASS_SLAVE_BARQUE</Description>
+            <DefaultUnit>UNIT_SLAVE_BARQUE</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
             <Type>UNITCLASS_GALLEON</Type>
             <Description>TXT_KEY_UNITCLASS_GALLEON</Description>
             <DefaultUnit>UNIT_GALLEON</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
+            <Type>UNITCLASS_ROYAL_TROOP_GALLEON</Type>
+            <Description>TXT_KEY_UNITCLASS_ROYAL_TROOP_GALLEON</Description>
+            <DefaultUnit>UNIT_ROYAL_TROOP_GALLEON</DefaultUnit>
         </UnitClassInfo>
         <UnitClassInfo>
             <Type>UNITCLASS_WEST_INDIAMAN</Type>
@@ -522,6 +552,11 @@
             <DefaultUnit>UNIT_PRIVATEER</DefaultUnit>
         </UnitClassInfo>
         <UnitClassInfo>
+            <Type>UNITCLASS_PIRATE_CUTTER</Type>
+            <Description>TXT_KEY_UNITCLASS_PIRATE_CUTTER</Description>
+            <DefaultUnit>UNIT_PIRATE_CUTTER</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
             <Type>UNITCLASS_PIRATE_FRIGATE</Type>
             <Description>TXT_KEY_UNITCLASS_PIRATE_FRIGATE</Description>
             <DefaultUnit>UNIT_PIRATE_FRIGATE</DefaultUnit>
@@ -537,14 +572,39 @@
             <DefaultUnit>UNIT_CORVETTE</DefaultUnit>
         </UnitClassInfo>
         <UnitClassInfo>
+            <Type>UNITCLASS_NAVAL_BRIG</Type>
+            <Description>TXT_KEY_UNITCLASS_NAVAL_BRIG</Description>
+            <DefaultUnit>UNIT_NAVAL_BRIG</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
             <Type>UNITCLASS_FRIGATE</Type>
             <Description>TXT_KEY_UNITCLASS_FRIGATE</Description>
             <DefaultUnit>UNIT_FRIGATE</DefaultUnit>
         </UnitClassInfo>
         <UnitClassInfo>
+            <Type>UNITCLASS_ROYAL_FRIGATE</Type>
+            <Description>TXT_KEY_UNITCLASS_ROYAL_FRIGATE</Description>
+            <DefaultUnit>UNIT_ROYAL_FRIGATE</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
             <Type>UNITCLASS_SHIP_OF_THE_LINE</Type>
             <Description>TXT_KEY_UNITCLASS_SHIP_OF_THE_LINE</Description>
             <DefaultUnit>UNIT_SHIP_OF_THE_LINE</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
+            <Type>UNITCLASS_ROYAL_SHIP_OF_THE_LINE</Type>
+            <Description>TXT_KEY_UNITCLASS_ROYAL_SHIP_OF_THE_LINE</Description>
+            <DefaultUnit>UNIT_ROYAL_SHIP_OF_THE_LINE</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
+            <Type>UNITCLASS_COLONIAL_MAN_O_WAR</Type>
+            <Description>TXT_KEY_UNITCLASS_COLONIAL_MAN_O_WAR</Description>
+            <DefaultUnit>UNIT_COLONIAL_MAN_O_WAR</DefaultUnit>
+        </UnitClassInfo>
+        <UnitClassInfo>
+            <Type>UNITCLASS_ROYAL_MAN_O_WAR</Type>
+            <Description>TXT_KEY_UNITCLASS_ROYAL_MAN_O_WAR</Description>
+            <DefaultUnit>UNIT_ROYAL_MAN_O_WAR</DefaultUnit>
         </UnitClassInfo>
         <UnitClassInfo>
             <Type>UNITCLASS_WHALING_BOAT</Type>

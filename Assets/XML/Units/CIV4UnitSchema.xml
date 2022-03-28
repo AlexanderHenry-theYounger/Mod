@@ -129,6 +129,9 @@
 	<ElementType name="bMechanized" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bLineOfSight" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bHiddenNationality" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bSlaveShip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bTreasureShip" content="textOnly" dt:type="boolean"/>
+	<ElementType name="bTroopShip" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bAlwaysHostile" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bTreasure" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bNoRevealMap" content="textOnly" dt:type="boolean"/>
@@ -204,6 +207,7 @@
 	<ElementType name="iMoves" content="textOnly" dt:type="int"/>
 	<ElementType name="bCapturesCargo" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bCapturesShips" content="textOnly" dt:type="boolean"/>
+	<ElementType name="iCaptureShipsChanceIncrease" content="textOnly" dt:type="int"/>
 	<ElementType name="iWorkRate" content="textOnly" dt:type="int"/>
 	<ElementType name="iWorkRateModifier" content="textOnly" dt:type="int"/>
 	<ElementType name="iMissionaryRateModifier" content="textOnly" dt:type="int"/>
@@ -365,6 +369,8 @@
 	<ElementType name="iCargo" content="textOnly" dt:type="int"/>
 	<ElementType name="iRequiredTransportSize" content="textOnly" dt:type="int"/>
 	<ElementType name="iBerthSize" content="textOnly" dt:type="int"/>
+	<ElementType name="iHarbourSpaceNeeded" content="textOnly" dt:type="int"/>
+	<ElementType name="iBarracksSpaceNeeded" content="textOnly" dt:type="int"/>
 	<ElementType name="iAsset" content="textOnly" dt:type="int"/>
 	<ElementType name="iPower" content="textOnly" dt:type="int"/>
 	<ElementType name="ArtDefineTag" content="textOnly"/>
@@ -460,6 +466,9 @@
 		<element type="bMechanized"/>
 		<element type="bLineOfSight"/>
 		<element type="bHiddenNationality"/>
+		<element type="bSlaveShip" minOccurs="0"/>
+		<element type="bTreasureShip" minOccurs="0"/>
+		<element type="bTroopShip" minOccurs="0"/>
 		<element type="bAlwaysHostile"/>
 		<element type="bTreasure"/>
 		<element type="bAnimal" minOccurs="0"/>
@@ -492,6 +501,7 @@
 		<element type="iMoves"/>
 		<element type="bCapturesCargo"/>
 		<element type="bCapturesShips"/>
+		<element type="iCaptureShipsChanceIncrease"/>
 		<element type="iWorkRate"/>
 		<element type="iWorkRateModifier"/>
 		<element type="iMissionaryRateModifier"/>
@@ -531,6 +541,8 @@
 		<element type="iCargo"/>
 		<element type="iRequiredTransportSize"/>
 		<element type="iBerthSize" minOccurs="0"/>
+		<element type="iHarbourSpaceNeeded" minOccurs="0"/>
+		<element type="iBarracksSpaceNeeded" minOccurs="0"/>
 		<element type="iAsset"/>
 		<element type="iPower"/>
 		<element type="iNativeLearnTime"/>
@@ -678,6 +690,8 @@
 	<ElementType name="iAdjacentTileHealChange" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatPercent" content="textOnly" dt:type="int"/>
 	<ElementType name="iCombatChange" content="textOnly" dt:type="int"/>
+	<ElementType name="iBombardRateChangeProfession" content="textOnly" dt:type="int"/>
+	<ElementType name="iBarracksSpaceNeededChange" content="textOnly" dt:type="int"/>
 	<ElementType name="bUnitCombat" content="textOnly" dt:type="boolean"/>
 	<ElementType name="UnitCombat" content="eltOnly">
 		<element type="UnitCombatType"/>
@@ -811,6 +825,8 @@
 		<element type="bUnarmed"/>
 		<element type="bNoDefensiveBonus"/>
 		<element type="iCombatChange"/>
+		<element type="iBombardRateChangeProfession" minOccurs="0"/>
+		<element type="iBarracksSpaceNeededChange" minOccurs="0"/>
 		<element type="iMovesChange"/>
 		<element type="bMoveIntoPeak" minOccurs="0"/>
 		<element type="iWorkRate"/>

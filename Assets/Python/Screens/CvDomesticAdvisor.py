@@ -10,6 +10,8 @@ import ImportExportAdvisor
 import ProductionAdvisor
 import NativeAdvisor
 import WarehouseAdvisor
+import TeacherAdvisor
+
 
 
 ## I rewrote most of the page to remove all hardcoded values
@@ -32,7 +34,6 @@ import WarehouseAdvisor
 ##
 ## Pages are accessed with self.StatePages[iState][iPage]
 ## Accessing the page (arrows and button pressing) is set up automatically
-
 
 
 # globals
@@ -131,6 +132,7 @@ class CvDomesticAdvisor:
 		self.CITIZEN_STATE            = self.addButton("CitizenState",           "INTERFACE_CITY_CITIZEN_BUTTON")
 		self.TOTAL_PRODUCTION_STATE   = self.addButton("TotalProductionState",   "INTERFACE_TOTAL_PRODUCTION_BUTTON")  # total production page - Nightinggale
 		self.TRADEROUTE_STATE         = self.addButton("TradeRouteState",        "INTERFACE_IMPORT_EXPORT_BUTTON")
+		self.TEACHER_STATE            = self.addButton("TeacherState",           "INTERFACE_TEACHER_LIST"            , TeacherAdvisor.TeacherAdvisor(self))
 		self.NATIVE_STATE             = self.addButton("NativeState",            "INTERFACE_NATIVE_BUTTON"           , NativeAdvisor.NativeAdvisor(self))
 		
 		if (gc.getUserSettings().getDebugMaxGameFont() > 0):
@@ -210,10 +212,12 @@ class CvDomesticAdvisor:
 		
 		## R&R, Robert Surcouf, Domestic Market display START
 		szListName = self.StatePages[self.GENERAL_STATE][2] + "ListBackground"
+		CocaLeaveColumn = 2
+		CocaLeaveYieldID = 8
+		screen.setTableColumnHeader(szListName,  CocaLeaveColumn, "<font=2>" + (u" %c" % gc.getYieldInfo(CocaLeaveYieldID).getChar()) + "</font>", (self.nTableWidth - self.CITY_NAME_COLUMN_WIDTH) / 18 + 1)
 		iStartYield=gc.getDefineINT("DOMESTIC_MARKET_SCREEN_START_YIELD_ID")
 		for iYield in range(iStartYield, YieldTypes.YIELD_LUXURY_GOODS + 1):
-			#screen.setTableColumnHeader(szListName, iYield-iStartYield + 2, "<font=2>" + (u" %c" % gc.getYieldInfo(iYield).getChar()) + "</font>", (self.WAREHOUSE_COLUMN_SIZE * self.nTableWidth) / self.nNormalizedTableWidth )
-			screen.setTableColumnHeader(szListName, iYield-iStartYield + 2, "<font=2>" + (u" %c" % gc.getYieldInfo(iYield).getChar()) + "</font>", (self.nTableWidth - self.CITY_NAME_COLUMN_WIDTH) / 17 + 1)
+			screen.setTableColumnHeader(szListName, iYield-iStartYield + 3, "<font=2>" + (u" %c" % gc.getYieldInfo(iYield).getChar()) + "</font>", (self.nTableWidth - self.CITY_NAME_COLUMN_WIDTH) / 18 + 1)
 		## R&R, Robert Surcouf, Domestic Market display End
 		
 		#GeneralState Headers
@@ -356,9 +360,7 @@ class CvDomesticAdvisor:
 			self.drawGameFont()
 		
 		self.drawButtons()
-		if self.StateWindow[self.CurrentState] != None:
-			screen.show(self.StateWindow[self.CurrentState].screenName)
-		else:
+		if self.StateWindow[self.CurrentState] == None:
 			screen.show(self.StatePages[self.CurrentState][self.CurrentPage] + "ListBackground")			
 		self.updateAppropriateCitySelection()
 
@@ -460,13 +462,15 @@ class CvDomesticAdvisor:
 					iProducedYield = pLoopCity.calculateNetYield(iYield)
 					aiProducedYields[iYield] += iProducedYield
 
-					if iYield == YieldTypes.YIELD_FOOD or iYield == YieldTypes.YIELD_LUMBER or iYield == YieldTypes.YIELD_STONE or not gc.getYieldInfo(iYield).isCargo(): # R&R, ray, small fix for Display
+					# ray, fixed hardcoded check for Food, Stone and Lumber
+					if gc.getYieldInfo(iYield).isIgnoredForStorageCapacity() or not gc.getYieldInfo(iYield).isCargo(): # R&R, ray, small fix for Display
 						continue
 					iNetYield += pLoopCity.getYieldStored(iYield)
 
 				iProdusedYield = 0
 				for iYield in range(YieldTypes.NUM_YIELD_TYPES):
-					if iYield != YieldTypes.YIELD_FOOD and iYield != YieldTypes.YIELD_LUMBER and iYield != YieldTypes.YIELD_STONE and gc.getYieldInfo(iYield).isCargo(): # R&R, ray, small fix for Display
+					# ray, fixed hardcoded check for Food, Stone and Lumber
+					if gc.getYieldInfo(iYield).isCargo() and not gc.getYieldInfo(iYield).isIgnoredForStorageCapacity(): # R&R, ray, small fix for Display
 						iProdusedYield += aiProducedYields[iYield]
 
 				#szText = u"<font=3><color=" 
@@ -497,18 +501,22 @@ class CvDomesticAdvisor:
 				for iYield in range(YieldTypes.NUM_YIELD_TYPES):
 					iNetYield = pLoopCity.getYieldStored(iYield)
 					szText = unicode(iNetYield)
+					# ray, making special storage capacity rules for Yields XML configurable
+					bIgnoredForStorageCapacity = gc.getYieldInfo(iYield).isIgnoredForStorageCapacity()
 					if iNetYield == 0:
 						szText = ""
 					## R&R, Robert Surcouf,  Domestic Advisor Screen - Start
 					if (iYield < self.MAX_YIELDS_IN_A_PAGE ):
-						if (pLoopCity.calculateNetYield(iYield) * 5 + pLoopCity.getYieldStored(iYield) <= pLoopCity.getMaxYieldCapacity() or iYield == YieldTypes.YIELD_FOOD or iYield == YieldTypes.YIELD_LUMBER or iYield == YieldTypes.YIELD_STONE):  # R&R, ray, small fix for Display
+						#if (pLoopCity.calculateNetYield(iYield) * 5 + pLoopCity.getYieldStored(iYield) <= pLoopCity.getMaxYieldCapacity() or iYield == YieldTypes.YIELD_FOOD or iYield == YieldTypes.YIELD_LUMBER or iYield == YieldTypes.YIELD_STONE):  # R&R, ray, small fix for Display
+						if ((pLoopCity.calculateNetYield(iYield) * 5 + pLoopCity.getYieldStored(iYield) <= pLoopCity.getMaxYieldCapacity()) or bIgnoredForStorageCapacity):
 							screen.setTableInt(self.StatePages[self.WAREHOUSE_STATE][0] + "ListBackground", iYield + 3, i, u"<font=1><color=0,255,255>" + szText + u"</color></font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 						elif (pLoopCity.getYieldStored(iYield) <= pLoopCity.getMaxYieldCapacity()):			
 							screen.setTableInt(self.StatePages[self.WAREHOUSE_STATE][0] + "ListBackground", iYield + 3, i, u"<font=1><color=255,255,0>" + szText + u"</color></font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 						else:
 							screen.setTableInt(self.StatePages[self.WAREHOUSE_STATE][0] + "ListBackground", iYield + 3, i, u"<font=1><color=255,0,0>" + szText + u"</color></font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 					else:
-						if (pLoopCity.calculateNetYield(iYield) * 5 + pLoopCity.getYieldStored(iYield) <= pLoopCity.getMaxYieldCapacity() or iYield == YieldTypes.YIELD_FOOD or iYield == YieldTypes.YIELD_LUMBER or iYield == YieldTypes.YIELD_STONE):  # R&R, ray, small fix for Display
+						#if (pLoopCity.calculateNetYield(iYield) * 5 + pLoopCity.getYieldStored(iYield) <= pLoopCity.getMaxYieldCapacity() or iYield == YieldTypes.YIELD_FOOD or iYield == YieldTypes.YIELD_LUMBER or iYield == YieldTypes.YIELD_STONE):  # R&R, ray, small fix for Display
+						if ((pLoopCity.calculateNetYield(iYield) * 5 + pLoopCity.getYieldStored(iYield) <= pLoopCity.getMaxYieldCapacity()) or bIgnoredForStorageCapacity):
 							screen.setTableInt(self.StatePages[self.WAREHOUSE_STATE][1] + "ListBackground", iYield - self.MAX_YIELDS_IN_A_PAGE + 3, i, u"<font=1><color=0,255,255>" + szText + u"</color></font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 						elif (pLoopCity.getYieldStored(iYield) <= pLoopCity.getMaxYieldCapacity()):			
 							screen.setTableInt(self.StatePages[self.WAREHOUSE_STATE][1] + "ListBackground", iYield - self.MAX_YIELDS_IN_A_PAGE + 3, i, u"<font=1><color=255,255,0>" + szText + u"</color></font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
@@ -564,6 +572,17 @@ class CvDomesticAdvisor:
 		
 		## R&R, Robert Surcouf, Domestic Market display START
 		elif(self.CurrentState == self.GENERAL_STATE and self.CurrentPage == 2): 
+			CocaLeaveColumn = 2
+			CocaLeaveYieldID = 8
+			if (pLoopCity.getYieldStored(CocaLeaveYieldID)<pLoopCity.getYieldDemand(CocaLeaveYieldID)):
+				if (pLoopCity.getYieldStored(CocaLeaveYieldID) == 0):
+					screen.setTableInt(szState + "ListBackground", CocaLeaveColumn, i, "<font=2>" + "<color=255,0,0>" + unicode(pLoopCity.getYieldStored(CocaLeaveYieldID)) + " / " + "</color>" + "<color=255,0,0>" + unicode(pLoopCity.getYieldDemand(CocaLeaveYieldID)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(CocaLeaveYieldID)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
+				else:
+					screen.setTableInt(szState + "ListBackground", CocaLeaveColumn, i, "<font=2>" + "<color=0,255,255>" + unicode(pLoopCity.getYieldStored(CocaLeaveYieldID)) + " / " + "</color>" + "<color=255,0,0>" + unicode(pLoopCity.getYieldDemand(CocaLeaveYieldID)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(CocaLeaveYieldID)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
+			elif (pLoopCity.getYieldStored(CocaLeaveYieldID)>pLoopCity.getYieldDemand(CocaLeaveYieldID)):
+				screen.setTableInt(szState + "ListBackground", CocaLeaveColumn, i, "<font=2>" + "<color=0,255,0>" + unicode(pLoopCity.getYieldStored(CocaLeaveYieldID)) + " / " +  unicode(pLoopCity.getYieldDemand(CocaLeaveYieldID)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(CocaLeaveYieldID)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
+			else:
+				screen.setTableInt(szState + "ListBackground", CocaLeaveColumn, i, "<font=2>" + "<color=0,255,255>" + unicode(pLoopCity.getYieldStored(CocaLeaveYieldID)) + " / " + unicode(pLoopCity.getYieldDemand(CocaLeaveYieldID)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(CocaLeaveYieldID)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 			iStartYield=gc.getDefineINT("DOMESTIC_MARKET_SCREEN_START_YIELD_ID")
 			for iYield in range(iStartYield, YieldTypes.YIELD_LUXURY_GOODS + 1):
 				#screen.setTableInt("GeneralStatePage3ListBackground", iYield-iStartYield + 2, i, "<font=2>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "/"+ "<color=0,255,0>" +  unicode(pLoopCity.getYieldDemand(iYield)) + "</color>" "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
@@ -572,16 +591,16 @@ class CvDomesticAdvisor:
 					# CBM - screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 2, i, "<font=2>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "/"+ "<color=255,0,0>" +  unicode(pLoopCity.getYieldDemand(iYield)) + "</color>" "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 					# CBM added differentiation between no stock and not enough stock - start
 					if (pLoopCity.getYieldStored(iYield) == 0):
-						screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 2, i, "<font=2>" + "<color=255,0,0>" + unicode(pLoopCity.getYieldStored(iYield)) + " / " + "</color>" + "<color=255,0,0>" + unicode(pLoopCity.getYieldDemand(iYield)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
+						screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 3, i, "<font=2>" + "<color=255,0,0>" + unicode(pLoopCity.getYieldStored(iYield)) + " / " + "</color>" + "<color=255,0,0>" + unicode(pLoopCity.getYieldDemand(iYield)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 					else:
-						screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 2, i, "<font=2>" + "<color=0,255,255>" + unicode(pLoopCity.getYieldStored(iYield)) + " / " + "</color>" + "<color=255,0,0>" + unicode(pLoopCity.getYieldDemand(iYield)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
+						screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 3, i, "<font=2>" + "<color=0,255,255>" + unicode(pLoopCity.getYieldStored(iYield)) + " / " + "</color>" + "<color=255,0,0>" + unicode(pLoopCity.getYieldDemand(iYield)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 					# CBM added differentiation between no stock and not enough stock - end
 				elif (pLoopCity.getYieldStored(iYield)>pLoopCity.getYieldDemand(iYield)):
 					# CBM - screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 2, i, "<font=2>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "/"+ "<color=0,255,0>" +  unicode(pLoopCity.getYieldDemand(iYield)) + "</color>" "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
-					screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 2, i, "<font=2>" + "<color=0,255,0>" + unicode(pLoopCity.getYieldStored(iYield)) + " / " +  unicode(pLoopCity.getYieldDemand(iYield)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
+					screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 3, i, "<font=2>" + "<color=0,255,0>" + unicode(pLoopCity.getYieldStored(iYield)) + " / " +  unicode(pLoopCity.getYieldDemand(iYield)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 				else:
 					# CBM - screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 2, i, "<font=2>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "/"+ "<color=0,255,255>" +  unicode(pLoopCity.getYieldDemand(iYield)) + "</color>" "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
-					screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 2, i, "<font=2>" + "<color=0,255,255>" + unicode(pLoopCity.getYieldStored(iYield)) + " / " + unicode(pLoopCity.getYieldDemand(iYield)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
+					screen.setTableInt(szState + "ListBackground", iYield-iStartYield + 3, i, "<font=2>" + "<color=0,255,255>" + unicode(pLoopCity.getYieldStored(iYield)) + " / " + unicode(pLoopCity.getYieldDemand(iYield)) + " / " + "</color>" + unicode(pLoopCity.getYieldBuyPrice(iYield)) + "</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 				# CBM 0.8.020 display of quantity available in city - end	
 		## R&R, Robert Surcouf, Domestic Market display End
 		elif(self.CurrentState == self.GENERAL_STATE and self.CurrentPage == 3): 
@@ -1075,7 +1094,7 @@ class CvDomesticAdvisor:
 			iMax = gc.getUserSettings().getDebugMaxGameFont() - 8483 + 1
 			if iMax <= 0:
 				# UserSettings didn't request a specific max. Use the lenght assumed by the game
-				iMax = FontSymbols.MAX_NUM_SYMBOLS + CyGame().getSymbolID(FontSymbols.HAPPY_CHAR) - 8483 + 10
+				iMax = self.maxNumGameFontID() - 8483 + 5
 			for iLine in range(iMax):
 				iID = iLine + 8483
 				screen.appendTableRow(szStateName)
@@ -1122,54 +1141,43 @@ class CvDomesticAdvisor:
 			if infoPointer.getMissionaryChar() == iIndex:
 				return infoPointer
 			
-
-		if iIndex >= CyGame().getSymbolID(FontSymbols.HAPPY_CHAR) and iIndex <= (CyGame().getSymbolID(FontSymbols.NO_ANCHOR_CHAR) + 5):
-		
-				list = [ "HAPPY_CHAR",
-				"UNHAPPY_CHAR",
-				"HEALTHY_CHAR",
-				"UNHEALTHY_CHAR",
-				"BULLET_CHAR",
-				"STRENGTH_CHAR",
-				"MOVES_CHAR",
-				"RELIGION_CHAR",
-				"STAR_CHAR",
-				"SILVER_STAR_CHAR",
-				"TRADE_CHAR",
-				"DEFENSE_CHAR",
-				"GREAT_PEOPLE_CHAR",
-				"BAD_GOLD_CHAR",
-				"BAD_FOOD_CHAR",
-				"EATEN_FOOD_CHAR",
-				"GOLDEN_AGE_CHAR",
-				"ANGRY_POP_CHAR",
-				"OPEN_BORDERS_CHAR",
-				"DEFENSIVE_PACT_CHAR",
-				"MAP_CHAR",
-				"OCCUPATION_CHAR",
-				"REBEL_CHAR",
-				"GOLD_CHAR",
-				"POWER_CHAR",
-				"CHECKBOX_CHAR",
-				"CHECKBOX_SELECTED_CHAR",
-				"ANCHOR_CHAR",
-				"ANCHOR_EUROPE_CHAR",
-				"EXPORT_CHAR",
-				"IMPORT_CHAR",
-				"EXPORT_IMPORT_CHAR",
-				"NO_ANCHOR_CHAR",
-
-				"ATTITUDE_FURIOUS (big not used)",
-				"ATTITUDE_ANNOYED (big not used)",
-				"ATTITUDE_CAUTIOUS (big not used)",
-				"ATTITUDE_PLEASED (big not used)",
-				"ATTITUDE_FRIENDLY (big not used)",
-				]
-		
-				return list[iIndex - CyGame().getSymbolID(FontSymbols.HAPPY_CHAR)]
-
+		for iSymbol in range(FontSymbols.MAX_NUM_SYMBOLS):
+			if iIndex == CyGame().getSymbolID(iSymbol):
+				for strKey in (CvUtil.OtherFontIcons.keys()):
+					if (CvUtil.OtherFontIcons[strKey] == iSymbol):
+						return strKey
 		
 		return None
+	
+	def maxNumGameFontID(self):
+		iMax = FontSymbols.MAX_NUM_SYMBOLS + CyGame().getSymbolID(FontSymbols.HAPPY_CHAR) + 5
+		
+		for iYieldIndex in range(gc.getNumYieldInfos()):
+			infoPointer = gc.getYieldInfo(iYieldIndex)
+			if infoPointer.getChar() > iMax:
+				iMax = infoPointer.getChar()
+		
+		for iBuildingIndex in range(gc.getNumSpecialBuildingInfos()):
+			infoPointer = gc.getSpecialBuildingInfo(iBuildingIndex)
+			if infoPointer.getChar() > iMax:
+				iMax = infoPointer.getChar()
+		
+		for iBonusIndex in range(gc.getNumBonusInfos()):
+			infoPointer = gc.getBonusInfo(iBonusIndex)
+			if infoPointer.getChar() > iMax:
+				iMax = infoPointer.getChar()
+			
+		for iFatherIndex in range(gc.getNumFatherPointInfos()):
+			infoPointer = gc.getFatherPointInfo(iFatherIndex)
+			if infoPointer.getChar() > iMax:
+				iMax = infoPointer.getChar()
+
+		for iCiv in range(gc.getNumCivilizationInfos()):
+			infoPointer = gc.getCivilizationInfo(iCiv)
+			if infoPointer.getMissionaryChar() > iMax:
+				iMax = infoPointer.getMissionaryChar()
+		return iMax
+		
 	
 	def createTable(self, szName):
 		self.getScreen().addTableControlGFC( szName, 7, (self.nScreenWidth - self.nTableWidth) / 2, 60, self.nTableWidth, self.nTableHeight, True, False, self.iCityButtonSize, self.iCityButtonSize, TableStyles.TABLE_STYLE_STANDARD )

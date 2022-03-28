@@ -2553,6 +2553,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>1</bNoDefensiveBonus>
             <iCombatChange>3</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>1</iMovesChange>
             <bMoveIntoPeak>1</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -2597,6 +2598,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>0</bNoDefensiveBonus>
             <iCombatChange>4</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>0</iMovesChange>
             <bMoveIntoPeak>1</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -2641,6 +2643,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>1</bNoDefensiveBonus>
             <iCombatChange>5</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>1</iMovesChange>
             <bMoveIntoPeak>1</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -2690,6 +2693,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>0</bNoDefensiveBonus>
             <iCombatChange>5</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>0</iMovesChange>
             <bMoveIntoPeak>1</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -2739,6 +2743,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>1</bNoDefensiveBonus>
             <iCombatChange>6</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>2</iMovesChange>
             <bMoveIntoPeak>1</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -2792,6 +2797,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>0</bNoDefensiveBonus>
             <iCombatChange>2</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>0</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -2841,6 +2847,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>0</bNoDefensiveBonus>
             <iCombatChange>3</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>0</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -2890,6 +2897,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>0</bNoDefensiveBonus>
             <iCombatChange>7</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>0</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -2934,6 +2942,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>0</bNoDefensiveBonus>
             <iCombatChange>9</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>0</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -2991,6 +3000,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>0</bNoDefensiveBonus>
             <iCombatChange>8</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>0</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -3035,6 +3045,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>0</bNoDefensiveBonus>
             <iCombatChange>12</iCombatChange>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
             <iMovesChange>0</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -3092,6 +3103,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>1</bNoDefensiveBonus>
             <iCombatChange>7</iCombatChange>
+            <iBarracksSpaceNeededChange>2</iBarracksSpaceNeededChange>
             <iMovesChange>2</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -3145,6 +3157,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>1</bNoDefensiveBonus>
             <iCombatChange>8</iCombatChange>
+            <iBarracksSpaceNeededChange>2</iBarracksSpaceNeededChange>
             <iMovesChange>2</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -3198,6 +3211,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>1</bNoDefensiveBonus>
             <iCombatChange>8</iCombatChange>
+            <iBarracksSpaceNeededChange>2</iBarracksSpaceNeededChange>
             <iMovesChange>1</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -3251,6 +3265,7 @@
             <bUnarmed>0</bUnarmed>
             <bNoDefensiveBonus>1</bNoDefensiveBonus>
             <iCombatChange>11</iCombatChange>
+            <iBarracksSpaceNeededChange>2</iBarracksSpaceNeededChange>
             <iMovesChange>1</iMovesChange>
             <bMoveIntoPeak>0</bMoveIntoPeak>
             <iWorkRate>0</iWorkRate>
@@ -3283,6 +3298,167 @@
             <Button>,Art/colonization_atlas_professions_bonus.dds,5,8</Button>
             <bUseLbD>1</bUseLbD>
             <ExpertUnit>UNITCLASS_ROYAL_CAVALRY</ExpertUnit>
+            <iLbDLearnLevel>1</iLbDLearnLevel>
+        </ProfessionInfo>
+		<ProfessionInfo>
+            <Type>PROFESSION_LIGHT_ARTILLERY</Type>
+            <Description>TXT_KEY_UNIT_LIGHT_ARTILLERY_VETERAN</Description>
+            <Civilopedia>TXT_KEY_UNIT_LIGHT_ARTILLERY_VETERAN_PEDIA</Civilopedia>
+            <Strategy>TXT_KEY_UNIT_LIGHT_ARTILLERY_VETERAN_STRATEGY</Strategy>
+            <Help>TXT_KEY_PROFESSION_LIGHT_ARTILLERY_HELP</Help>
+            <Combat>UNITCOMBAT_SIEGE</Combat>
+            <DefaultUnitAI>UNITAI_DEFENSIVE</DefaultUnitAI>
+            <SpecialBuilding>NONE</SpecialBuilding>
+            <bWorkPlot>0</bWorkPlot>
+            <bCitizen>0</bCitizen>
+            <bWater>0</bWater>
+            <bScout>0</bScout>
+            <bCanCrossLargeRivers>0</bCanCrossLargeRivers>
+            <bCityDefender>1</bCityDefender>
+            <bCanFound>0</bCanFound>
+            <bUnarmed>0</bUnarmed>
+            <bNoDefensiveBonus>0</bNoDefensiveBonus>
+            <iCombatChange>5</iCombatChange>
+			<iBombardRateChangeProfession>10</iBombardRateChangeProfession>
+            <iBarracksSpaceNeededChange>1</iBarracksSpaceNeededChange>
+            <iMovesChange>0</iMovesChange>
+            <bMoveIntoPeak>0</bMoveIntoPeak>
+            <iWorkRate>0</iWorkRate>
+            <iMissionaryRate>0</iMissionaryRate>
+            <iNativeTradeRate>0</iNativeTradeRate>
+            <iPower>200</iPower>
+            <iAsset>300</iAsset>
+            <YieldEquipedNums>
+                <YieldEquipedNum>
+                    <YieldType>YIELD_CANNONS</YieldType>
+                    <iYieldAmount>50</iYieldAmount>
+                </YieldEquipedNum>
+            </YieldEquipedNums>
+            <FreePromotions>
+                <FreePromotion>
+                    <PromotionType>PROMOTION_ARTILLERY</PromotionType>
+                    <bFreePromotion>1</bFreePromotion>
+                </FreePromotion>
+            </FreePromotions>
+            <YieldsProduced>
+                <YieldType>NONE</YieldType>
+            </YieldsProduced>
+            <YieldsConsumed>
+                <YieldType>NONE</YieldType>
+            </YieldsConsumed>
+            <Button>,Art/colonization_atlas_professions_bonus.dds,7,8</Button>
+            <bUseLbD>1</bUseLbD>
+            <ExpertUnit>UNITCLASS_LIGHT_ARTILLERY</ExpertUnit>
+            <iLbDLearnLevel>1</iLbDLearnLevel>
+        </ProfessionInfo>
+        <ProfessionInfo>
+            <Type>PROFESSION_HEAVY_ARTILLERY</Type>
+            <Description>TXT_KEY_UNIT_HEAVY_ARTILLERY_VETERAN</Description>
+            <Civilopedia>TXT_KEY_UNIT_HEAVY_ARTILLERY_VETERAN_PEDIA</Civilopedia>
+            <Strategy>TXT_KEY_UNIT_HEAVY_ARTILLERY_VETERAN_STRATEGY</Strategy>
+            <Help>TXT_KEY_PROFESSION_HEAVY_ARTILLERY_HELP</Help>
+            <Combat>UNITCOMBAT_SIEGE</Combat>
+            <DefaultUnitAI>UNITAI_OFFENSIVE</DefaultUnitAI>
+             <SpecialBuilding>NONE</SpecialBuilding>
+            <bWorkPlot>0</bWorkPlot>
+            <bCitizen>0</bCitizen>
+            <bWater>0</bWater>
+            <bScout>0</bScout>
+            <bCanCrossLargeRivers>0</bCanCrossLargeRivers>
+            <bCityDefender>1</bCityDefender>
+            <bCanFound>0</bCanFound>
+            <bUnarmed>0</bUnarmed>
+            <bNoDefensiveBonus>0</bNoDefensiveBonus>
+            <iCombatChange>7</iCombatChange>
+			<iBombardRateChangeProfession>20</iBombardRateChangeProfession>
+            <iBarracksSpaceNeededChange>2</iBarracksSpaceNeededChange>
+            <iMovesChange>0</iMovesChange>
+            <bMoveIntoPeak>0</bMoveIntoPeak>
+            <iWorkRate>0</iWorkRate>
+            <iMissionaryRate>0</iMissionaryRate>
+            <iNativeTradeRate>0</iNativeTradeRate>
+            <iPower>250</iPower>
+            <iAsset>350</iAsset>
+            <YieldEquipedNums>
+                <YieldEquipedNum>
+                    <YieldType>YIELD_CANNONS</YieldType>
+                    <iYieldAmount>50</iYieldAmount>
+                </YieldEquipedNum>
+                <YieldEquipedNum>
+                    <YieldType>YIELD_BLADES</YieldType>
+                    <iYieldAmount>25</iYieldAmount>
+                </YieldEquipedNum>
+            </YieldEquipedNums>
+            <FreePromotions>
+                <FreePromotion>
+                    <PromotionType>PROMOTION_ARTILLERY</PromotionType>
+                    <bFreePromotion>1</bFreePromotion>
+                </FreePromotion>
+            </FreePromotions>
+            <YieldsProduced>
+                <YieldType>NONE</YieldType>
+            </YieldsProduced>
+            <YieldsConsumed>
+                <YieldType>NONE</YieldType>
+            </YieldsConsumed>
+            <Button>,Art/colonization_atlas_professions_bonus.dds,7,7</Button>
+            <bUseLbD>1</bUseLbD>
+            <ExpertUnit>UNITCLASS_HEAVY_ARTILLERY</ExpertUnit>
+            <iLbDLearnLevel>1</iLbDLearnLevel>
+        </ProfessionInfo>
+        <ProfessionInfo>
+            <Type>PROFESSION_ROYAL_ARTILLERY</Type>
+            <Description>TXT_KEY_UNIT_ROYAL_ARTILLERY</Description>
+            <Civilopedia>TXT_KEY_UNIT_ROYAL_ARTILLERY_PEDIA</Civilopedia>
+            <Strategy>TXT_KEY_UNIT_ROYAL_ARTILLERY_STRATEGY</Strategy>
+            <Help>TXT_KEY_PROFESSION_ROYAL_HELP</Help>
+            <Combat>UNITCOMBAT_SIEGE</Combat>
+            <DefaultUnitAI>UNITAI_OFFENSIVE</DefaultUnitAI>
+            <SpecialBuilding>NONE</SpecialBuilding>
+            <bWorkPlot>0</bWorkPlot>
+            <bCitizen>0</bCitizen>
+            <bWater>0</bWater>
+            <bScout>0</bScout>
+            <bCanCrossLargeRivers>0</bCanCrossLargeRivers>
+            <bCityDefender>1</bCityDefender>
+            <bCanFound>0</bCanFound>
+            <bUnarmed>0</bUnarmed>
+            <bNoDefensiveBonus>0</bNoDefensiveBonus>
+            <iCombatChange>9</iCombatChange>
+			<iBombardRateChangeProfession>30</iBombardRateChangeProfession>
+            <iBarracksSpaceNeededChange>2</iBarracksSpaceNeededChange>
+            <iMovesChange>0</iMovesChange>
+            <bMoveIntoPeak>0</bMoveIntoPeak>
+            <iWorkRate>0</iWorkRate>
+            <iMissionaryRate>0</iMissionaryRate>
+            <iNativeTradeRate>0</iNativeTradeRate>
+            <iPower>300</iPower>
+            <iAsset>400</iAsset>
+            <YieldEquipedNums>
+                <YieldEquipedNum>
+                    <YieldType>YIELD_CANNONS</YieldType>
+                    <iYieldAmount>75</iYieldAmount>
+                </YieldEquipedNum>
+                <YieldEquipedNum>
+                    <YieldType>YIELD_BLADES</YieldType>
+                    <iYieldAmount>50</iYieldAmount>
+                </YieldEquipedNum>
+            </YieldEquipedNums>
+            <FreePromotions>
+                <FreePromotion>
+                    <PromotionType>PROMOTION_ARTILLERY</PromotionType>
+                    <bFreePromotion>1</bFreePromotion>
+                </FreePromotion>
+            </FreePromotions>
+            <YieldsProduced>
+                <YieldType>NONE</YieldType>
+            </YieldsProduced>
+            <YieldsConsumed>
+                <YieldType>NONE</YieldType>
+            </YieldsConsumed>
+            <Button>,Art/colonization_atlas_professions_bonus.dds,6,7</Button>
+            <bUseLbD>1</bUseLbD>
+            <ExpertUnit>UNITCLASS_ROYAL_ARTILLERY</ExpertUnit>
             <iLbDLearnLevel>1</iLbDLearnLevel>
         </ProfessionInfo>
         <ProfessionInfo>

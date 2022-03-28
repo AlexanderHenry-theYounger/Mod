@@ -28,7 +28,8 @@ public:
 	bool isWithinTeamCityRadius(int /*TeamTypes*/ eTeam, int /*PlayerTypes*/ eIgnorePlayer);
 	bool isLake();
 	bool isRiverSide();
-	bool isRiver();
+	bool isRiver(); 
+	bool isFreshWater();// WTP, ray, Health Overhaul
 	bool isRiverConnection(int /*DirectionTypes*/ eDirection);
 	int getNearestLandArea();
 	int seeFromLevel();

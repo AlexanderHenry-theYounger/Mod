@@ -1499,6 +1499,30 @@ void CvGame::updateColoredPlots()
 		}
 	}
 
+	// WTP, ray, Game Option Goodies always display coloured circle - START
+	if (isOption(GAMEOPTION_GOODIES_ALWAYS_DISPLAY_COLOURED_CIRCLE))
+	{
+		for (int iPlotLoop = 0; iPlotLoop < GC.getMap().numPlots(); iPlotLoop++)
+		{
+			CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlotLoop);
+			if (pLoopPlot != NULL)
+			{
+				if (pLoopPlot->isGoody() && pLoopPlot->isRevealed(getActiveTeam(), false))
+				{
+					for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+					{
+						CvPlayer& kPlayer = GET_PLAYER((PlayerTypes) iPlayer);
+						if (kPlayer.isAlive() && getActiveTeam() == kPlayer.getTeam())
+						{
+							gDLL->getEngineIFace()->addColoredPlot(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), GC.getColorInfo((ColorTypes)GC.getInfoTypeForString("COLOR_GREEN")).getColor(), PLOT_STYLE_CIRCLE, PLOT_LANDSCAPE_LAYER_RECOMMENDED_PLOTS);
+						}
+					}
+				}
+			}
+		}
+	}
+	// WTP, ray, Game Option Goodies always display coloured circle - END
+
 	pHeadSelectedCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
 	pHeadSelectedUnit = gDLL->getInterfaceIFace()->getHeadSelectedUnit();
 
@@ -2169,7 +2193,9 @@ void CvGame::selectionListMove(CvPlot* pPlot, bool bAlt, bool bShift, bool bCtrl
 		eRivalTeam = pSelectedUnit->getDeclareWarUnitMove(pPlot);
 		
 		// Erik: No annoying popup for transport units
-		if (pSelectedUnit->cargoSpace() == 0 && eRivalTeam != NO_TEAM)
+		// WTP, ray, unless it is a "Troop only" ship
+		//if (pSelectedUnit->cargoSpace() == 0 && eRivalTeam != NO_TEAM)
+		if ((pSelectedUnit->cargoSpace() == 0 || pSelectedUnit->getUnitInfo().isTroopShip())&& eRivalTeam != NO_TEAM)
 		{
 			CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_DECLAREWARMOVE);
 			if (NULL != pInfo)
@@ -3402,13 +3428,6 @@ void CvGame::getGlobeviewConfigurationParameters(TeamTypes eTeam, bool& bStarsVi
 		bWorldIsRound = false;
 	}
 }
-
-
-int CvGame::getSymbolID(int iSymbol)
-{
-	return gDLL->getInterfaceIFace()->getSymbolID(iSymbol);
-}
-
 
 int CvGame::getAdjustedPopulationPercent(VictoryTypes eVictory) const
 {
@@ -7152,6 +7171,60 @@ void CvGame::changeYieldBoughtTotal(PlayerTypes eMainEurope, YieldTypes eYield, 
 		}
 	}
 }
+
+// WTP, ray, Yields Traded Total for Africa and Port Royal - START
+void CvGame::changeYieldBoughtTotalAfrica(PlayerTypes eMainEurope, YieldTypes eYield, int iChange) const
+{
+	//change non-mercantile Europes by partial amount
+	for(int iEurope=0;iEurope<MAX_PLAYERS;iEurope++)
+	{
+		CvPlayer& kEuropePlayer = GET_PLAYER((PlayerTypes) iEurope);
+		if(kEuropePlayer.isAlive() && kEuropePlayer.isEurope())
+		{
+			//check if any children are mercantile
+			int iMercantilePercent = (iEurope == eMainEurope) ? 100 : GC.getDefineINT("EUROPE_MARKET_CORRELATION_PERCENT");
+			for(int iPlayer=0;iPlayer<MAX_PLAYERS;iPlayer++)
+			{
+				CvPlayer& kChildPlayer = GET_PLAYER((PlayerTypes) iPlayer);
+				if(kChildPlayer.isAlive() && (kChildPlayer.getParent() == iEurope))
+				{
+					iMercantilePercent *= 100 + kChildPlayer.getMercantileFactor();
+					iMercantilePercent /= 100;
+				}
+			}
+
+			//affect non-mercantile amounts
+			kEuropePlayer.changeYieldBoughtTotalAfrica(eYield, iChange * iMercantilePercent / 100);
+		}
+	}
+}
+
+void CvGame::changeYieldBoughtTotalPortRoyal(PlayerTypes eMainEurope, YieldTypes eYield, int iChange) const
+{
+	//change non-mercantile Europes by partial amount
+	for(int iEurope=0;iEurope<MAX_PLAYERS;iEurope++)
+	{
+		CvPlayer& kEuropePlayer = GET_PLAYER((PlayerTypes) iEurope);
+		if(kEuropePlayer.isAlive() && kEuropePlayer.isEurope())
+		{
+			//check if any children are mercantile
+			int iMercantilePercent = (iEurope == eMainEurope) ? 100 : GC.getDefineINT("EUROPE_MARKET_CORRELATION_PERCENT");
+			for(int iPlayer=0;iPlayer<MAX_PLAYERS;iPlayer++)
+			{
+				CvPlayer& kChildPlayer = GET_PLAYER((PlayerTypes) iPlayer);
+				if(kChildPlayer.isAlive() && (kChildPlayer.getParent() == iEurope))
+				{
+					iMercantilePercent *= 100 + kChildPlayer.getMercantileFactor();
+					iMercantilePercent /= 100;
+				}
+			}
+
+			//affect non-mercantile amounts
+			kEuropePlayer.changeYieldBoughtTotalPortRoyal(eYield, iChange * iMercantilePercent / 100);
+		}
+	}
+}
+// WTP, ray, Yields Traded Total for Africa and Port Royal - END
 
 void CvGame::updateOceanDistances()
 {

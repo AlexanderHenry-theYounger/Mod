@@ -1524,6 +1524,13 @@ int coastalRouteValid(FAStarNode* parent, FAStarNode* node, int data, const void
 		return true;
 	}
 
+	// WTP, ray, Canal - START
+	if (pNewPlot->getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(pNewPlot->getImprovementType()).isCanal())
+	{
+		return true;
+	}
+	// WTP, ray, Canal - END
+
 	const TeamTypes eTeam = GET_PLAYER(ePlayer).getTeam();
 
 	if (pNewPlot->isWater() && pNewPlot->isRevealed(eTeam, false) && !pNewPlot->isImpassable())
@@ -1545,7 +1552,7 @@ int coastalRouteValid(FAStarNode* parent, FAStarNode* node, int data, const void
 		//WTP, ray, Large Rivers
 		// if (pNewPlot->getTerrainType() == TERRAIN_COAST || pNewPlot->getTeam() == eTeam)
 		//WTP, ray, Lakes
-		if (pNewPlot->getTerrainType() == TERRAIN_COAST || pNewPlot->getTerrainType() == TERRAIN_LARGE_RIVERS || pNewPlot->getTerrainType() == TERRAIN_LAKE || pNewPlot->getTeam() == eTeam)
+		if (pNewPlot->getTerrainType() == TERRAIN_COAST || pNewPlot->getTerrainType() == TERRAIN_SHALLOW_COAST || pNewPlot->getTerrainType() == TERRAIN_LARGE_RIVERS || pNewPlot->getTerrainType() == TERRAIN_LAKE || pNewPlot->getTerrainType() == TERRAIN_ICE_LAKE || pNewPlot->getTeam() == eTeam)
 		{
 			return true;
 		}

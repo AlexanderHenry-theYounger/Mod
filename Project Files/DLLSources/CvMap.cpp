@@ -1249,7 +1249,9 @@ void CvMap::updateWaterPlotTerrainTypes()
 	EnumMap<TerrainTypes, bool> em;
 	em.set(TERRAIN_COAST, true);
 	em.set(TERRAIN_OCEAN, true);
+	em.set(TERRAIN_SHALLOW_COAST, true); //WTP, ray considering shallow Coasts as well for being transformed to lakes
 	em.set(TERRAIN_LAKE, true);
+	em.set(TERRAIN_ICE_LAKE, true);
 
 	PlotRegionMap regions(em);
 
@@ -1264,9 +1266,27 @@ void CvMap::updateWaterPlotTerrainTypes()
 			{
 				kRegion.getPlot(iPlot)->setCoastline();
 			}
+			// ray, Ice Lakes
 			else
 			{
-				kRegion.getPlot(iPlot)->setTerrainType(TERRAIN_LAKE);
+				// WTP, ray, we improve the logic by also checking for size
+				// if it becomes to big, we rather not change to Lake or Ice Lakes
+				// this prevents really strange stuff e.g. in MapScripts like "Carribean"
+				bool isSmallEnoughForLake = kRegion.getNumPlots() < 50;
+				if (isSmallEnoughForLake)
+				{
+					// Ice Lakes only in Lattitudes (North or South) above 75 degrees - else normal Lakes
+					bool bIsBetterIceLake = kRegion.getPlot(iPlot)->getLatitude() > 75;
+
+					if (bIsBetterIceLake)
+					{
+						kRegion.getPlot(iPlot)->setTerrainType(TERRAIN_ICE_LAKE);
+					}
+					else
+					{
+						kRegion.getPlot(iPlot)->setTerrainType(TERRAIN_LAKE);
+					}
+				}
 			}
 		}
 	}

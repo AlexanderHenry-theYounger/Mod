@@ -2,9 +2,9 @@
 <Civ4GameText xmlns="http://www.firaxis.com">
     <TEXT>
         <Tag>TXT_KEY_SPECIALBUILDING_BEER</Tag>
-        <English>Beer production</English>
-        <French>ProdPction de bière</French>
-        <German>Bierherstellung</German>
+        <English>Breweries</English>
+        <French>Production de bière</French>
+        <German>Brauereien</German>
         <Italian>Beerproduction</Italian>
         <Spanish>Beerproduction</Spanish>
     </TEXT>
@@ -50,13 +50,13 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_SPECIALBUILDING_CLOTH</Tag>
-        <English>Cloth Buildings</English>
+        <English>Textile Mills</English>
         <French>
             <Text>Bâtiments dédiés aux tissus</Text>
             <Gender>Male</Gender>
             <Plural>1</Plural>
         </French>
-        <German>Webereigebäude</German>
+        <German>Webereien</German>
         <Italian>
             <Text>Edifici per il tessuto</Text>
             <Gender>Male</Gender>
@@ -92,13 +92,13 @@
         <Tag>TXT_KEY_SPECIALBUILDING_COLOURED_CLOTH</Tag>
         <English>Dyery</English>
         <French>Teinturerie</French>
-        <German>Färberei</German>
+        <German>Färbereien</German>
         <Italian>Dyery</Italian>
         <Spanish>Dyery</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_SPECIALBUILDING_CORN</Tag>
-        <English>Corn</English>
+        <English>Granary</English>
         <French>Maïs</French>
         <German>Getreide</German>
         <Italian>Corn</Italian>
@@ -112,7 +112,7 @@
             <Gender>Male</Gender>
             <Plural>0</Plural>
         </French>
-        <German>Religionsgebäude</German>
+        <German>Kirchen</German>
         <Italian>
             <Text>Edifici religiosi</Text>
             <Gender>Male</Gender>
@@ -130,7 +130,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_SPECIALBUILDING_DOCK</Tag>
-        <English>Docks</English>
+        <English>Port Facilities</English>
         <French>
             <Text>Docks</Text>
             <Gender>Male</Gender>
@@ -156,7 +156,7 @@
             <Gender>Male</Gender>
             <Plural>1</Plural>
         </French>
-        <German>Bildungsgebäude</German>
+        <German>Lehranstalten</German>
         <Italian>
             <Text>Edifici per l'educazione</Text>
             <Gender>Male</Gender>
@@ -184,7 +184,7 @@
             <Gender>Male</Gender>
             <Plural>1</Plural>
         </French>
-        <German>Zimmereigebäude</German>
+        <German>Zimmereien</German>
         <Italian>
             <Text>Edifici per la carpenteria</Text>
             <Gender>Male</Gender>
@@ -206,13 +206,13 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_SPECIALBUILDING_HORSES</Tag>
-        <English>Horse Buildings</English>
+        <English>Horse Stables</English>
         <French>
             <Text>Bâtiments dédiés aux chevaux</Text>
             <Gender>Male</Gender>
             <Plural>0</Plural>
         </French>
-        <German>Pferdegebäude</German>
+        <German>Pferdezuchten</German>
         <Italian>
             <Text>Edifici per cavalli</Text>
             <Gender>Male</Gender>
@@ -236,7 +236,7 @@
         <Tag>TXT_KEY_SPECIALBUILDING_MEAT</Tag>
         <English>Slaughterhouse</English>
         <French>Abattage</French>
-        <German>Schlachtung</German>
+        <German>Schlachtereien</German>
         <Italian>Slaughtery</Italian>
         <Spanish>Slaughtery</Spanish>
     </TEXT>
@@ -250,13 +250,13 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_SPECIALBUILDING_MUSKETS</Tag>
-        <English>Armoury Buildings</English>
+        <English>Armouries</English>
         <French>
             <Text>Bâtiments dédiés aux armes</Text>
             <Gender>Male</Gender>
             <Plural>0</Plural>
         </French>
-        <German>Waffengebäude</German>
+        <German>Waffenkammern</German>
         <Italian>
             <Text>Edifici per moschetti</Text>
             <Gender>Male</Gender>
@@ -270,21 +270,21 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_SPECIALBUILDING_PRINT</Tag>
-        <English>Printing Buildings</English>
+        <English>Printers</English>
         <French>Bâtiments d'imprimerie</French>
-        <German>Druckergebäude</German>
+        <German>Druckereien</German>
         <Italian>Edifici per la stampa</Italian>
         <Spanish>Imprentas</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_SPECIALBUILDING_RUM</Tag>
-        <English>Rum Buildings</English>
+        <English>Distilleries</English>
         <French>
             <Text>Bâtiments dédiés au rhum</Text>
             <Gender>Male</Gender>
             <Plural>1</Plural>
         </French>
-        <German>Rumbrennergebäude</German>
+        <German>Brennereien</German>
         <Italian>
             <Text>Edifici per il rum</Text>
             <Gender>Male</Gender>
@@ -376,7 +376,7 @@
             <Gender>Male</Gender>
             <Plural>0:1</Plural>
         </French>
-        <German>Lagergebäude</German>
+        <German>Lagerhäuser</German>
         <Italian>
             <Text>Magazzini</Text>
             <Gender>Male</Gender>
@@ -398,7 +398,7 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_SPECIALBUILDING_WHALE_OIL</Tag>
-        <English>Train Oil Production</English>
+        <English>Whale Oil Production</English>
         <French>Production d'huile de baleine</French>
         <German>Walfettverarbeitung</German>
         <Italian>Whaleoilproduction</Italian>
@@ -408,7 +408,7 @@
         <Tag>TXT_KEY_SPECIALBUILDING_WINE</Tag>
         <English>Wine Production</English>
         <French>Production de vin</French>
-        <German>Weinkelterung</German>
+        <German>Kellereien</German>
         <Italian>Wineproduction</Italian>
         <Spanish>Wineproduction</Spanish>
     </TEXT>

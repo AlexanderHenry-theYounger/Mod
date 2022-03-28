@@ -438,6 +438,7 @@ public:
 	void setHasFreeBuilding(BuildingTypes eIndex, bool bNewValue);
 	bool isHasConceptualBuilding(BuildingTypes eIndex) const;
 	bool isDominantSpecialBuilding(BuildingTypes eIndex) const;
+	BuildingTypes getDominantBuilding(SpecialBuildingTypes eSpecialBuilding) const;
 	void clearOrderQueue();
 	DllExport void pushOrder(OrderTypes eOrder, int iData1, int iData2, bool bSave, bool bPop, bool bAppend, bool bForce = false);
 	DllExport void popOrder(int iNum, bool bFinish = false, bool bChoose = false);
@@ -515,6 +516,46 @@ public:
 	void setCityHealth(int iValue);
 	void changeCityHealth(int iValue);
 	// R&R, ray, Health - END
+
+	// WTP, ray, Health Overhaul - START
+	int getCityHealthChangeFromCentralPlot() const;
+	int getCityHealthChangeFromRessourcesInCityRadius() const;
+	// WTP, ray, Health Overhaul - END
+
+	// WTP, ray, new Harbour System - START
+	int getCityHarbourSpace() const;
+	void setCityHarbourSpace(int iValue);
+	int getCityHarbourSpaceUsed() const;
+	bool bShouldShowCityHarbourSystem() const;
+	// WTP, ray, new Harbour System - END
+
+	// WTP, ray, new Barracks System - START
+	int getCityBarracksSpace() const;
+	void setCityBarracksSpace(int iValue);
+	int getCityBarracksSpaceUsed() const;
+	bool bShouldShowCityBarracksSystem() const;
+	// WTP, ray, new Barracks  System - END
+
+	// WTP, ray, Improvements give Bonus to their City - START
+	int getMonasteryCrossBonusForCity() const;
+	int getFortDefenseBonusForCity() const;
+	// WTP, ray, Improvements give Bonus to their City - END
+
+	// WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	int getImprovementFoodModifierForCity() const;
+	int getImprovementHammersModifierForCity() const;
+	int getImprovementToolsModifierForCity() const;
+	// WTP, ray, Improvements give Bonus to their City - PART 2 - END
+
+	// WTP, ray, helper methods for Python Event System - Spawning Units and Barbarians on Plots - START
+	void spawnOwnPlayerUnitOnPlotOfCity(int /*UnitTypes*/ iIndex) const;
+	void spawnBarbarianUnitOnPlotOfCity(int /*UnitTypes*/ iIndex) const; // careful with this, because will take over City for Barbarians
+	void spawnOwnPlayerUnitOnAdjacentPlotOfCity(int /*UnitTypes*/ iIndex) const;
+	void spawnBarbarianUnitOnAdjacentPlotOfCity(int /*UnitTypes*/ iIndex) const;
+
+	bool isPlayerUnitOnAdjacentPlotOfCity(int /*UnitTypes*/ iIndex) const;
+	bool isBarbarianUnitOnAdjacentPlotOfCity(int /*UnitTypes*/ iIndex) const;
+	// WTP, ray, helper methods for Python Event System - Spawning Units and Barbarians on Plots - END
 
 	// WTP, ray, Happiness - START
 	int getCityHappiness() const;
@@ -670,6 +711,7 @@ public:
 	bool canProduceYield(YieldTypes eYield);
 
 	bool educateStudent(int iUnitId, UnitTypes eUnit);
+	bool canTeach(UnitTypes eUnit) const;
 	int getSpecialistTuition(UnitTypes eUnit) const;
 
 	bool isExport(YieldTypes eYield) const;
@@ -737,6 +779,8 @@ protected:
 	int m_iTradePostGold; // WTP, ray, Native Trade Posts - START
 	bool m_bStirredUp; // R&R, ray , Stirring Up Natives
 	int m_iRebelSentiment;
+	int m_iCityHarbourSpace; // WTP, ray, new Harbour System - START
+	int m_iCityBarracksSpace; // WTP, ray, new Barracks System - START
 	int m_iCityHealth; // R&R, ray, Health
 	int m_iCityHappiness; // WTP, ray, Happiness
 	int m_iCityUnHappiness; // WTP, ray, Happiness
@@ -787,7 +831,7 @@ protected:
 	CvString m_szScriptData;
 	EnumMap<BuildingTypes,int> m_em_iBuildingProduction;
 	EnumMap<BuildingTypes,int> m_em_iBuildingProductionTime;
-	EnumMapDefault<BuildingTypes,PlayerTypes,NO_PLAYER> m_em_eBuildingOriginalOwner;
+	EnumMap<BuildingTypes,PlayerTypes> m_em_eBuildingOriginalOwner;
 	EnumMap<BuildingTypes,int> m_em_iBuildingOriginalTime;
 	EnumMap<UnitTypes,int> m_em_iUnitProduction;
 	EnumMap<UnitTypes,int> m_em_iUnitProductionTime;
@@ -796,7 +840,7 @@ protected:
 	EnumMap<PromotionTypes,int> m_em_iFreePromotionCount;
 	EnumMap<BuildingTypes,bool> m_em_bHasRealBuilding;
 	EnumMap<BuildingTypes,bool> m_em_bHasFreeBuilding;
-	EnumMapInt<CityPlotTypes, int, -1> m_em_iWorkingPlot;
+	EnumMap<CityPlotTypes, int, -1> m_em_iWorkingPlot;
 	IDInfo* m_paTradeCities;
 	mutable CLinkList<OrderData> m_orderQueue;
 	std::vector< std::pair < float, float> > m_kWallOverridePoints;
@@ -807,15 +851,16 @@ protected:
 	// CACHE: cache frequently used values
 	mutable int	m_iPopulationRank;
 	mutable bool m_bPopulationRankValid;
-	mutable EnumMapDefault<YieldTypes,int,-1> m_em_iBaseYieldRank;
+	mutable EnumMap<YieldTypes,int,-1> m_em_iBaseYieldRank;
 	mutable EnumMap<YieldTypes,bool> m_em_bBaseYieldRankValid;
-	mutable EnumMapDefault<YieldTypes,int,-1> m_em_iYieldRank;
+	mutable EnumMap<YieldTypes,int,-1> m_em_iYieldRank;
 	mutable EnumMap<YieldTypes,bool> m_em_bYieldRankValid;
 
 	void doGrowth();
 	void doYields();
 	void addTempHurryYieldsForProduction();
 	void doEntertainmentBuildings(); // R&R, ray, Entertainment Buildings
+
 	void doCulture();
 	void doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate);
 	void doSpecialists();

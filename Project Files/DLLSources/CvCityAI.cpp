@@ -1116,7 +1116,9 @@ int CvCityAI::AI_buildingValue(BuildingTypes eBuilding, int iFocusFlags) const
 			{
 				YieldTypes eLoopYield = (YieldTypes)i;
 
-				if ((eLoopYield != YIELD_FOOD) && (eLoopYield != YIELD_LUMBER) && (eLoopYield != YIELD_STONE) && GC.getYieldInfo(eLoopYield).isCargo())
+				// ray, making special storage capacity rules for Yields XML configurable
+				if (!GC.getYieldInfo(eLoopYield).isIgnoredForStorageCapacity() && GC.getYieldInfo(eLoopYield).isCargo())
+				// if ((eLoopYield != YIELD_FOOD) && (eLoopYield != YIELD_LUMBER) && (eLoopYield != YIELD_STONE) && GC.getYieldInfo(eLoopYield).isCargo())
 				{
 					int iExcess = getYieldStored(eLoopYield) - iCityCapacity;
 					if (iExcess > 0)
@@ -1617,7 +1619,7 @@ int CvCityAI::AI_buildingValue(BuildingTypes eBuilding, int iFocusFlags) const
 
 			// WTP, ray, also check for available AI experts for Building Construction - START
 			// first we get the Array containing UnitClasses and Weight
-			const InfoArray<UnitClassTypes, IntTypes>& AI_ExpertWeightInfoArray = kBuildingInfo.AI_getUnitClassWeight();
+			const InfoArray<UnitClassTypes, int>& AI_ExpertWeightInfoArray = kBuildingInfo.AI_getUnitClassWeight();
 			// now we loop
 			for (int iI = 0; iI < AI_ExpertWeightInfoArray.getLength(); ++iI)
 			{
@@ -5326,6 +5328,7 @@ int CvCityAI::AI_plotValue(const CvPlot* pPlot, bool bAvoidGrowth, bool bRemove,
 	{
 		iValue += 200;
 		int iUpgradeTime = (GC.getGameINLINE().getImprovementUpgradeTime(eCurrentImprovement));
+
 		if (iUpgradeTime > 0) //assert this?
 		{
 			int iUpgradePenalty = (100 * (iUpgradeTime - pPlot->getUpgradeProgress()));

@@ -54,17 +54,13 @@ CvUnitTemporaryStrengthModifier::~CvUnitTemporaryStrengthModifier()
 
 
 CvUnit::CvUnit() :
-	m_ba_HasRealPromotion(JIT_ARRAY_PROMOTION),
 	m_eUnitType(NO_UNIT),
 	m_iID(-1),
 	m_iVisibilityRange(-1),
 
 	// unit yield cache - start - Nightinggale
-	m_eCachedYield(NO_YIELD),
+	m_eCachedYield(NO_YIELD)
 	// unit yield cache - end - Nightinggale
-
-	m_ba_isPromotionApplied(JIT_ARRAY_PROMOTION)
-
 {
 	CvDLLEntity::createUnitEntity(this);		// create and attach entity to unit
 
@@ -574,48 +570,51 @@ void CvUnit::kill(bool bDelay, CvUnit* pAttacker)
 			{
 				eCaptureProfession = GC.getUnitInfo(eCaptureUnitType).getDefaultProfession();
 			}
-			CvUnit* pkCapturedUnit = GET_PLAYER(eCapturingPlayer).initUnit(eCaptureUnitType, eCaptureProfession, pPlot->getX_INLINE(), pPlot->getY_INLINE(), NO_UNITAI, NO_DIRECTION, iYieldStored);
-
-			if (pkCapturedUnit != NULL)
+			// WTP, ray fixing Unit duplication bug
+			if (eCaptureProfession == NO_PROFESSION || (eCaptureProfession != NO_PROFESSION && GC.getProfessionInfo(eCaptureProfession).getCombatChange() == 0))
 			{
-				bool bAlive = true;
-				if (pAttacker != NULL && pAttacker->getUnitInfo().isCapturesCargo())
+				CvUnit* pkCapturedUnit = GET_PLAYER(eCapturingPlayer).initUnit(eCaptureUnitType, eCaptureProfession, pPlot->getX_INLINE(), pPlot->getY_INLINE(), NO_UNITAI, NO_DIRECTION, iYieldStored);
+				if (pkCapturedUnit != NULL)
 				{
-					pkCapturedUnit->setXY(pAttacker->getX_INLINE(), pAttacker->getY_INLINE());
-					if(pkCapturedUnit->getTransportUnit() == NULL) //failed to load
+					bool bAlive = true;
+					if (pAttacker != NULL && pAttacker->getUnitInfo().isCapturesCargo())
 					{
-						bAlive = false;
-						pkCapturedUnit->kill(false);
-					}
-				}
-
-				if (bAlive)
-				{
-					szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_CAPTURED_UNIT", GC.getUnitInfo(eCaptureUnitType).getTextKeyWide());
-					gDLL->getInterfaceIFace()->addMessage(eCapturingPlayer, false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITCAPTURE", MESSAGE_TYPE_INFO, pkCapturedUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
-
-					if (!pkCapturedUnit->isCargo())
-					{
-						// Add a captured mission
-						CvMissionDefinition kMission;
-						kMission.setMissionTime(GC.getMissionInfo(MISSION_CAPTURED).getTime() * gDLL->getSecsPerTurn());
-						kMission.setUnit(BATTLE_UNIT_ATTACKER, pkCapturedUnit);
-						kMission.setUnit(BATTLE_UNIT_DEFENDER, NULL);
-						kMission.setPlot(pPlot);
-						kMission.setMissionType(MISSION_CAPTURED);
-						gDLL->getEntityIFace()->AddMission(&kMission);
-					}
-
-					pkCapturedUnit->finishMoves();
-
-					if (!GET_PLAYER(eCapturingPlayer).isHuman())
-					{
-						CvPlot* pPlot = pkCapturedUnit->plot();
-						if (pPlot && !pPlot->isCity(false))
+						pkCapturedUnit->setXY(pAttacker->getX_INLINE(), pAttacker->getY_INLINE());
+						if(pkCapturedUnit->getTransportUnit() == NULL) //failed to load
 						{
-							if (GET_PLAYER(eCapturingPlayer).AI_getPlotDanger(pPlot) && GC.getDefineINT("AI_CAN_DISBAND_UNITS"))
+							bAlive = false;
+							pkCapturedUnit->kill(false);
+						}
+					}
+
+					if (bAlive)
+					{
+						szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_CAPTURED_UNIT", GC.getUnitInfo(eCaptureUnitType).getTextKeyWide());
+						gDLL->getInterfaceIFace()->addMessage(eCapturingPlayer, false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITCAPTURE", MESSAGE_TYPE_INFO, pkCapturedUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
+
+						if (!pkCapturedUnit->isCargo())
+						{
+							// Add a captured mission
+							CvMissionDefinition kMission;
+							kMission.setMissionTime(GC.getMissionInfo(MISSION_CAPTURED).getTime() * gDLL->getSecsPerTurn());
+							kMission.setUnit(BATTLE_UNIT_ATTACKER, pkCapturedUnit);
+							kMission.setUnit(BATTLE_UNIT_DEFENDER, NULL);
+							kMission.setPlot(pPlot);
+							kMission.setMissionType(MISSION_CAPTURED);
+							gDLL->getEntityIFace()->AddMission(&kMission);
+						}
+
+						pkCapturedUnit->finishMoves();
+
+						if (!GET_PLAYER(eCapturingPlayer).isHuman())
+						{
+							CvPlot* pPlot = pkCapturedUnit->plot();
+							if (pPlot && !pPlot->isCity(false))
 							{
-								pkCapturedUnit->kill(false);
+								if (GET_PLAYER(eCapturingPlayer).AI_getPlotDanger(pPlot) && GC.getDefineINT("AI_CAN_DISBAND_UNITS"))
+								{
+									pkCapturedUnit->kill(false);
+								}
 							}
 						}
 					}
@@ -819,7 +818,21 @@ void CvUnit::doTurn()
 
 	setMadeAttack(false);
 
-	setMoves(0);
+	// ray, new Movement Calculation - START
+	// we do not reset to 0 anymore because this would prevent the new calulation
+	// we give back the full movement points of the Unit instead: Unit, Profession, Promotion, Traits, ...
+	// but of course we never give more than the Unit can actually have
+	// setMoves(0);
+	if ((getMoves() - maxMoves()) < 0)
+	{
+		setMoves(0);
+	}
+
+	else
+	{
+		changeMoves(-maxMoves());
+	}
+	// ray, new Movement Calculation - END
 }
 
 
@@ -1259,6 +1272,7 @@ void CvUnit::updateCombat(bool bQuick)
 		NotifyEntity(MISSION_DAMAGE);
 		pDefender->NotifyEntity(MISSION_DAMAGE);
 
+		// case: Attacker died, defender won
 		if (isDead())
 		{
 			// PatchMod: Achievements START
@@ -1308,6 +1322,14 @@ void CvUnit::updateCombat(bool bQuick)
 			szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_KILLED_ENEMY_UNIT", pDefender->getNameOrProfessionKey(), getNameOrProfessionKey(), getVisualCivAdjective(pDefender->getTeam()));
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGameINLINE().getCurrentEra()).getAudioUnitVictoryScript(), MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
+			// WTP, ray, fix for Human Unit not stopping automation after attacked - START
+			// in this case the defender is alive and has won the battle
+			if (pDefender->isHuman() && pDefender->isAutomated())
+			{
+				pDefender->getGroup()->setAutomateType(NO_AUTOMATE);
+			}
+			// WTP, ray, fix for Human Unit not stopping automation after attacked - END
+
 			// report event to Python, along with some other key state
 			gDLL->getEventReporterIFace()->combatResult(pDefender, this);
 
@@ -1322,15 +1344,23 @@ void CvUnit::updateCombat(bool bQuick)
 			}
 			// TAC - AI purchases military units - koma13 - END
 		}
+
+		// case: Attacker won, defender died
 		else if (pDefender->isDead())
 		{
 			// TAC Capturing Ships - ray
 			bool displayCapturedShipMessage = false;
 			int capturingShipChance = GC.getBASE_CHANCE_CAPTURING_SHIPS();
 			int randomShipCaptureValue = GC.getGameINLINE().getSorenRandNum(1000, "Capture Ships");
-					
-			if (m_pUnitInfo->isCapturesShips() && !(pDefender->getUnitInfo()).isAnimal())
+			
+			// ray, fix for bNoCapture being ingored 
+			if (m_pUnitInfo->isCapturesShips() && !pDefender->getUnitInfo().isAnimal() && !pDefender->getUnitInfo().isNoCapture())
 			{
+				// WTP, ray, Capture Ship chance increase - START
+				int iCaptureShipsChanceIncrease = m_pUnitInfo->getCaptureShipsChanceIncrease();
+				capturingShipChance = capturingShipChance * (100 + iCaptureShipsChanceIncrease) / 100;
+				// WTP, ray, Capture Ship chance increase - START
+
 				if (capturingShipChance > randomShipCaptureValue)
 				{
 					bool bHasParents = (GET_PLAYER(getOwnerINLINE()).getParent() != NO_PLAYER);
@@ -1444,11 +1474,16 @@ void CvUnit::updateCombat(bool bQuick)
 			//WTP, ray, Large Rivers - START
 			// allowing Cargo Ships on Large Rivers to be caugth as well
 			// if (((pDefender->cargoSpace() > 0 && (pDefender->getDomainType() == DOMAIN_LAND)) || pDefender->getUnitInfo().isTreasure() || (pDefender->isUnarmed() && pDefender->getProfession() != NO_PROFESSION && GC.getProfessionInfo(pDefender->getProfession()).getCombatChange() > 0)) && !GET_PLAYER(getOwnerINLINE()).isNative() && !GC.getGameINLINE().isBarbarianPlayer(getOwnerINLINE())) 
-			if ((pDefender->cargoSpace() > 0 && (pDefender->getDomainType() == DOMAIN_LAND || (pDefender->getDomainType() == DOMAIN_SEA && pPlot->getTerrainType() == TERRAIN_LARGE_RIVERS)) || pDefender->getUnitInfo().isTreasure() || (pDefender->isUnarmed() && pDefender->getProfession() != NO_PROFESSION && GC.getProfessionInfo(pDefender->getProfession()).getCombatChange() > 0)) && !GET_PLAYER(getOwnerINLINE()).isNative() && !GC.getGameINLINE().isBarbarianPlayer(getOwnerINLINE())) 
+			// ray, fix for bNoCapture being ingored 
+			// we do not capture Units anymore that are flagged as bNoCapture
+			if (!pDefender->getUnitInfo().isNoCapture())
 			{
-				CvUnit* pkCapturedUnitAfterFight = GET_PLAYER(getOwnerINLINE()).initUnit(pDefender->getUnitType(), pDefender->getProfession(), pPlot->getX_INLINE(), pPlot->getY_INLINE(), NO_UNITAI, NO_DIRECTION, pDefender->getYieldStored());
-				pkCapturedUnitAfterFight->setDamage(GC.getMAX_HIT_POINTS() / 2);	
-				szBuffer = gDLL->getText("TXT_KEY_UNIT_CAPTURED_AFTER_FIGHT", pDefender->getUnitInfo().getDescription());				
+				if (((pDefender->cargoSpace() > 0 && (pDefender->getDomainType() == DOMAIN_LAND || (pDefender->getDomainType() == DOMAIN_SEA && pPlot->getTerrainType() == TERRAIN_LARGE_RIVERS))) || pDefender->getUnitInfo().isTreasure() || (pDefender->isUnarmed() && pDefender->getProfession() != NO_PROFESSION && GC.getProfessionInfo(pDefender->getProfession()).getCombatChange() > 0)) && !GET_PLAYER(getOwnerINLINE()).isNative() && !GC.getGameINLINE().isBarbarianPlayer(getOwnerINLINE())) 
+				{
+					CvUnit* pkCapturedUnitAfterFight = GET_PLAYER(getOwnerINLINE()).initUnit(pDefender->getUnitType(), pDefender->getProfession(), pPlot->getX_INLINE(), pPlot->getY_INLINE(), NO_UNITAI, NO_DIRECTION, pDefender->getYieldStored());
+					pkCapturedUnitAfterFight->setDamage(GC.getMAX_HIT_POINTS() / 2);	
+					szBuffer = gDLL->getText("TXT_KEY_UNIT_CAPTURED_AFTER_FIGHT", pDefender->getUnitInfo().getDescription());				
+				}
 			}
 			//Ende ray14
 
@@ -1588,6 +1623,8 @@ void CvUnit::updateCombat(bool bQuick)
 			// to the square that they came from, before advancing.
 			getGroup()->clearMissionQueue();
 		}
+
+		// case: Attacker won, defender escaped
 		else if (bDefenderEscaped)
 		{
 			// PatchMod: Achievements START
@@ -1612,6 +1649,14 @@ void CvUnit::updateCombat(bool bQuick)
 				szBuffer = gDLL->getText("TXT_KEY_MISC_ENEMY_UNIT_ESCAPED", pDefender->getNameOrProfessionKey(), getNameOrProfessionKey(), pCity->getNameKey());
 				gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_OUR_WITHDRAWL", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pCity->getX_INLINE(), pCity->getY_INLINE());
 			}
+
+			// WTP, ray, fix for Human Unit not stopping automation after attacked - START
+			// in this case the defender is alive and lost but escaped
+			if (pDefender->isHuman() && pDefender->isAutomated())
+			{
+				pDefender->getGroup()->setAutomateType(NO_AUTOMATE);
+			}
+			// WTP, ray, fix for Human Unit not stopping automation after attacked - END
 
 			bool bAdvance = canAdvance(pPlot, 0);
 			if (!bAdvance)
@@ -1656,6 +1701,8 @@ void CvUnit::updateCombat(bool bQuick)
 
 			getGroup()->clearMissionQueue();
 		}
+
+		// case: Attacker lost but escaped
 		else if (bAttackerEscaped)
 		{
 			// PatchMod: Achievements START
@@ -1688,6 +1735,14 @@ void CvUnit::updateCombat(bool bQuick)
 			szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_UNIT_ESCAPED", pDefender->getNameOrProfessionKey(), getNameOrProfessionKey());
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_THEIR_WITHDRAWL", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
+			// WTP, ray, fix for Human Unit not stopping automation after attacked - START
+			// in this case the defender is alive and had won the battle
+			if (pDefender->isHuman() && pDefender->isAutomated())
+			{
+				pDefender->getGroup()->setAutomateType(NO_AUTOMATE);
+			}
+			// WTP, ray, fix for Human Unit not stopping automation after attacked - END
+
 			if (IsSelected())
 			{
 				if (gDLL->getInterfaceIFace()->getLengthSelectionList() > 1)
@@ -1701,12 +1756,22 @@ void CvUnit::updateCombat(bool bQuick)
 			// to the square that they came from, before advancing.
 			getGroup()->clearMissionQueue();
 		}
+
+		// case: draw, but sides withdraw
 		else
 		{
 			szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_UNIT_WITHDRAW", getNameOrProfessionKey(), pDefender->getNameOrProfessionKey());
 			gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_OUR_WITHDRAWL", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 			szBuffer = gDLL->getText("TXT_KEY_MISC_ENEMY_UNIT_WITHDRAW", getNameOrProfessionKey(), pDefender->getNameOrProfessionKey());
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_THEIR_WITHDRAWL", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
+
+			// WTP, ray, fix for Human Unit not stopping automation after attacked - START
+			// in this case we are sure that defender is alive since both are alive
+			if (pDefender->isHuman() && pDefender->isAutomated())
+			{
+				pDefender->getGroup()->setAutomateType(NO_AUTOMATE);
+			}
+			// WTP, ray, fix for Human Unit not stopping automation after attacked - END
 
 			changeMoves(std::max(GC.getMOVE_DENOMINATOR(), pPlot->movementCost(this, plot())));
 
@@ -2857,6 +2922,14 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 		}
 	}
 
+	// WTP, ray, Canal - START
+	// in Canals, which are actually on land plots, we do not want to have any Ships bigger than Coastal Ships or GatherBoats
+	if (getUnitInfo().getDomainType() == DOMAIN_SEA && !pPlot->isWater() && !getUnitInfo().getTerrainImpassable(TERRAIN_OCEAN) && !(getUnitInfo().isGatherBoat() && getUnitInfo().getHarbourSpaceNeeded() == 1) && pPlot->getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(pPlot->getImprovementType()).isCanal())
+	{
+		return false;
+	}
+	// WTP, ray, Canal - END
+
 	const FeatureTypes eFeature = pPlot->getFeatureType();
 
 	// Prevent the AI from moving through storms and sustaining damage
@@ -2899,16 +2972,19 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 
 			if (getDomainType() == DOMAIN_LAND && pPlot->getTerrainType() == TERRAIN_LARGE_RIVERS)
 			{
-				bLandUnitMayPassLargeRiverDueToImprovement = (pPlot->getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(pPlot->getImprovementType()).getTerrainMakesValid(TERRAIN_LARGE_RIVERS));
-				bLandUnitMayPassLargeRiverDueToTerrainFeature = (pPlot->getFeatureType() != NO_FEATURE && GC.getFeatureInfo(pPlot->getFeatureType()).isTerrain(TERRAIN_LARGE_RIVERS));
+				//WTP, ray, small adaptation to ensure that not all Improvements allow Movement on Large Rivers by adding "Outside Borders check" which is only true for "Ferry Station" aka "Raft Station"
+				// TODO: Maybe create a new XML tag "bAllowLargeRiverMovement in XML of Improvements instead - might be cleaner
+				bLandUnitMayPassLargeRiverDueToImprovement = (pPlot->getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(pPlot->getImprovementType()).getTerrainMakesValid(TERRAIN_LARGE_RIVERS) && GC.getImprovementInfo(pPlot->getImprovementType()).isOutsideBorders());
+				//WTP, ray, small adaptation to ensure that not all Terrain Features allow Movement on Large Rivers by adding "bNoImprovement check" which is only true for "River Ford" (at least on Terrain Large Rivers
+				// TODO: Maybe create a new XML tag "bAllowLargeRiverMovement in XML of Terrain Features instead - might be cleaner
+				bLandUnitMayPassLargeRiverDueToTerrainFeature = (pPlot->getFeatureType() != NO_FEATURE && GC.getFeatureInfo(pPlot->getFeatureType()).isTerrain(TERRAIN_LARGE_RIVERS) && GC.getFeatureInfo(pPlot->getFeatureType()).isNoImprovement());
 				bLandUnitMayPassLargeRiverDueToProfession = (getProfession() != NO_PROFESSION && GC.getProfessionInfo(getProfession()).isCanCrossLargeRivers());
 				bLandUnitMayBeLoaded = canLoad(pPlot, false);
 			}
 
-
 			// stop large ships from entering Large Rivers in own Terrain
 			// if (DOMAIN_SEA != getDomainType() || ePlotTeam != getTeam()) // sea units can enter impassable in own cultural borders
-			if (DOMAIN_SEA != getDomainType() || ePlotTeam != getTeam() || pPlot->getTerrainType() == TERRAIN_LARGE_RIVERS)
+			if (DOMAIN_SEA != getDomainType() || ePlotTeam != getTeam() || pPlot->getTerrainType() == TERRAIN_LARGE_RIVERS || pPlot->getTerrainType() == TERRAIN_LAKE || pPlot->getTerrainType() == TERRAIN_ICE_LAKE || pPlot->getTerrainType() == TERRAIN_SHALLOW_COAST)
 			{
 				// if (bIgnoreLoad || !canLoad(pPlot, true))
 				if (bIgnoreLoad || !canLoad(pPlot, true))
@@ -2922,6 +2998,177 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 			//WTP, ray, Large Rivers - END
 		}
 	}
+
+	// WTP, ray, new Harbour System - START
+	// of course this is only checked if new Harbour System is enabled
+	// We check this only for Humans, AI can ignore it because it is too difficult to teach it
+	if (GC.getENABLE_NEW_HARBOUR_SYSTEM() && isHuman())
+	{
+		// Stop Ships from Entering a City in which harbour is full - e might also check "automated"
+		if (DOMAIN_SEA == getDomainType() && pPlot->isCity(true, getTeam()))
+		{
+			// Case real City
+			if (pPlot->getImprovementType() == NO_IMPROVEMENT)
+			{
+				// this is only checked for Colonial Cities, Native Villages can always be entered
+				CvCity* pCity = pPlot->getPlotCity();
+				if (pCity != NULL)
+				{
+					if(!pCity->isNative())
+					{
+						int iHarbourSpaceNeededByUnit = getUnitInfo().getHarbourSpaceNeeded();
+
+						// Caclulating free Harbour Space in City
+						int iHarbourSpaceMaxInCity = pPlot->getPlotCity()->getCityHarbourSpace();
+						int iHarbourSpaceUsedInCity = pPlot->getPlotCity()->getCityHarbourSpaceUsed();
+						int iHarbourSpaceAvailableInCity = iHarbourSpaceMaxInCity - iHarbourSpaceUsedInCity;
+
+						if (iHarbourSpaceNeededByUnit > iHarbourSpaceAvailableInCity)
+						{
+							return false;
+						}
+					}
+				}
+			}
+
+			// Case "actAsCity" Improvement - also considered as City
+			else
+			{
+				// just to ensure that something may be messed up in the future
+				bool bWeCheckAllowedUnitsOnPlot = (pPlot->isFort() || pPlot->isMonastery() || pPlot->isCanal());
+				if (bWeCheckAllowedUnitsOnPlot)
+				{
+					// this is how much the Unit needs
+					int iHarbourSpaceNeededByUnit = getUnitInfo().getHarbourSpaceNeeded();
+
+					// we check how many Units that place would allow
+					int iImprovementHarbourSpace = GC.getBASE_HARBOUR_SPACES_WITHOUT_BUILDINGS();
+					// it is the second level Improvement, so we double - unless for canal, which has no upgrade
+					if (GC.getImprovementInfo(pPlot->getImprovementType()).getImprovementUpgrade() == NO_IMPROVEMENT && !pPlot->isCanal())
+					{
+						iImprovementHarbourSpace = iImprovementHarbourSpace * 2;
+					}
+
+					// now we calculate how much is already used
+					int iImprovementHarbourSpaceUsed = 0;
+					for (int i = 0; i < pPlot->getNumUnits(); ++i)
+					{
+						CvUnit* pLoopUnit = pPlot->getUnitByIndex(i);
+						// we only count Land Units that can attack, civil Units are not considered
+						// we also not consider Units loaded on Ships
+						// we also not consider Units of other Nations
+						if (pLoopUnit != NULL && pLoopUnit->getDomainType() == DOMAIN_SEA)
+						{
+							iImprovementHarbourSpaceUsed += pLoopUnit->getUnitInfo().getHarbourSpaceNeeded();
+						}
+					}
+
+					// we now know how much is available
+					int iImprovementShipSpaceAvailable = iImprovementHarbourSpace - iImprovementHarbourSpaceUsed;
+					if (iHarbourSpaceNeededByUnit > iImprovementShipSpaceAvailable)
+					{
+						return false;
+					}
+				}
+			}
+		}
+	}
+	// WTP, ray, new Harbour System - END
+
+	// WTP, ray, new Barracks System - START
+	// of course this is only checked if new Barracks System is enabled
+	// We check this only for Humans, AI can ignore it because it is too difficult to teach it
+	if (GC.getENABLE_NEW_BARRACKS_SYSTEM() && isHuman())
+	{
+		// Stop Combat Land Units from Entering a City in which barracks are full - we might also check "automated"
+		// here we also check just for can Attack - we check City owner further down
+		if (DOMAIN_LAND == getDomainType() && pPlot->isCity(true, getTeam()) && canAttack())
+		{
+			// Case real City
+			if (pPlot->getImprovementType() == NO_IMPROVEMENT)
+			{
+				// this is only checked for Colonial Cities, Native Villages can always be entered
+				CvCity* pCity = pPlot->getPlotCity();
+				if (pCity != NULL)
+				{
+					// here we ensure we check this only for the Owner of the Unit being Owner of the City
+					if(!pCity->isNative() && pCity->getOwnerINLINE() == getOwnerINLINE())
+					{
+						int iBarracksSpaceNeededByUnit = getUnitInfo().getBarracksSpaceNeeded();
+
+						// we also need to check the PRofession
+						if (getProfession() != NO_PROFESSION)
+						{
+							iBarracksSpaceNeededByUnit += GC.getProfessionInfo(getProfession()).getBarracksSpaceNeededChange();
+						}
+
+						// Caclulating free Harbour Space in City
+						int iBarracksSpaceMaxInCity = pPlot->getPlotCity()->getCityBarracksSpace();
+						int iBarracksSpaceUsedInCity = pPlot->getPlotCity()->getCityBarracksSpaceUsed();
+						int iBarracksSpaceAvailableInCity = iBarracksSpaceMaxInCity - iBarracksSpaceUsedInCity;
+
+						if (iBarracksSpaceNeededByUnit > iBarracksSpaceAvailableInCity)
+						{
+							return false;
+						}
+					}
+				}
+			}
+
+			// Case "actAsCity" Improvement - also considered as City
+			else
+			{
+				// just to ensure that something may be messed up in the future
+				bool bWeCheckAllowedUnitsOnPlot = (pPlot->isFort() || pPlot->isMonastery());
+				if (bWeCheckAllowedUnitsOnPlot)
+				{
+					// this is how much the Unit needs
+					int iBarracksSpaceNeededByUnit = getUnitInfo().getBarracksSpaceNeeded();
+					// we also need to check the PRofession
+					if (getProfession() != NO_PROFESSION)
+					{
+						iBarracksSpaceNeededByUnit += GC.getProfessionInfo(getProfession()).getBarracksSpaceNeededChange();
+					}
+
+					// we check how many Units that place would allow
+					int iImprovementBarracksSpace = GC.getBASE_BARRACKS_SPACES_WITHOUT_BUILDINGS();
+					// it is the second level Improvement, so we double
+					if (GC.getImprovementInfo(pPlot->getImprovementType()).getImprovementUpgrade() == NO_IMPROVEMENT)
+					{
+						iImprovementBarracksSpace = iImprovementBarracksSpace * 2;
+					}
+
+					// now we calculate how much is already used
+					int iImprovementBarracksSpaceUsed = 0;
+					for (int i = 0; i < pPlot->getNumUnits(); ++i)
+					{
+						CvUnit* pLoopUnit = pPlot->getUnitByIndex(i);
+						// we only count Land Units that can attack, civil Units are not considered
+						// we also not consider Units loaded on Ships
+						// we also not consider Units of other Nations
+						if (pLoopUnit != NULL && pLoopUnit->getDomainType() == DOMAIN_LAND && pLoopUnit->canAttack() && pLoopUnit->getTransportUnit() == NULL && pLoopUnit->getOwnerINLINE() == getOwnerINLINE())
+						{
+							iImprovementBarracksSpaceUsed += pLoopUnit->getUnitInfo().getBarracksSpaceNeeded();
+							// we also need to consider Professions
+							if (pLoopUnit->getProfession() != NO_PROFESSION)
+							{
+								iImprovementBarracksSpaceUsed += GC.getProfessionInfo(pLoopUnit->getProfession()).getBarracksSpaceNeededChange();
+							}
+						}
+					}
+
+					// we now know how much is available
+					int iBarracksSpaceAvailable = iImprovementBarracksSpace - iImprovementBarracksSpaceUsed;
+					if (iBarracksSpaceNeededByUnit > iBarracksSpaceAvailable)
+					{
+						return false;
+					}
+				}
+			}
+		}
+	}
+	// WTP, ray, new Barracks System - END
+
 
 	if (m_pUnitInfo->getMoves() == 0)
 	{
@@ -3460,7 +3707,9 @@ bool CvUnit::canAutomate(AutomateTypes eAutomate) const
 		{
 			CvUnit *pLoopUnit = ::getUnit(pUnitNode->m_data);
 
-			if (!pLoopUnit->getUnitInfo().isHiddenNationality())
+			// WTP, ray Slave Ship 
+			// we allow Slave Ships to sail to Port Royal as well
+			if (!pLoopUnit->getUnitInfo().isHiddenNationality() && !pLoopUnit->getUnitInfo().isSlaveShip())
 			{
 				return false;
 			}
@@ -3739,6 +3988,47 @@ bool CvUnit::canLoadUnit(const CvUnit* pTransport, const CvPlot* pPlot, bool bCh
 	{
 		return false;
 	}
+
+	// WTP, ray Slave Ship - START
+	// a Slave Ship can only carry Slaves or Goods
+	// to avoid AI issues - only for Human player
+	if (pTransport->getUnitInfo().isSlaveShip() && isHuman())
+	{
+		// it is neither Goods nor a Slave
+		if (getSpecialUnitType() == NO_SPECIALUNIT && !getUnitInfo().LbD_canRevolt())
+		{
+			return false;
+		}
+	}
+	// WTP, ray Slave Ship - END
+
+	// WTP, ray Treasure Ship - START
+	// a Treasure Ship can only carry Treasures or Goods
+	// to avoid AI issues - only for Human player
+	if (pTransport->getUnitInfo().isTreasureShip() && isHuman())
+	{
+		// it is neither Goods nor a Slave
+		if (getSpecialUnitType() == NO_SPECIALUNIT && !getUnitInfo().isTreasure())
+		{
+			return false;
+		}
+	}
+	// WTP, ray Treasure Ship - END
+
+	// WTP, ray Troop Ship - START
+	// a Troop Ship can only carry Troops or Goods
+	// to avoid AI issues - only for Human player
+	if (pTransport->getUnitInfo().isTroopShip() && isHuman())
+	{
+		// it is neither Goods nor a Slave
+		if (getSpecialUnitType() == NO_SPECIALUNIT && !canAttack())
+		{
+			return false;
+		}
+	}
+	// WTP, ray Treasure Ship - END
+
+
 //	if (!(pTransport->cargoSpaceAvailable(getSpecialUnitType(), getDomainType())))
 //	{
 //		return false;
@@ -4020,10 +4310,13 @@ int CvUnit::getMaxLoadYieldAmount(YieldTypes eYield) const
 			if (GC.getNEW_CAPACITY() && !isHuman() && (pCity->getTotalYieldStored() > pCity->getMaxYieldCapacity() / 2))
 			//if (GC.getNEW_CAPACITY() && !isHuman())
 			{
+				// ray, making special storage capacity rules for Yields XML configurable
 				int iCargoYields = 0;
-				for (YieldTypes eLoopYield = YIELD_HEMP; eLoopYield < NUM_YIELD_TYPES; ++eLoopYield)// without YIELD_FOOD, YIELD_LUMBER, YIELD_STONE
+				// for (YieldTypes eLoopYield = YIELD_HEMP; eLoopYield < NUM_YIELD_TYPES; ++eLoopYield)// without YIELD_FOOD, YIELD_LUMBER, YIELD_STONE
+				for (YieldTypes eLoopYield = FIRST_YIELD; eLoopYield < NUM_YIELD_TYPES; ++eLoopYield)
 				{
-					if ((pCity->getYieldStored(eLoopYield) > 0) && (GC.getYieldInfo(eLoopYield).isCargo()))
+					// ray, making special storage capacity rules for Yields XML configurable
+					if ((pCity->getYieldStored(eLoopYield) > 0) && (GC.getYieldInfo(eLoopYield).isCargo()) && !(GC.getYieldInfo(eLoopYield).isIgnoredForStorageCapacity()))
 						{iCargoYields++;}
 				}
 				
@@ -4460,7 +4753,9 @@ void CvUnit::sailToAfrica(UnitTravelStates eNewState)
 bool CvUnit::canSailToPortRoyal(const CvPlot* pPlot, UnitTravelStates eNewState) const
 {
 	// only Ships with hidden nationality can sail to Port Royal
-	if (!getUnitInfo().isHiddenNationality())
+	// WTP, ray Slave Ship
+	// we allow Slave Ships to sail to Port Royal as well
+	if (!getUnitInfo().isHiddenNationality() && !getUnitInfo().isSlaveShip())
 	{
 		return false;
 	}
@@ -4522,7 +4817,9 @@ bool CvUnit::canSailToPortRoyal(const CvPlot* pPlot, UnitTravelStates eNewState)
 
 		if (pLoopUnit->getTransportUnit() == NULL)
 		{
-			if (!pLoopUnit->getUnitInfo().isHiddenNationality())
+			// WTP, ray Slave Ship
+			// we allow Slave Ships to sail to Port Royal as well
+			if (!pLoopUnit->getUnitInfo().isHiddenNationality() && !getUnitInfo().isSlaveShip())
 			{
 				return false;
 			}
@@ -5071,10 +5368,20 @@ bool CvUnit::canKingTransport() const
 		return false;
 	}
 
+	// this here is basically pointless now, but I still leave it in because it might be faster than below
 	if (!pCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
 	{
 		return false;
 	}
+
+	// WTP, ray, fix small issue with King Treasure Transport at Lakes - START
+	// this is just needed for incredibly huge Lakes or Ice Lakes
+	// if there is no TERRAIN_COAST, TERRAIN_SHALLOW_COAST or TERRAIN_LARGE_RIVER there can be no Ocean access
+	if (!plot()->hasNearbyPlotWith(TERRAIN_COAST) && !plot()->hasNearbyPlotWith(TERRAIN_SHALLOW_COAST) && !plot()->hasNearbyPlotWith(TERRAIN_LARGE_RIVERS))
+	{
+		return false;
+	}
+	// WTP, ray, fix small issue with King Treasure Transport at Lakes - END
 
 	if (getYieldStored() == 0)
 	{
@@ -6876,7 +7183,9 @@ bool CvUnit::canJoinCity(const CvPlot* pPlot, bool bTestVisible, bool bIgnoreFoo
 		ProfessionTypes eProfession = getProfession();
 		if (eProfession == NO_PROFESSION || GC.getProfessionInfo(eProfession).isUnarmed() || GC.getProfessionInfo(eProfession).isCitizen())
 		{
-			if (movesLeft() == 0)
+			// ray, new Movement Calculation - START
+			// if (movesLeft() == 0)
+			if (movesLeft() <= 0)
 			{
 				return false;
 			}
@@ -7264,18 +7573,26 @@ int CvUnit::canLead(const CvPlot* pPlot, int iUnitId) const
 			CvUnit* pUnit = ::getUnit(pUnitNode->m_data);
 			pUnitNode = pPlot->nextUnitNode(pUnitNode);
 
-			if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canPromote((PromotionTypes)kUnitInfo.getLeaderPromotion(), getID()))
+			// WTP, fixing Generals and Admirals to lead civilists or small tiny fishing boats - START
+			if ((kUnitInfo.getDomainType() == DOMAIN_LAND && pUnit->canAttack()) || (kUnitInfo.getDomainType() == DOMAIN_SEA && pUnit->baseCombatStr() >= 20))
 			{
-				++iNumUnits;
+				if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canPromote((PromotionTypes)kUnitInfo.getLeaderPromotion(), getID()))
+				{
+					++iNumUnits;
+				}
 			}
 		}
 	}
 	else
 	{
 		CvUnit* pUnit = GET_PLAYER(getOwnerINLINE()).getUnit(iUnitId);
-		if (pUnit && pUnit != this && pUnit->canPromote((PromotionTypes)kUnitInfo.getLeaderPromotion(), getID()))
+		// WTP, fixing Generals and Admirals to lead civilists or small tiny fishing boats - START
+		if ((kUnitInfo.getDomainType() == DOMAIN_LAND && pUnit->canAttack()) || (kUnitInfo.getDomainType() == DOMAIN_SEA && pUnit->baseCombatStr() >= 20))
 		{
-			iNumUnits = 1;
+			if (pUnit && pUnit != this && pUnit->canPromote((PromotionTypes)kUnitInfo.getLeaderPromotion(), getID()))
+			{
+				iNumUnits = 1;
+			}
 		}
 	}
 	return iNumUnits;
@@ -7291,13 +7608,40 @@ int CvUnit::canGiveExperience(const CvPlot* pPlot) const
 		CLLNode<IDInfo>* pUnitNode = pPlot->headUnitNode();
 		while(pUnitNode != NULL)
 		{
+			// Ramstormp, WtP, Generals and admirals only share experience with units in the army or the navy respectively - START
 			CvUnit* pUnit = ::getUnit(pUnitNode->m_data);
 			pUnitNode = pPlot->nextUnitNode(pUnitNode);
-
-			if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canAcquirePromotionAny())
+			// WTP, adjustment ray, small improvement, let us read the UnitClassTypes only once
+			UnitClassTypes eLeaderUnitClassType = getUnitClassType();
+			// Navy Case with Great Admiral
+			if (eLeaderUnitClassType == GC.getDefineINT("UNITCLASS_GREAT_ADMIRAL"))
 			{
-				++iNumUnits;
+				// not really happy about the >= 20 being hardcoded but for now it prevents e.g. Fishing Boat, which is good
+				if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canAcquirePromotionAny() && pUnit->getDomainType() == DOMAIN_SEA && pUnit->baseCombatStr() >= 20)
+				{
+					++iNumUnits;
+				}
 			}
+			// Army Case with Great General
+			else if (eLeaderUnitClassType == GC.getDefineINT("UNITCLASS_GREAT_GENERAL"))
+			{
+				// here we could easily switch to canAttack
+				if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canAcquirePromotionAny() && pUnit->getDomainType() == DOMAIN_LAND && pUnit->canAttack())
+				{
+					++iNumUnits;
+				}
+			}
+			
+			// WTP, ray we keep this for safety in case something ever changes
+			// old default case if we ever have something else than a Great General Unitclass / Great Admiral Unitclass
+			else
+			{
+				if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canAcquirePromotionAny())
+				{
+					++iNumUnits;
+				}
+			}
+			// Ramstormp, WtP, Generals and admirals only share experience with units in the army or the navy respectively - END
 		}
 	}
 
@@ -7324,13 +7668,43 @@ bool CvUnit::giveExperience()
 			{
 				CvUnit* pUnit = ::getUnit(pUnitNode->m_data);
 				pUnitNode = pPlot->nextUnitNode(pUnitNode);
+				// Ramstormp, WtP, Generals and admirals only share experience with units in the army or the navy respectively - START
+				// Navy Case with Great Admiral
 
-				if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canAcquirePromotionAny())
+				// WTP, adjustment ray, small improvement, let us read the UnitClassTypes only once
+				UnitClassTypes eLeaderUnitClassType = getUnitClassType();
+				if (eLeaderUnitClassType == GC.getDefineINT("UNITCLASS_GREAT_ADMIRAL"))
 				{
-					pUnit->changeExperience(i < iRemainder ? iMinExperiencePerUnit+1 : iMinExperiencePerUnit);
-					pUnit->testPromotionReady();
+					// not really happy about the >= 20 being hardcoded but for now it prevents e.g. Fishing Boat, which is good
+					if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canAcquirePromotionAny() && pUnit->getDomainType() == DOMAIN_SEA && pUnit->baseCombatStr() >= 20)
+					{
+						pUnit->changeExperience(i < iRemainder ? iMinExperiencePerUnit + 1 : iMinExperiencePerUnit);
+						pUnit->testPromotionReady();
+					}
+				}
+				// Army Case with Great General
+				else if (eLeaderUnitClassType == GC.getDefineINT("UNITCLASS_GREAT_GENERAL"))
+				{
+					// not really happy about the > 2 being hardcoded but for now it prevents normal settlers which is good
+					if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canAcquirePromotionAny() && pUnit->getDomainType() == DOMAIN_LAND && pUnit->canAttack())
+					{
+						pUnit->changeExperience(i < iRemainder ? iMinExperiencePerUnit + 1 : iMinExperiencePerUnit);
+						pUnit->testPromotionReady();
+					}
 				}
 
+				// WTP, ray we keep this for safety in case something ever changes
+				// old default case if we ever have something else than a Great General Unitclass / Great Admiral Unitclass
+				else
+				{
+					if (pUnit && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canAcquirePromotionAny())
+					{
+						pUnit->changeExperience(i < iRemainder ? iMinExperiencePerUnit+1 : iMinExperiencePerUnit);
+						pUnit->testPromotionReady();
+					}
+				}
+
+				// Ramstormp, WtP, Generals and admirals only share experience with units in the army or the navy respectively - END
 				i++;
 			}
 
@@ -7903,7 +8277,10 @@ int CvUnit::maxMoves() const
 
 int CvUnit::movesLeft() const
 {
-	return std::max(0, (maxMoves() - getMoves()));
+	// ray, new Movement Calculation - START
+	// this can get smaller than 0 now
+	// return std::max(0, (maxMoves() - getMoves()));
+	return (maxMoves() - getMoves());
 }
 
 
@@ -8989,7 +9366,7 @@ CvCity* CvUnit::getEvasionCity() const
 					//WTP, ray, Large Rivers - START
 					// Correcting that Ships eveade to Cities without Ocean access
 					// if (pLoopCity->plot()->isFriendlyCity(*this, false))
-					if (pLoopCity->plot()->isFriendlyCity(*this, false) && pLoopCity->plot()->hasAnyOtherWaterPlotsThanJustLargeRivers())
+					if (pLoopCity->plot()->isFriendlyCity(*this, false) && pLoopCity->plot()->hasDeepWaterCoast())
 					{
 						for (int iBuildingClass = 0; iBuildingClass < GC.getNumBuildingClassInfos(); ++iBuildingClass)
 						{
@@ -9123,10 +9500,17 @@ int CvUnit::rebelModifier(PlayerTypes eOtherPlayer) const
 	return iModifier;
 }
 
-
 int CvUnit::bombardRate() const
 {
-	return (m_pUnitInfo->getBombardRate() + getExtraBombardRate());
+	// WTP, ray, Cannons to Professions - START
+	int iBombardRateChangeProfession = 0;
+	if (getProfession() != NO_PROFESSION)
+	{
+		iBombardRateChangeProfession = GC.getProfessionInfo(getProfession()).getBombardRateChangeProfession();
+	}
+
+	return (m_pUnitInfo->getBombardRate() + getExtraBombardRate() + iBombardRateChangeProfession);
+	// WTP, ray, Cannons to Professions - START
 }
 
 
@@ -10316,7 +10700,7 @@ void CvUnit::setMoves(int iNewValue)
 		pPlot = plot();
 
 		m_iMoves = iNewValue;
-
+ 
 		FAssert(getMoves() >= 0);
 
 		if (getTeam() == GC.getGameINLINE().getActiveTeam())
@@ -11250,7 +11634,9 @@ bool CvUnit::canHaveProfession(ProfessionTypes eProfession, bool bBumpOther, con
 
 			if (!kNewProfession.isCitizen())
 			{
-				if (movesLeft() == 0)
+				// ray, new Movement Calculation - START
+				// if (movesLeft() == 0)
+				if (movesLeft() <= 0)
 				{
 					return false;
 				}
@@ -12468,7 +12854,7 @@ bool CvUnit::isHasRealPromotion(PromotionTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumPromotionInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	return m_ba_HasRealPromotion.get(eIndex);
+	return m_embHasRealPromotion.get(eIndex);
 }
 
 void CvUnit::setHasRealPromotion(PromotionTypes eIndex, bool bValue)
@@ -12478,7 +12864,7 @@ void CvUnit::setHasRealPromotion(PromotionTypes eIndex, bool bValue)
 
 	if (isHasRealPromotion(eIndex) != bValue)
 	{
-		m_ba_HasRealPromotion.set(bValue, eIndex);
+		m_embHasRealPromotion.set(eIndex, bValue);
 
 		setPromotions(eIndex);
 
@@ -12627,13 +13013,13 @@ void CvUnit::setPromotions(PromotionTypes ePromotion)
 
 	// Only update promotions if the unit can have some or there are already promotions applied
 	// most calls will likely be from 
-	if (eUnitCombat != NO_UNITCOMBAT || m_ba_isPromotionApplied.isAllocated())
+	if (eUnitCombat != NO_UNITCOMBAT || m_embisPromotionApplied.hasContent())
 	{
 
 		CvPlayerAI &kOwner = GET_PLAYER(getOwnerINLINE());
 
-		PromotionTypes eLoopPromotion = ePromotion != NO_PROMOTION ? ePromotion : FIRST_PROMOTION;
-		PromotionTypes eLastPromotion = ePromotion != NO_PROMOTION ? ePromotion : NUM_PROMOTION_TYPES - static_cast<PromotionTypes>(1);
+		PromotionTypes eLoopPromotion = ePromotion != NO_PROMOTION ? ePromotion : m_embisPromotionApplied.FIRST;
+		const PromotionTypes eLastPromotion = ePromotion != NO_PROMOTION ? ePromotion : m_embisPromotionApplied.LAST;
 
 		ProfessionTypes eProfession = getProfession();
 
@@ -12670,17 +13056,17 @@ void CvUnit::setPromotions(PromotionTypes ePromotion)
 			if (bHasPromotion)
 			{
 				bFoundAnyPromotions = true;
-				if (!m_ba_isPromotionApplied.get(eLoopPromotion))
+				if (!m_embisPromotionApplied.get(eLoopPromotion))
 				{
-					m_ba_isPromotionApplied.set(true, eLoopPromotion);
+					m_embisPromotionApplied.set(eLoopPromotion, true);
 					processPromotion(eLoopPromotion, 1);
 				}
 			}
 			else
 			{
-				if (m_ba_isPromotionApplied.get(eLoopPromotion))
+				if (m_embisPromotionApplied.get(eLoopPromotion))
 				{
-					m_ba_isPromotionApplied.set(false, eLoopPromotion);
+					m_embisPromotionApplied.set(eLoopPromotion, false);
 					processPromotion(eLoopPromotion, -1);
 				}
 			}
@@ -12690,7 +13076,7 @@ void CvUnit::setPromotions(PromotionTypes ePromotion)
 		{
 			// try to release the array
 			// See top check with unit combat to see why it's good to release the array if possible. There is more to it than just memory usage.
-			m_ba_isPromotionApplied.isEmpty();
+			m_embisPromotionApplied.releaseMemoryIfUnused();
 		}
 	}
 
@@ -15165,7 +15551,6 @@ void CvUnit::mergeTreasures()
 
 void CvUnit::createTreasures(int overallAmount, int maxTreasureGold)
 {
-
 	FAssert(overallAmount > 0);
 	FAssert(maxTreasureGold > 0);
 	int treasureCount_MaxAmount = overallAmount / maxTreasureGold;
@@ -15202,6 +15587,163 @@ void CvUnit::createTreasures(int overallAmount, int maxTreasureGold)
 	}
 }
 // WTP, merge Treasures, of Raubwuerger - END
+
+// WTP, ray, helper methods for Python Event System - Spawning Units and Barbarians on Plots - START
+void CvUnit::spawnOwnPlayerUnitOnPlotOfUnit(int /*UnitTypes*/ iIndex) const
+{
+	CvPlayer& onwPlayer = GET_PLAYER(getOwnerINLINE());
+	UnitTypes eUnitToSpawn = (UnitTypes) iIndex;
+	CvUnit* eOwnUnitToSpawn = onwPlayer.initUnit(eUnitToSpawn, GC.getUnitInfo(eUnitToSpawn).getDefaultProfession(), getX_INLINE(), getY_INLINE(), NO_UNITAI);
+	return;
+}
+
+void CvUnit::spawnBarbarianUnitOnPlotOfUnit(int /*UnitTypes*/ iIndex) const
+{
+	PlayerTypes eBarbarianPlayerType = GC.getGameINLINE().getBarbarianPlayer();
+	if (eBarbarianPlayerType == NO_PLAYER)
+    {
+        return;
+    }
+
+	CvPlayer& barbarianPlayer = GET_PLAYER(eBarbarianPlayerType);
+	UnitTypes eUnitToSpawn = (UnitTypes) iIndex;
+	CvUnit* eBarbarianUnitToSpawn = barbarianPlayer.initUnit(eUnitToSpawn, GC.getUnitInfo(eUnitToSpawn).getDefaultProfession(), getX_INLINE(), getY_INLINE(), NO_UNITAI);
+	return;
+}
+
+void CvUnit::spawnOwnPlayerUnitOnAdjacentPlotOfUnit(int /*UnitTypes*/ iIndex) const
+{
+	CvPlayer& onwPlayer = GET_PLAYER(getOwnerINLINE());
+	UnitTypes eUnitToSpawn = (UnitTypes) iIndex;
+
+	// we use this as last fallback if we do not find an adjacent plot below
+	CvPlot* pPlotToSpawn = plot();
+
+	// try to find a better adjacent plot
+	for (int iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
+	{
+		CvPlot* pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+		if (pAdjacentPlot != NULL)
+		{
+			// if the adjacent Plot is valid and there are no other Units, prevent Cities for safety reasons
+			if (pAdjacentPlot->isValidDomainForAction(eUnitToSpawn) && pAdjacentPlot->getNumUnits() == 0 && !pAdjacentPlot->isCity())
+			{
+				// we found a proper fallback solution and use it as spawning plot
+				pPlotToSpawn = pAdjacentPlot;
+				break;
+			}
+		}
+	}
+
+	// now we spawn and are done
+	CvUnit* eOwnUnitToSpawn = onwPlayer.initUnit(eUnitToSpawn, GC.getUnitInfo(eUnitToSpawn).getDefaultProfession(), pPlotToSpawn->getX_INLINE(), pPlotToSpawn->getY_INLINE(), NO_UNITAI);
+	return;
+}
+
+void CvUnit::spawnBarbarianUnitOnAdjacentPlotOfUnit(int /*UnitTypes*/ iIndex) const
+{
+	PlayerTypes eBarbarianPlayerType = GC.getGameINLINE().getBarbarianPlayer();
+	if (eBarbarianPlayerType == NO_PLAYER)
+    {
+        return;
+    }
+
+	CvPlayer& barbarianPlayer = GET_PLAYER(eBarbarianPlayerType);
+	UnitTypes eUnitToSpawn = (UnitTypes) iIndex;
+
+	// we use this as last fallback belok
+	CvPlot* pPlotToSpawn = plot();
+
+	// try to find a better adjacent plot
+	for (int iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
+	{
+		CvPlot* pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+		if (pAdjacentPlot != NULL)
+		{
+			// if the adjacent Plot is valid and there are no other Units, prevent Cities for safety reasons
+			if (pAdjacentPlot->isValidDomainForAction(eUnitToSpawn) && pAdjacentPlot->getNumUnits() == 0 && !pAdjacentPlot->isCity())
+			{
+				// we found a proper fallback solution and use it as spawning plot
+				pPlotToSpawn = pAdjacentPlot;
+				break;
+			}
+		}
+	}
+
+	// now we spawn and are done
+	CvUnit* eBarbarianUnitToSpawn = barbarianPlayer.initUnit(eUnitToSpawn, GC.getUnitInfo(eUnitToSpawn).getDefaultProfession(), pPlotToSpawn->getX_INLINE(), pPlotToSpawn->getY_INLINE(), NO_UNITAI);
+	return;
+}
+
+bool CvUnit::isPlayerUnitOnAdjacentPlotOfUnit(int /*UnitTypes*/ iIndex) const
+{
+	PlayerTypes eOwnPlayerType = getOwnerINLINE();
+	UnitTypes eUnit = (UnitTypes) iIndex;
+
+	// we check the adjacent Plots
+	for (int iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
+	{
+		CvPlot* pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+		if (pAdjacentPlot != NULL)
+		{
+			// if the adjacent Plot is valid and there are no other Units, prevent Cities for safety reasons
+			CLLNode<IDInfo>* pUnitNode = pAdjacentPlot->headUnitNode();
+			while (pUnitNode)
+			{
+				CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
+				pUnitNode = plot()->nextUnitNode(pUnitNode);
+
+				// check for owner and UnitType
+				if (pLoopUnit->getOwnerINLINE() == eOwnPlayerType && pLoopUnit->getUnitType() == eUnit)
+				{
+					// we found a unit of our player;
+					return true;
+				}
+			}
+		}
+	}
+
+	// nothing found, return false
+	return false;
+}
+
+bool CvUnit::isBarbarianUnitOnAdjacentPlotOfUnit(int /*UnitTypes*/ iIndex) const
+{
+	PlayerTypes eBarbarianPlayerType = GC.getGameINLINE().getBarbarianPlayer();
+	if (eBarbarianPlayerType == NO_PLAYER)
+    {
+        return false;
+    }
+
+	UnitTypes eUnit = (UnitTypes) iIndex;
+
+	// we check the adjacent Plots
+	for (int iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
+	{
+		CvPlot* pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+		if (pAdjacentPlot != NULL)
+		{
+			// if the adjacent Plot is valid and there are no other Units, prevent Cities for safety reasons
+			CLLNode<IDInfo>* pUnitNode = pAdjacentPlot->headUnitNode();
+			while (pUnitNode)
+			{
+				CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
+				pUnitNode = plot()->nextUnitNode(pUnitNode);
+
+				// check for owner and UnitType
+				if (pLoopUnit->getOwnerINLINE() == eBarbarianPlayerType && pLoopUnit->getUnitType() == eUnit)
+				{
+					// we found a unit of our player;
+					return true;
+				}
+			}
+		}
+	}
+
+	// nothing found, return false
+	return false;
+}
+// WTP, ray, helper methods for Python Event System - Spawning Units and Barbarians on Plots - END
 
 
 // Erik: We should come up with a XML tag (e.g. bJoin vs. bFound) so that we don't need to hard-code this

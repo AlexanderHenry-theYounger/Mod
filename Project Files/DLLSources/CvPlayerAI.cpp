@@ -1557,6 +1557,13 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 		}
 		else
 		{
+			//ray,  reduce founding chances at Hostile Goodies - START
+			if (pLoopPlot->isGoodyForSpawningHostileCriminals() || pLoopPlot->isGoodyForSpawningHostileNatives() ||  pLoopPlot->isGoodyForSpawningHostileAnimals())
+			{
+				iValue /= 2; // should normally make this an upleasant place
+			}
+			//ray,  reduce founding chances at Hostile Goodies - END
+
 			if (pLoopPlot->isCityRadius())
 			{
 				iTakenTiles++;
@@ -1576,12 +1583,8 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 
 				for (int iYieldType = 0; iYieldType < NUM_YIELD_TYPES; ++iYieldType)
 				{
-
-
 					YieldTypes eYield = (YieldTypes)iYieldType;
 					int iYield = pLoopPlot->calculateBestNatureYield(eYield, getTeam());
-
-
 
 					if (iI == CITY_HOME_PLOT)
 					{
@@ -1605,7 +1608,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 					int bestOutput = 0;
 					for (int i = 0; i < NUM_YIELD_TYPES; i++)
 					{
-						//ignore food and lumber and stone
+						//ignore food because checked and lumber and stone because City Center Plot
 						if ((i != YIELD_FOOD) && (i != YIELD_LUMBER) && (i != YIELD_STONE))
 						{
 							int natureYield = pPlot->calculateNatureYield((YieldTypes) i, getTeam(), false);
@@ -1718,7 +1721,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 		// to ensure that first city is not found at Large River without other Water access
 		if (bStartingLoc)
 		{
-			if (pPlot->hasAnyOtherWaterPlotsThanJustLargeRivers())
+			if (pPlot->hasDeepWaterCoast())
 			{
 				iValue *= 125; // found value increased
 				iValue /= 100;
@@ -1756,6 +1759,14 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 					{
 						if (plotDistance(iX, iY, pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE()) <= iRange)
 						{
+
+							//ray,  reduce founding chances at Hostile Goodies - START
+							if (pLoopPlot->isGoodyForSpawningHostileCriminals() || pLoopPlot->isGoodyForSpawningHostileNatives() || pLoopPlot->isGoodyForSpawningHostileAnimals())
+							{
+								iGreaterBadTile += 12; // should normally ensure it does not found there the first City
+							}
+							//ray,  reduce founding chances at Hostile Goodies - END
+
 						    int iTempValue = 0;
 							iTempValue += (pLoopPlot->calculatePotentialYield(YIELD_FOOD, NULL, false) * 15);
 							iTempValue += (pLoopPlot->calculatePotentialYield(YIELD_FUR, NULL, false) * 4); // R&R, ray, adjustment because of MYCP
@@ -6260,7 +6271,7 @@ int CvPlayerAI::AI_getContactTimer(PlayerTypes eIndex1, ContactTypes eIndex2)
 	FAssertMsg(eIndex1 < MAX_PLAYERS, "eIndex1 is expected to be within maximum bounds (invalid Index)");
 	FAssertMsg(eIndex2 >= 0, "eIndex2 is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex2 < NUM_CONTACT_TYPES, "eIndex2 is expected to be within maximum bounds (invalid Index)");
-	return m_em_iContactTimer.get(eIndex1, eIndex2);
+	return m_em_iContactTimer[eIndex1].get(eIndex2);
 }
 
 
@@ -6270,7 +6281,7 @@ void CvPlayerAI::AI_changeContactTimer(PlayerTypes eIndex1, ContactTypes eIndex2
 	FAssertMsg(eIndex1 < MAX_PLAYERS, "eIndex1 is expected to be within maximum bounds (invalid Index)");
 	FAssertMsg(eIndex2 >= 0, "eIndex2 is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex2 < NUM_CONTACT_TYPES, "eIndex2 is expected to be within maximum bounds (invalid Index)");
-	m_em_iContactTimer.add(eIndex1, eIndex2, iChange);
+	m_em_iContactTimer[eIndex1].add(eIndex2, iChange);
 	FAssert(AI_getContactTimer(eIndex1, eIndex2) >= 0);
 }
 
@@ -6281,7 +6292,7 @@ int CvPlayerAI::AI_getMemoryCount(PlayerTypes eIndex1, MemoryTypes eIndex2)
 	FAssertMsg(eIndex1 < MAX_PLAYERS, "eIndex1 is expected to be within maximum bounds (invalid Index)");
 	FAssertMsg(eIndex2 >= 0, "eIndex2 is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex2 < NUM_MEMORY_TYPES, "eIndex2 is expected to be within maximum bounds (invalid Index)");
-	return m_em_iMemoryCount.get(eIndex1, eIndex2);
+	return m_em_iMemoryCount[eIndex1].get(eIndex2);
 }
 
 
@@ -6291,7 +6302,7 @@ void CvPlayerAI::AI_changeMemoryCount(PlayerTypes eIndex1, MemoryTypes eIndex2, 
 	FAssertMsg(eIndex1 < MAX_PLAYERS, "eIndex1 is expected to be within maximum bounds (invalid Index)");
 	FAssertMsg(eIndex2 >= 0, "eIndex2 is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex2 < NUM_MEMORY_TYPES, "eIndex2 is expected to be within maximum bounds (invalid Index)");
-	m_em_iMemoryCount.add(eIndex1, eIndex2, iChange);
+	m_em_iMemoryCount[eIndex1].add(eIndex2, iChange);
 	FAssert(AI_getMemoryCount(eIndex1, eIndex2) >= 0);
 }
 
@@ -9405,8 +9416,14 @@ int CvPlayerAI::AI_transferYieldValue(const IDInfo target, YieldTypes eYield, in
 	if (pCity != NULL)
 	{
 		int iStored = pCity->getYieldStored(eYield);
-	
 		int iMaxCapacity = (eYield == YIELD_FOOD) ? pCity->growthThreshold() : pCity->getMaxYieldCapacity();
+		// WTP, ray, just to be save e.g. if getMaxYieldCapacity is really 0 - START
+		if (iMaxCapacity == 0)
+		{
+			iMaxCapacity = 300;
+		}
+		// WTP, ray, just to be save e.g. if getMaxYieldCapacity is really 0 - END
+
 		// transport feeder - start - Nightinggale
 		//int iMaintainLevel = pCity->getMaintainLevel(eYield);
 		int iMaintainLevel = pCity->getAutoMaintainThreshold(eYield);
@@ -9435,16 +9452,20 @@ int CvPlayerAI::AI_transferYieldValue(const IDInfo target, YieldTypes eYield, in
 			if (iSurplus > 0)
 			{
 				iValue = std::min(iSurplus, -iAmount);
-//VET BugFix - begin /
 
-				//int iMaxCapacity = (eYield == YIELD_FOOD) ? pCity->growthThreshold() : iMaxCapacity = pCity->getMaxYieldCapacity();
-				//FAssert(iMaxCapacity > 0);
-//VET BugFix - end /
 //VET NewCapacity - begin 4/8
 				if (GC.getNEW_CAPACITY())
 				{
 					iValue *= 50 + ((100 * iStored) / std::max(1, iMaxCapacity));
 					int iMax = iMaxCapacity * 9 / 10;
+
+					// WTP, ray, even if it should never happen, let us prevent iMax being 0 if iMaxCapacity for some reason is 1 above - START
+					if (iMax == 0)
+					{
+						iMax = 270;
+					}
+					// WTP, ray, even if it should never happen, let us prevent iMax being 0 if iMaxCapacity for some reason is 1 above - END
+
 					if (iTotalStored >= iMax)
 					{
 						iValue *= 125 + ((100 * iMax) / iMax);
@@ -9482,6 +9503,14 @@ int CvPlayerAI::AI_transferYieldValue(const IDInfo target, YieldTypes eYield, in
 			if (GC.getNEW_CAPACITY())
 			{
 				int iMax = iMaxCapacity * 9 / 10;
+
+				// WTP, ray, even if it should never happen, let us prevent iMax being 0 if iMaxCapacity for some reason is 1 above - START
+				if (iMax == 0)
+				{
+					iMax = 270;
+				}
+				// WTP, ray, even if it should never happen, let us prevent iMax being 0 if iMaxCapacity for some reason is 1 above - END
+
 				if (iTotalStored > iMax)
 				{
 					iValue *= 10;
@@ -10572,6 +10601,9 @@ int CvPlayerAI::AI_professionValue(ProfessionTypes eProfession, UnitAITypes eUni
 		case UNITAI_DEFENSIVE:
 			{
 				int iExtraCombatStrength = kProfession.getCombatChange() - GC.getProfessionInfo(GC.getCivilizationInfo(getCivilizationType()).getDefaultProfession()).getCombatChange();
+				// WTP, ray, Cannons to Professions - START
+				int iExtraBombardStrength = kProfession.getBombardRateChangeProfession()- GC.getProfessionInfo(GC.getCivilizationInfo(getCivilizationType()).getDefaultProfession()).getBombardRateChangeProfession();
+				// WTP, ray, Cannons to Professions - END
 				if (isNative())
 				{
 					iValue += 10;
@@ -10582,6 +10614,7 @@ int CvPlayerAI::AI_professionValue(ProfessionTypes eProfession, UnitAITypes eUni
 					if (kProfession.isCityDefender())
 					{
 						iValue += iExtraCombatStrength * 25;
+						iValue += iExtraBombardStrength * 25; // WTP, ray, Cannons to Professions - START
 					}
 				}
 			}
@@ -10593,11 +10626,15 @@ int CvPlayerAI::AI_professionValue(ProfessionTypes eProfession, UnitAITypes eUni
 			{
 				iValue += 10;
 				int iExtraCombatStrength = kProfession.getCombatChange() - GC.getProfessionInfo(GC.getCivilizationInfo(getCivilizationType()).getDefaultProfession()).getCombatChange();
+				// WTP, ray, Cannons to Professions - START
+				int iExtraBombardStrength = kProfession.getBombardRateChangeProfession()- GC.getProfessionInfo(GC.getCivilizationInfo(getCivilizationType()).getDefaultProfession()).getBombardRateChangeProfession();
+				// WTP, ray, Cannons to Professions - END
 				if (!kProfession.isUnarmed() && iExtraCombatStrength > 0)
 				{
 					iValue += iExtraCombatStrength * 15;
 					//iValue += kProfession.getMovesChange() * 15;
 					iValue += kProfession.getMovesChange() * 10;
+					iValue += iExtraBombardStrength * 10; // WTP, ray, Cannons to Professions - START
 				}
 			}
 			// TAC - AI purchases military units - koma13 - END
@@ -10615,6 +10652,9 @@ int CvPlayerAI::AI_professionValue(ProfessionTypes eProfession, UnitAITypes eUni
 				{
 					iValue += iExtraCombatStrength * 15;
 					iValue *= 1 + kProfession.getMovesChange();
+
+					// WTP, ray, Cannons to Professions - START
+					// in Counter BombarStrength does not matter
 				}
 			}
 			break;
@@ -14851,7 +14891,9 @@ int CvPlayerAI::AI_getPlotCanalValue(CvPlot* pPlot) const
 					if (pPlot->getImprovementType() != NO_IMPROVEMENT)
 					{
 						CvImprovementInfo &kImprovementInfo = GC.getImprovementInfo(pPlot->getImprovementType());
-						if (!kImprovementInfo.isActsAsCity())
+						// WTP, ray, Canal - START
+						// also needed to put new Canal Improvement in here
+						if (!kImprovementInfo.isActsAsCity() && !kImprovementInfo.isCanal())
 						{
 							return 0;
 						}
@@ -15499,7 +15541,6 @@ bool CvPlayerAI::AI_isPathDanger(const CvSelectionGroup* pGroup, const CvPlot* p
 		
 	int iMovesLeft;
 	int iStart;
-	int iPathLength;
 	
 	if (iRange == -1)
 	{
@@ -15508,7 +15549,15 @@ bool CvPlayerAI::AI_isPathDanger(const CvSelectionGroup* pGroup, const CvPlot* p
 		
 	iMovesLeft = (pGroup->getHeadUnit()->movesLeft() / GC.getMOVE_DENOMINATOR());
 	iStart = (pPlot == pToPlot) ? iMovesLeft : 0;
-	iPathLength = (pPlot == pFromPlot) ? pGroup->getPathLength() - iMovesLeft : pGroup->getPathLength();
+	//iPathLength = (pPlot == pFromPlot) ? pGroup->getPathLength() - iMovesLeft : pGroup->getPathLength();
+	// fix: avoids NULL crash when iMovesLeft is negative - Nightinggale
+	// the issue is that iPathLength could become longer than getPathLength() resulting in NULL plots being used without checking for NULL
+	int iPathLength = pGroup->getPathLength();
+	if (pPlot == pFromPlot && iMovesLeft > 0)
+	{
+		iPathLength -= iMovesLeft;
+	}
+	// NULL crash end
 		
 	// R&R, ray, commented out unnecessary Asserts, probably used for testing feature
 	// FAssert(iPathLength > 0);

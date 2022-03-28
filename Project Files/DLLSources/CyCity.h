@@ -236,6 +236,8 @@ public:
 	void setHasRealBuilding(int /*BuildingTypes*/ iIndex, bool bNewValue);
 	bool isHasFreeBuilding(int /*BuildingTypes*/ iIndex);
 
+	int getDominantBuilding(int /*SpecialBuildingTypes*/ iSpecialBuilding) const;
+
 	void clearOrderQueue();
 	void pushOrder(OrderTypes eOrder, int iData1, int iData2, bool bSave, bool bPop, bool bAppend, bool bForce);
 	void popOrder(int iNum, bool bFinish, bool bChoose);
@@ -271,11 +273,25 @@ public:
 	void addPopulationUnit(CyUnit* pUnit, int /*ProfessionTypes*/ eProfession);
 	bool removePopulationUnit(CyUnit* pUnit, bool bDelete, int /*ProfessionTypes*/ eProfession);
 
+	bool canTeach(int iUnit) const;
+
 	int getTeachUnitClass();
 	int getTeachUnit() const; // native advisor update - Nightinggale
 	int getRebelPercent();
 	int getRebelSentiment() const;
 	void setRebelSentiment(int iValue);
+
+	// WTP, ray, new Harbour System - START
+	int getCityHarbourSpace() const;
+	int getCityHarbourSpaceUsed() const;
+	bool bShouldShowCityHarbourSystem() const;
+	// WTP, ray, new Harbour System - END
+
+	// WTP, ray, new Barracks System - START
+	int getCityBarracksSpace() const;
+	int getCityBarracksSpaceUsed() const;
+	bool bShouldShowCityBarracksSystem() const;
+	// WTP, ray, new Harbour System - END
 
 	// R&R, ray, Health - START
 	int getCityHealth() const;
@@ -283,6 +299,16 @@ public:
 	void setCityHealth(int iValue);
 	void changeCityHealth(int iValue);
 	// R&R, ray, Health - END
+
+	// WTP, ray, helper methods for Python Event System - Spawning Units and Barbarians on Plots - START
+	void spawnOwnPlayerUnitOnPlotOfCity(int /*UnitTypes*/ iIndex) const;
+	void spawnBarbarianUnitOnPlotOfCity(int /*UnitTypes*/ iIndex) const; // careful with this, because will take over City for Barbarians
+	void spawnOwnPlayerUnitOnAdjacentPlotOfCity(int /*UnitTypes*/ iIndex) const;
+	void spawnBarbarianUnitOnAdjacentPlotOfCity(int /*UnitTypes*/ iIndex) const;
+
+	bool isPlayerUnitOnAdjacentPlotOfCity(int /*UnitTypes*/ iIndex) const;
+	bool isBarbarianUnitOnAdjacentPlotOfCity(int /*UnitTypes*/ iIndex) const;
+	// WTP, ray, helper methods for Python Event System - Spawning Units and Barbarians on Plots - END
 
 	// WTP, ray, Happiness - START
 	int getCityHappiness() const;

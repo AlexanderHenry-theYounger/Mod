@@ -331,9 +331,10 @@ class CvPortRoyalScreen:
 		
 		screen.setImageButtonAt(self.szTradeTable + "Close", self.szTradeTable, "", 0, 0, self.TRADE_W, self.XResolution, WidgetTypes.WIDGET_GENERAL, self.TRADE_LOG, -1)
 		
-		# Purchase - needed to be moved
+		# Purchase - was moved to other place because of "Ships in Port Condition".
 		#if (gc.getPlayer(gc.getGame().getActivePlayer()).canTradeWithPortRoyal()):
-			#screen.setImageButton("PurchaseButton",  "Art/Interface/Screens/Europe/Great_General_Dollar.dds",  self.XResolution - self.RECRUIT_W - self.STANDARD_MARGIN,  self.RECRUIT_Y, self.RECRUIT_W,self.RECRUIT_H,  WidgetTypes.WIDGET_GENERAL, self.BUY_UNIT_BUTTON_ID, -1)
+			# screen.addUnitGraphicGFC("PurchaseButton", gc.getInfoTypeForString("UNIT_GREAT_GENERAL"), -1, self.XResolution - self.RECRUIT_W - self.STANDARD_MARGIN, self.RECRUIT_Y, self.RECRUIT_W, self.RECRUIT_H, WidgetTypes.WIDGET_GENERAL, self.BUY_UNIT_BUTTON_ID, -1, 0, 0, 1.0, false)
+			# screen.setImageButton("PurchaseButton",  "Art/Interface/Screens/Port_Royal/Great_General_Dollar.dds",  self.XResolution - self.RECRUIT_W - self.STANDARD_MARGIN,  self.RECRUIT_Y, self.RECRUIT_W,self.RECRUIT_H,  WidgetTypes.WIDGET_GENERAL, self.BUY_UNIT_BUTTON_ID, -1)
 		
 		# draw the contents
 		self.drawContents()
@@ -355,7 +356,7 @@ class CvPortRoyalScreen:
 		screen.setText(self.getNextWidgetName(), "Background", szTreasury, CvUtil.FONT_LEFT_JUSTIFY, self.STANDARD_MARGIN, self.STANDARD_MARGIN, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, self.TREASURY_ID, -1 )
 		szExit = u"<font=4>" + localText.getText(hudColor, ()) + localText.getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>"
 		screen.setText(self.getNextWidgetName(), "Background", szExit, CvUtil.FONT_RIGHT_JUSTIFY, self.XResolution - self.STANDARD_MARGIN, self.STANDARD_MARGIN, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
-		szTaxRate = u"<font=4>" + localText.getText(hudColor, ()) + localText.getText("TXT_KEY_MISC_BRIBE_RATE", (2 * gc.getDefineINT("SMUGGLING_BRIBE_RATE"), player.NBMOD_GetMaxTaxRate())).upper() + u"</font>"
+		szTaxRate = u"<font=4>" + localText.getText(hudColor, ()) + localText.getText("TXT_KEY_MISC_BRIBE_RATE", (gc.getDefineINT("PORT_ROYAL_PORT_TAX"), player.NBMOD_GetMaxTaxRate())).upper() + u"</font>"
 		# R&R, Robert Surcouf, No More Variables Hidden game option START
 		#screen.setText(self.getNextWidgetName(), "Background", szTaxRate, CvUtil.FONT_RIGHT_JUSTIFY, self.XResolution - CyInterface().determineWidth(szExit) - self.STANDARD_MARGIN * 2, self.STANDARD_MARGIN, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		screen.setText(self.getNextWidgetName(), "Background", szTaxRate, CvUtil.FONT_RIGHT_JUSTIFY, self.XResolution - CyInterface().determineWidth(szExit) - self.STANDARD_MARGIN * 2, self.STANDARD_MARGIN, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, self.HELP_TAX_RATE, -1 )
@@ -569,21 +570,21 @@ class CvPortRoyalScreen:
 			iPrice = player.getTradeMessageAmount(i)
 			szBuffer = u"-"
 			szTax = u"-"
-			
+			#gc.getDefineINT("PORT_ROYAL_PORT_TAX")
 			if player.getTradeMessageType(i) == TradeMessageTypes.TRADE_MESSAGE_EUROPE_YIELD_SOLD:
 				iPrice *= self.playerEurope.getYieldPortRoyalBuyPrice(iYield)
 				szBuffer = u"%d%c" % (player.getTradeMessageAmount(i), gc.getYieldInfo(iYield).getChar())
 				szAction = localText.getText("TXT_KEY_EU_TRADE_LOG_SOLD", ())
-				if player.getTaxRate() > 0:
-					szTax = str(iPrice * player.getTaxRate() / 100)
+				if gc.getDefineINT("PORT_ROYAL_PORT_TAX") > 0:
+					szTax = str(iPrice * gc.getDefineINT("PORT_ROYAL_PORT_TAX") / 100)
 			elif player.getTradeMessageType(i) == TradeMessageTypes.TRADE_MESSAGE_EUROPE_YIELD_BOUGHT:
 				iPrice *= self.playerEurope.getYieldPortRoyalSellPrice(iYield)
 				szBuffer = u"%d%c" % (player.getTradeMessageAmount(i), gc.getYieldInfo(iYield).getChar())
 				szAction = localText.getText("TXT_KEY_EU_TRADE_LOG_BOUGHT", ())
 			elif player.getTradeMessageType(i) == TradeMessageTypes.TRADE_MESSAGE_TREASURE:
 				szAction = localText.getText("TXT_KEY_UNIT_TREASURE", ())
-				if player.getTaxRate() > 0:
-					szTax = str(iPrice * player.getTaxRate() / 100)
+				if gc.getDefineINT("PORT_ROYAL_PORT_TAX") > 0:
+					szTax = str(iPrice * gc.getDefineINT("PORT_ROYAL_PORT_TAX") / 100)
 			
 			if player.getTradeMessageType(i) == TradeMessageTypes.TRADE_MESSAGE_LACK_FUNDS:
 				iLastFailed = i
@@ -1383,7 +1384,7 @@ class CvPortRoyalScreen:
 
 			if self.iThisWinter:
 				unitsVolume = 1.0
-				screen.setSoundId(self.playSound("AS2D_SS_TUNDRALOOP"))
+				screen.setSoundId(self.playSound("AS2D_SS_JUNGLELOOP"))
 			else:
 				unitsVolume = 0.75
 				screen.setSoundId(self.playSound("AS2D_SS_PORTROYALELOOP"))

@@ -268,6 +268,7 @@ void CyInfoPythonInterface2()
 		.def("getArtDefineTag", &CvBonusInfo::getArtDefineTag, "string ()")
 		// Arrays
 		.def("getYieldChange", &CvBonusInfo::getYieldChange, "int (int i)")
+		.def("getHealthEffectFromRessource", &CvBonusInfo::getHealthEffectFromRessource,  "int ()") // WTP, ray, Health from specific Bonus Ressources
 		.def("isTerrain", &CvBonusInfo::isTerrain, "bool (int i)")
 		.def("isFeature", &CvBonusInfo::isFeature, "bool (int i)")
 		.def("isFeatureTerrain", &CvBonusInfo::isFeatureTerrain, "bool (int i)")
@@ -287,9 +288,12 @@ void CyInfoPythonInterface2()
 		.def("getDefenseModifier", &CvFeatureInfo::getDefenseModifier, "int ()")
 		.def("getAdvancedStartRemoveCost", &CvFeatureInfo::getAdvancedStartRemoveCost, "int ()")
 		.def("isNoCoast", &CvFeatureInfo::isNoCoast, "bool ()")
+		.def("isOnlyCoastalLand", &CvFeatureInfo::isOnlyCoastalLand, "bool ()") //WTP, Feature settings enhancements
 		.def("isNoRiver", &CvFeatureInfo::isNoRiver, "bool ()")
 		.def("isNoAdjacent", &CvFeatureInfo::isNoAdjacent, "bool ()")
 		.def("isRequiresFlatlands", &CvFeatureInfo::isRequiresFlatlands, "bool ()")
+		.def("isRequiresHills", &CvFeatureInfo::isRequiresHills, "bool ()") //WTP, Feature settings enhancements
+		.def("isRequiresPeaks", &CvFeatureInfo::isRequiresPeaks, "bool ()") //WTP, Feature settings enhancements
 		.def("isRequiresRiver", &CvFeatureInfo::isRequiresRiver, "bool ()")
 		.def("isImpassable", &CvFeatureInfo::isImpassable, "bool ()")
 		.def("isNoCity", &CvFeatureInfo::isNoCity, "bool ()")

@@ -200,6 +200,9 @@ public:
 	int getTraitCount(TraitTypes eTrait) const;
 	void changeTraitCount(TraitTypes eTrait, int iChange);
 	int getMercantileFactor() const;
+	int getTotalPlayerAfricaSellProfitModifierInPercent() const; // WTP, Africa and Port Royal Profit Modifiers - START
+	int getTotalPlayerPortRoyalSellProfitModifierInPercent() const; // WTP, Africa and Port Royal Profit Modifiers - START
+	int getTotalPlayerDomesticMarketProfitModifierInPercent() const; // WTP, ray, Domestic Market Profit Modifier
 	DllExport bool isHuman() const;
 	DllExport void updateHuman();
 	bool isNative() const;
@@ -348,6 +351,8 @@ public:
 	void changeWorkerSpeedModifier(int iChange);
 	int getImprovementUpgradeRateModifier() const;
 	void changeImprovementUpgradeRateModifier(int iChange);
+	int getImprovementUpgradeDurationModifier() const; // WTP, ray, Improvement Growth Modifier - START
+	void changeImprovementUpgradeDurationModifier(int iChange); // WTP, ray, Improvement Growth Modifier - START
 	int getMilitaryProductionModifier() const;
 	void changeMilitaryProductionModifier(int iChange);
 	int getCityDefenseModifier() const;
@@ -525,6 +530,7 @@ public:
 
 	// city iteration
 	DllExport CvCity* firstCity(int *pIterIdx, bool bRev=false) const;
+	CvCity* firstCity() const;
 	DllExport CvCity* nextCity(int *pIterIdx, bool bRev=false) const;
 	DllExport int getNumCities() const;
 	DllExport CvCity* getCity(int iID) const;
@@ -722,16 +728,34 @@ public:
 	void buyUnitsFromKing();
 	int getYieldTradedTotal(YieldTypes eYield) const;
 	void setYieldTradedTotal(YieldTypes eYield, int iValue);
+	// WTP, ray, Yields Traded Total for Africa and Port Royal - START
+	int getYieldTradedTotalAfrica(YieldTypes eYield) const;
+	void setYieldTradedTotalAfrica(YieldTypes eYield, int iValue);
+	int getYieldTradedTotalPortRoyal(YieldTypes eYield) const;
+	void setYieldTradedTotalPortRoyal(YieldTypes eYield, int iValue);
+	// WTP, ray, Yields Traded Total for Africa and Port Royal - END
 	// R&R, vetiarvind, Price dependent tax rate change - Start
 	int CvPlayer::getYieldScoreTotal(YieldTypes eYield) const;
 	void CvPlayer::setYieldScoreTotal(YieldTypes eYield, int iValue);
 	void CvPlayer::changeYieldTradedTotal(YieldTypes eYield, int iChange, int iUnitPrice = -1);
+	void CvPlayer::changeYieldTradedTotalAfrica(YieldTypes eYield, int iChange, int iUnitPrice = -1); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
+	void CvPlayer::changeYieldTradedTotalPortRoyal(YieldTypes eYield, int iChange, int iUnitPrice = -1); // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 	//void changeYieldTradedTotal(YieldTypes eYield, int iChange);
 	// R&R, vetiarvind, Price dependent tax rate change - End
 	
 	int getYieldBoughtTotal(YieldTypes eYield) const;
 	void setYieldBoughtTotal(YieldTypes eYield, int iValue);
 	void changeYieldBoughtTotal(YieldTypes eYield, int iChange);
+
+	// WTP, ray, Yields Traded Total for Africa and Port Royal - START
+	int getYieldBoughtTotalAfrica(YieldTypes eYield) const;
+	void setYieldBoughtTotalAfrica(YieldTypes eYield, int iValue);
+	void changeYieldBoughtTotalAfrica(YieldTypes eYield, int iChange);
+	int getYieldBoughtTotalPortRoyal(YieldTypes eYield) const;
+	void setYieldBoughtTotalPortRoyal(YieldTypes eYield, int iValue);
+	void changeYieldBoughtTotalPortRoyal(YieldTypes eYield, int iChange);
+	// WTP, ray, Yields Traded Total for Africa and Port Royal - END
+
 	YieldTypes getHighestTradedYield() const;
 	int getHighestStoredYieldCityId(YieldTypes eYield) const;
 
@@ -925,6 +949,7 @@ protected:
 	int m_iFreeExperience;
 	int m_iWorkerSpeedModifier;
 	int m_iImprovementUpgradeRateModifier;
+	int m_iImprovementUpgradeDurationModifier; // WTP, ray, Improvement Growth Modifier - START
 	int m_iMilitaryProductionModifier;
 	int m_iCityDefenseModifier;
 	int m_iHighestUnitLevel;
@@ -1011,11 +1036,15 @@ protected:
 	EnumMap<YieldTypes, int> m_em_iYieldAfricaBuyPrice; // R&R, ray, Africa
 	EnumMap<YieldTypes, int> m_em_iYieldPortRoyalBuyPrice; // R&R, ray, Port Royal
 	EnumMap<YieldTypes, int> m_em_iYieldTradedTotal;
+	EnumMap<YieldTypes, int> m_em_iYieldTradedTotalAfrica; // WTP, ray, Yields Traded Total for Africa and Port Royal - START
+	EnumMap<YieldTypes, int> m_em_iYieldTradedTotalPortRoyal; // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 	EnumMap<YieldTypes, int> m_em_iYieldBoughtTotal;
+	EnumMap<YieldTypes, int> m_em_iYieldBoughtTotalAfrica; // WTP, ray, Yields Traded Total for Africa and Port Royal - START
+	EnumMap<YieldTypes, int> m_em_iYieldBoughtTotalPortRoyal; // WTP, ray, Yields Traded Total for Africa and Port Royal - START
 	EnumMap<YieldTypes, int> m_em_iTaxYieldModifierCount;
 	EnumMap<YieldTypes, int> m_em_iYieldScoreTotal; // R&R, vetiarvind, Price dependent tax rate change
 
-	EnumMapDefault<YieldTypes, bool, true> m_em_bYieldEuropeTradable;
+	EnumMap<YieldTypes, bool, true> m_em_bYieldEuropeTradable;
 	EnumMap<FeatTypes, bool> m_em_bFeatAccomplished;
 	EnumMap<PlayerOptionTypes, bool> m_em_bOptions;
 
@@ -1035,7 +1064,7 @@ protected:
 	EnumMap<HurryTypes, int> m_em_iHurryCount;
 	EnumMap<SpecialBuildingTypes, int> m_em_iSpecialBuildingNotRequiredCount;
 	EnumMap<PlayerTypes, int> m_em_iMissionaryPoints;
-	EnumMapDefault<PlayerTypes, int, 100> m_em_iMissionaryThresholdMultiplier;
+	EnumMap<PlayerTypes, int, 100> m_em_iMissionaryThresholdMultiplier;
 	EnumMap<ProfessionTypes, int> m_em_iProfessionEquipmentModifier;
 	EnumMap<TraitTypes, int> m_em_iTraitCount;
 	// cache CvPlayer::getYieldEquipmentAmount - start - Nightinggale
@@ -1046,8 +1075,8 @@ protected:
 	// cache CvPlayer::getYieldEquipmentAmount - start - Nightinggale
 	std::vector<EventTriggerTypes> m_triggersFired;
 	EnumMap<CivicOptionTypes, CivicTypes> m_em_eCivics;
-	EnumMap2D<ImprovementTypes, YieldTypes, int> m_em_iImprovementYieldChange;
-	EnumMap2D<BuildingClassTypes, YieldTypes, int> m_em_iBuildingYieldChange;
+	EnumMap<ImprovementTypes  , EnumMap<YieldTypes, int> > m_em_iImprovementYieldChange;
+	EnumMap<BuildingClassTypes, EnumMap<YieldTypes, int> > m_em_iBuildingYieldChange;
 	CLinkList<int> m_groupCycle;
 	std::vector<CvWString> m_aszCityNames;
 	FFreeListTrashArray<CvCityAI> m_cities;

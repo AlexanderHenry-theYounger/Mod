@@ -73,7 +73,7 @@ public:
 	bool shareAdjacentArea( const CvPlot* pPlot) const;
 	bool isAdjacentToLand() const;
 	bool isCoastalLand(int iMinWaterSize = -1) const;
-	bool hasAnyOtherWaterPlotsThanJustLargeRivers() const;
+	bool hasDeepWaterCoast() const;
 	bool isAdjacentWaterPassable(CvPlot* pPlot) const;
 
 	bool isVisibleWorked() const;
@@ -85,6 +85,7 @@ public:
 	DllExport bool isRiverCrossingFlowClockwise(DirectionTypes eDirection) const;
 	bool isRiverSide() const;
 	bool isRiver() const;
+	bool isFreshWater() const; // WTP, ray, Health Overhaul
 	bool isRiverConnection(DirectionTypes eDirection) const;
 
 	CvPlot* getNearestLandPlotInternal(int iDistance) const;
@@ -181,7 +182,13 @@ public:
 	// R&R, ray, Monasteries and Forts - START
 	bool isFort() const;
 	bool isMonastery() const;
+	bool isCanal() const;
 	// R&R, ray, Monasteries and Forts - END
+
+	//R&R mod, vetiarvind, super forts merge, refactor checks for activating monastery and forts - start
+	CvUnit* getFortDefender();
+	CvUnit* getMonasteryMissionary();
+	//R&R mod, vetiarvind, super forts merge, refactor checks for activating monastery and forts - end
 
 	bool isOccupation() const;
 	bool isBeingWorked() const;
@@ -223,6 +230,9 @@ public:
 	bool at(int iX, int iY) const;
 	int getIndex() const;
 	int getLatitude() const;
+	int getSignedLatitude() const; //ray, Norther and Southern Hemisphere, using hint of f1rpo 
+	bool isSouthernHemisphere() const; //ray, Norther and Southern Hemisphere, using hint of f1rpo 
+	bool isNorthernHemisphere() const; //ray, Norther and Southern Hemisphere, using hint of f1rpo 
 	int getFOWIndex() const;
 	CvArea* area() const;
 	CvArea* waterArea() const;
@@ -240,7 +250,7 @@ public:
 
 	//WTP, Nightinggale - Terrain locator - start
 	template <typename T>
-	bool hasNearbyPlotWith(const InfoArray<T>& kInfo, int iRange = 1, bool bEmptyReturnVal = true) const;
+	bool hasNearbyPlotWith(const InfoArray1<T>& kInfo, int iRange = 1, bool bEmptyReturnVal = true) const;
 
 	// function to avoid using an InfoArray, though it only works when searching for a single value
 	// use InfoArray if searching for multiple as it will be faster
@@ -561,9 +571,9 @@ protected:
 	signed char m_seeThroughLevelCache;
 	signed char m_iPlotVisibilityCache;
 	signed char m_iUnitVisibilityBonusCache;
-	EnumMap<TeamTypes  , short> m_em_iVisibilityCount;
-	EnumMap<TeamTypes  , PlayerTypes> m_em_eRevealedOwner;
-	TeamBoolArray m_pab_Revealed;
+	EnumMap<TeamTypes, short      > m_em_iVisibilityCount;
+	EnumMap<TeamTypes, PlayerTypes> m_em_eRevealedOwner;
+	EnumMap<TeamTypes, bool       > m_em_bRevealed;
 	RevealedPlotDataArray m_aeRevealedImprovementRouteTypes;
 
 	char* m_szScriptData;
@@ -579,8 +589,8 @@ protected:
 
 	CvPlotBuilder* m_pPlotBuilder;		// builds bonuses and improvements
 
-	EnumMap2D<PlayerTypes, CultureLevelTypes, char> m_em2_iCultureRangeCities;
-	EnumMap2D<TeamTypes, InvisibleTypes, short> m_em2_iInvisibleVisibilityCount;
+	EnumMap<PlayerTypes, EnumMap<CultureLevelTypes, char > > m_em2_iCultureRangeCities;
+	EnumMap<TeamTypes  , EnumMap<InvisibleTypes   , short> > m_em2_iInvisibleVisibilityCount;
 
 	CLinkList<IDInfo> m_units;
 
@@ -589,10 +599,6 @@ protected:
 
 	void processArea(CvArea* pArea, int iChange);
 	void doImprovementUpgrade();
-	//R&R mod, vetiarvind, super forts merge, refactor checks for activating monastery and forts - start
-	CvUnit* getFortDefender();
-	CvUnit* getMonasteryMissionary();
-	//R&R mod, vetiarvind, super forts merge, refactor checks for activating monastery and forts - end
 	// R&R, ray, Monasteries and Forts - START	
 	void doFort();
 	void doMonastery();

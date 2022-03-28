@@ -1410,7 +1410,9 @@ CvProfessionInfo::CvProfessionInfo() :
 	// m_iYieldConsumed(NO_YIELD),
 	// R&R, ray , MYCP partially based on code of Aymerick - END
 	m_iSpecialBuilding(NO_SPECIALBUILDING),
-	m_iCombatChange(0),
+	m_iCombatChange(0), 
+	m_iBombardRateChangeProfession(0), // WTP, ray, Cannons to Professions - START
+	m_iBarracksSpaceNeededChange(0), // WTP, ray, new Barracks System - START
 	m_iMovesChange(0),
 	m_iWorkRate(0),
 	m_iMissionaryRate(0),
@@ -1492,6 +1494,21 @@ int CvProfessionInfo::getCombatChange() const
 {
 	return m_iCombatChange;
 }
+
+// WTP, ray, Cannons to Professions - START
+int CvProfessionInfo::getBombardRateChangeProfession() const
+{
+	return m_iBombardRateChangeProfession;
+}
+// WTP, ray, Cannons to Professions - END
+
+// WTP, ray, new Barracks System - START
+int CvProfessionInfo::getBarracksSpaceNeededChange() const
+{
+	return m_iBarracksSpaceNeededChange;
+}
+// WTP, ray, new Barracks System - END
+
 int CvProfessionInfo::getMovesChange() const
 {
 	return m_iMovesChange;
@@ -1619,6 +1636,8 @@ void CvProfessionInfo::read(FDataStreamBase* stream)
 	// R&R, ray , MYCP partially based on code of Aymerick - END
 	stream->Read(&m_iSpecialBuilding);
 	stream->Read(&m_iCombatChange);
+	stream->Read(&m_iBombardRateChangeProfession); // WTP, ray, Cannons to Professions - START
+	stream->Read(&m_iBarracksSpaceNeededChange); // WTP, ray, new Barracks System - START
 	stream->Read(&m_iMovesChange);
 	stream->Read(&m_iWorkRate);
 	stream->Read(&m_iMissionaryRate);
@@ -1685,6 +1704,8 @@ void CvProfessionInfo::write(FDataStreamBase* stream)
 	// R&R, ray , MYCP partially based on code of Aymerick - END
 	stream->Write(m_iSpecialBuilding);
 	stream->Write(m_iCombatChange);
+	stream->Write(m_iBombardRateChangeProfession); // WTP, ray, Cannons to Professions - START
+	stream->Write(m_iBarracksSpaceNeededChange); // WTP, ray, new Barracks System - START
 	stream->Write(m_iMovesChange);
 	stream->Write(m_iWorkRate);
 	stream->Write(m_iMissionaryRate);
@@ -1753,6 +1774,8 @@ bool CvProfessionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(szTextVal, "SpecialBuilding");
 	m_aszExtraXMLforPass3.push_back(szTextVal);
 	pXML->GetChildXmlValByName(&m_iCombatChange, "iCombatChange");
+	pXML->GetChildXmlValByName(&m_iBombardRateChangeProfession, "iBombardRateChangeProfession"); // WTP, ray, Cannons to Professions - START
+	pXML->GetChildXmlValByName(&m_iBarracksSpaceNeededChange, "iBarracksSpaceNeededChange"); // WTP, ray, new Barracks System - START
 	pXML->GetChildXmlValByName(&m_iMovesChange, "iMovesChange");
 	pXML->GetChildXmlValByName(&m_iWorkRate, "iWorkRate");
 	pXML->GetChildXmlValByName(&m_iMissionaryRate, "iMissionaryRate");
@@ -2621,9 +2644,10 @@ int CvUnitInfo::NBMOD_GetTeachLevel() const
 //
 //------------------------------------------------------------------------------------------------------
 CvUnitInfo::CvUnitInfo() :
-// PatchMod: Berth size START
-m_iBerthSize(1),
-// PatchMod: Berth size END
+
+m_iBerthSize(1), // PatchMod: Berth size START
+m_iHarbourSpaceNeeded(0), // WTP, ray, new Harbour System - START
+m_iBarracksSpaceNeeded(0), // WTP, ray, new Barracks System - START
 
 /** NBMOD EDU **/
 m_iTeachLevel(3),
@@ -2704,6 +2728,9 @@ m_bIgnoreTerrainCost(false),
 m_bMechanized(false),
 m_bLineOfSight(false),
 m_bHiddenNationality(false),
+m_bSlaveShip(false), // WTP, ray Slave Ship
+m_bTreasureShip(false), // WTP, ray Treasure Ship
+m_bTroopShip(false), // WTP, ray Troop Ship
 m_bAlwaysHostile(false),
 m_bTreasure(false),
 // R&R, ray, Changes for Treasures, START
@@ -2720,6 +2747,7 @@ m_canRevolt(false),
 m_bCapturesCargo(false),
 // TAC Capturing Ships - ray
 m_bCapturesShips(false),
+m_iCaptureShipsChanceIncrease(0), // WTP, ray, Capture Ship chance increase - START
 // TAC Capturing Ships - ray - END
 m_bLandYieldChanges(false),
 m_bWaterYieldChanges(false),
@@ -3118,6 +3146,27 @@ bool CvUnitInfo::isHiddenNationality() const
 {
 	return m_bHiddenNationality;
 }
+// WTP, ray Slave Ship - START
+bool CvUnitInfo::isSlaveShip() const
+{
+	return m_bSlaveShip;
+}
+// WTP, ray Slave Ship - END
+
+// WTP, ray Treasure Ship - START
+bool CvUnitInfo::isTreasureShip() const
+{
+	return m_bTreasureShip;
+}
+// WTP, ray Treasure Ship - END
+
+// WTP, ray Troop Ship - START
+bool CvUnitInfo::isTroopShip() const
+{
+	return m_bTroopShip;
+}
+// WTP, ray Troop Ship - END
+
 bool CvUnitInfo::isAlwaysHostile() const
 {
 	return m_bAlwaysHostile;
@@ -3167,6 +3216,13 @@ bool CvUnitInfo::isCapturesCargo() const
 bool CvUnitInfo::isCapturesShips() const
 {
 	return m_bCapturesShips;
+}
+// TAC Capturing Ships - ray - END
+
+// TAC Capturing Ships - ray
+int CvUnitInfo::getCaptureShipsChanceIncrease() const
+{
+	return m_iCaptureShipsChanceIncrease;
 }
 // TAC Capturing Ships - ray - END
 
@@ -3271,7 +3327,7 @@ int CvUnitInfo::getYieldModifier(int i) const
 	return m_aiYieldModifier ? m_aiYieldModifier[i] : -1;
 }
 // R&R, Androrc, Domestic Market -- modified by Nightinggale - start
-const InfoArray<YieldTypes, IntTypes>& CvUnitInfo::getYieldDemands() const
+const InfoArray<YieldTypes, int>& CvUnitInfo::getYieldDemands() const
 {
 	return m_info_YieldDemands;
 }
@@ -3534,9 +3590,9 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_iDomainCargo);
 	stream->Read(&m_iCargoSpace);
 	stream->Read(&m_iRequiredTransportSize);
-	// PatchMod: Berth size START
-	stream->Read(&m_iBerthSize);
-	// PatchMod: Berth size END
+	stream->Read(&m_iBerthSize); // PatchMod: Berth size START
+	stream->Read(&m_iHarbourSpaceNeeded); // WTP, ray, new Harbour System - START
+	stream->Read(&m_iBarracksSpaceNeeded); // WTP, ray, new Barracks System - START
 	stream->Read(&m_iAssetValue);
 	stream->Read(&m_iPowerValue);
 	stream->Read(&m_iUnitClassType);
@@ -3581,6 +3637,9 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_bMechanized);
 	stream->Read(&m_bLineOfSight);
 	stream->Read(&m_bHiddenNationality);
+	stream->Read(&m_bSlaveShip); // WTP, ray Slave Ship
+	stream->Read(&m_bTreasureShip); // WTP, ray Treasure Ship
+	stream->Read(&m_bTroopShip); // WTP, ray Troop Ship
 	stream->Read(&m_bAlwaysHostile);
 	stream->Read(&m_bTreasure);
 	// R&R, ray, Changes for Treasures, START
@@ -3600,6 +3659,7 @@ void CvUnitInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_bCapturesCargo);
 	// TAC Capturing Ships - ray
 	stream->Read(&m_bCapturesShips);
+	stream->Read(&m_iCaptureShipsChanceIncrease); // WTP, ray, Capture Ship chance increase - START
 	// TAC Capturing Ships - ray - End
 	stream->Read(&m_bLandYieldChanges);
 	stream->Read(&m_bWaterYieldChanges);
@@ -3758,9 +3818,9 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iDomainCargo);
 	stream->Write(m_iCargoSpace);
 	stream->Write(m_iRequiredTransportSize);
-	// PatchMod: Berth size START
-	stream->Write(m_iBerthSize);
-	// PatchMod: Berth size END
+	stream->Write(m_iBerthSize); // PatchMod: Berth size START
+	stream->Write(m_iHarbourSpaceNeeded); // WTP, ray, new Harbour System - START
+	stream->Write(m_iBarracksSpaceNeeded); // WTP, ray, new Barracks System - START
 	stream->Write(m_iAssetValue);
 	stream->Write(m_iPowerValue);
 	stream->Write(m_iUnitClassType);
@@ -3802,11 +3862,12 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	stream->Write(m_bMechanized);
 	stream->Write(m_bLineOfSight);
 	stream->Write(m_bHiddenNationality);
+	stream->Write(m_bSlaveShip); // WTP, ray Slave Ship
+	stream->Write(m_bTreasureShip); // WTP, ray Treasure Ship
+	stream->Write(m_bTroopShip); // WTP, ray Troop Ship
 	stream->Write(m_bAlwaysHostile);
 	stream->Write(m_bTreasure);
-	// R&R, ray, Changes for Treasures, START
-	stream->Write(m_bNoRevealMap);
-	// R&R, ray, Changes for Treasures, END
+	stream->Write(m_bNoRevealMap); // R&R, ray, Changes for Treasures, START
 
 	// TAC - LbD - Ray - START
 	stream->Write(m_canBecomeExpert);
@@ -3821,6 +3882,7 @@ void CvUnitInfo::write(FDataStreamBase* stream)
 	stream->Write(m_bCapturesCargo);
 	// TAC Capturing Ships - ray
 	stream->Write(m_bCapturesShips);
+	stream->Write(m_iCaptureShipsChanceIncrease); // WTP, ray, Capture Ship chance increase - START
 	// TAC Capturing Ships - ray - END
 	stream->Write(m_bLandYieldChanges);
 	stream->Write(m_bWaterYieldChanges);
@@ -3943,6 +4005,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bMechanized,"bMechanized",false);
 	pXML->GetChildXmlValByName(&m_bLineOfSight,"bLineOfSight",false);
 	pXML->GetChildXmlValByName(&m_bHiddenNationality,"bHiddenNationality",false);
+	pXML->GetChildXmlValByName(&m_bSlaveShip,"bSlaveShip",false); // WTP, ray Slave Ship
+	pXML->GetChildXmlValByName(&m_bTreasureShip,"bTreasureShip",false); // WTP, ray Treasure Ship
+	pXML->GetChildXmlValByName(&m_bTroopShip,"bTroopShip",false); // WTP, ray Troop Ship
 	pXML->GetChildXmlValByName(&m_bAlwaysHostile,"bAlwaysHostile",false);
 	pXML->GetChildXmlValByName(&m_bTreasure,"bTreasure",false);
 	// R&R, ray, Changes for Treasures, START
@@ -3962,6 +4027,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bCapturesCargo,"bCapturesCargo",false);
 	// TAC Capturing Ships - ray
 	pXML->GetChildXmlValByName(&m_bCapturesShips,"bCapturesShips",false);
+	pXML->GetChildXmlValByName(&m_iCaptureShipsChanceIncrease,"iCaptureShipsChanceIncrease",false); // WTP, ray, Capture Ship chance increase - START
 	// TAC Capturing Ships - ray - END
 	pXML->GetChildXmlValByName(&m_bLandYieldChanges,"bLandYieldChanges",true);
 	pXML->GetChildXmlValByName(&m_bWaterYieldChanges,"bWaterYieldChanges",true);
@@ -4044,9 +4110,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	m_iDomainCargo = pXML->FindInInfoClass(szTextVal);
 	pXML->GetChildXmlValByName(&m_iCargoSpace, "iCargo");
 	pXML->GetChildXmlValByName(&m_iRequiredTransportSize, "iRequiredTransportSize");
-	// PatchMod: Berth size START
-	pXML->GetChildXmlValByName(&m_iBerthSize, "iBerthSize");
-	// PatchMod: Berth size END
+	pXML->GetChildXmlValByName(&m_iBerthSize, "iBerthSize"); // PatchMod: Berth size START
+	pXML->GetChildXmlValByName(&m_iHarbourSpaceNeeded, "iHarbourSpaceNeeded"); // WTP, ray, new Harbour System - START
+	pXML->GetChildXmlValByName(&m_iBarracksSpaceNeeded, "iBarracksSpaceNeeded"); // WTP, ray, new Barracks System - START
 	pXML->GetChildXmlValByName(&m_iAssetValue, "iAsset");
 	pXML->GetChildXmlValByName(&m_iPowerValue, "iPower");
 	// Read the mesh groups elements
@@ -4873,6 +4939,7 @@ m_iVictoryPrereq(NO_VICTORY),
 m_iFreeStartEra(NO_ERA),
 m_iMaxStartEra(NO_ERA),
 m_iFreePromotion(NO_PROMOTION),
+m_iRouteTypeCreated(NO_ROUTE), //ray, removing hardcoded Roads for Buildings
 m_iAIWeight(0),
 m_iHurryCostModifier(0),
 m_iAdvancedStartCost(0),
@@ -4891,8 +4958,10 @@ m_iMilitaryProductionModifier(0),
 m_iAssetValue(0),
 m_iPowerValue(0),
 m_iYieldStorage(0),
+m_iMaxHarbourSpaceProvided(0), // WTP, ray, new Harbour System - START
+m_iMaxBarracksSpaceProvided(0), // WTP, ray, new Barracks System - START
 m_iSpecialBuildingType(NO_SPECIALBUILDING),
-m_iIndexOf_NextBuildingType_In_SpecialBuilding(NO_BUILDING),
+m_eIndexOf_NextBuildingType_In_SpecialBuilding(NO_BUILDING),
 m_iConquestProbability(0),
 m_iHealRateChange(0),
 m_iDefenseModifier(0),
@@ -4911,6 +4980,7 @@ m_bNationalWonder(false), // R&R, ray, National Wonders
 m_bNeverCapture(false),
 m_bCenterInCity(false),
 m_iDomesticMarketModifier(0),
+m_iEntertainmentGoldModifier(0), // ray, Balancing of Entertainment Buildings in XML
 m_aiProductionTraits(NULL),
 m_aiLandPlotYieldChange(NULL), // R&R, ray, Landplot Yields
 m_aiSeaPlotYieldChange(NULL),
@@ -4967,6 +5037,12 @@ int CvBuildingInfo::getFreePromotion() const
 {
 	return m_iFreePromotion;
 }
+//ray, removing hardcoded Roads for Buildings - START
+int CvBuildingInfo::getRouteTypeCreated() const
+{
+	return m_iRouteTypeCreated;
+}
+//ray, removing hardcoded Roads for Buildings - END
 int CvBuildingInfo::getAIWeight() const
 {
 	return m_iAIWeight;
@@ -5039,6 +5115,20 @@ int CvBuildingInfo::getYieldStorage() const
 {
 	return m_iYieldStorage;
 }
+// WTP, ray, new Harbour System - START
+int CvBuildingInfo::getMaxHarbourSpaceProvided() const
+{
+	return m_iMaxHarbourSpaceProvided;
+}
+// WTP, ray, new Harbour System - END
+
+// WTP, ray, new Barracks System - START
+int CvBuildingInfo::getMaxBarracksSpaceProvided() const
+{
+	return m_iMaxBarracksSpaceProvided;
+}
+// WTP, ray, new Barracks System - END
+
 int CvBuildingInfo::getSpecialBuildingType() const
 {
 	return m_iSpecialBuildingType;
@@ -5112,7 +5202,7 @@ const InfoArray<PlotTypes>& CvBuildingInfo::AI_getRequiredCatchmentAreaPlotTypes
 {
 	return m_info_AIRequiredCatchmentAreaPlotTypes;
 }
-const InfoArray<UnitClassTypes, IntTypes>& CvBuildingInfo::AI_getUnitClassWeight() const
+const InfoArray<UnitClassTypes, int>& CvBuildingInfo::AI_getUnitClassWeight() const
 {
 	return m_info_AIUnitClassWeight;
 }
@@ -5134,7 +5224,7 @@ bool CvBuildingInfo::isCenterInCity() const
 	return m_bCenterInCity;
 }
 // R&R, Androrc, Domestic Market -- modified by Nightinggale - start
-const InfoArray<YieldTypes, IntTypes>& CvBuildingInfo::getYieldDemands() const
+const InfoArray<YieldTypes, int>& CvBuildingInfo::getYieldDemands() const
 {
 	return m_info_YieldDemands;
 }
@@ -5313,6 +5403,7 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_iFreeStartEra);
 	stream->Read(&m_iMaxStartEra);
 	stream->Read(&m_iFreePromotion);
+	stream->Read(&m_iRouteTypeCreated); //ray, removing hardcoded Roads for Buildings
 	stream->Read(&m_iAIWeight);
 	stream->Read(&m_iHurryCostModifier);
 	stream->Read(&m_iAdvancedStartCost);
@@ -5331,8 +5422,10 @@ void CvBuildingInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_iAssetValue);
 	stream->Read(&m_iPowerValue);
 	stream->Read(&m_iYieldStorage);
+	stream->Read(&m_iMaxHarbourSpaceProvided); // WTP, ray, new Harbour System - START
+	stream->Read(&m_iMaxBarracksSpaceProvided); // WTP, ray, new Barracks System - START
 	stream->Read(&m_iSpecialBuildingType);
-	stream->Read(&m_iIndexOf_NextBuildingType_In_SpecialBuilding);
+	stream->Read(&m_eIndexOf_NextBuildingType_In_SpecialBuilding);
 	stream->Read(&m_iConquestProbability);
 	stream->Read(&m_iHealRateChange);
 	stream->Read(&m_iDefenseModifier);
@@ -5407,6 +5500,7 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iFreeStartEra);
 	stream->Write(m_iMaxStartEra);
 	stream->Write(m_iFreePromotion);
+	stream->Write(m_iRouteTypeCreated); //ray, removing hardcoded Roads for Buildings
 	stream->Write(m_iAIWeight);
 	stream->Write(m_iHurryCostModifier);
 	stream->Write(m_iAdvancedStartCost);
@@ -5425,8 +5519,10 @@ void CvBuildingInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iAssetValue);
 	stream->Write(m_iPowerValue);
 	stream->Write(m_iYieldStorage);
+	stream->Write(m_iMaxHarbourSpaceProvided); // WTP, ray, new Harbour System - START
+	stream->Write(m_iMaxBarracksSpaceProvided);	// WTP, ray, new Barracks System - START
 	stream->Write(m_iSpecialBuildingType);
-	stream->Write(m_iIndexOf_NextBuildingType_In_SpecialBuilding);
+	stream->Write(m_eIndexOf_NextBuildingType_In_SpecialBuilding);
 	stream->Write(m_iConquestProbability);
 	stream->Write(m_iHealRateChange);
 	stream->Write(m_iDefenseModifier);
@@ -5502,7 +5598,12 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_aiProductionTraits, "ProductionTraits", GC.getNumTraitInfos(), 0);
 	pXML->GetChildXmlValByName(szTextVal, "FreePromotion");
 	m_iFreePromotion = pXML->FindInInfoClass(szTextVal);
+	//ray, removing hardcoded Roads for Buildings - START
+	pXML->GetChildXmlValByName(szTextVal, "RouteTypeCreated");
+	m_iRouteTypeCreated = pXML->FindInInfoClass(szTextVal);
+	//ray, removing hardcoded Roads for Buildings - END
 	pXML->GetChildXmlValByName(&m_iDomesticMarketModifier, "iDomesticMarketModifier");
+	pXML->GetChildXmlValByName(&m_iEntertainmentGoldModifier, "iEntertainmentGoldModifier"); // ray, Balancing of Entertainment Buildings in XML
 	readXML(m_info_YieldDemands, "YieldDemands");
 	pXML->GetChildXmlValByName(&m_bWorksWater, "bWorksWater");
 	pXML->GetChildXmlValByName(&m_bWater, "bWater");
@@ -5537,6 +5638,8 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iAssetValue, "iAsset");
 	pXML->GetChildXmlValByName(&m_iPowerValue, "iPower");
 	pXML->GetChildXmlValByName(&m_iYieldStorage, "iYieldStorage");
+	pXML->GetChildXmlValByName(&m_iMaxHarbourSpaceProvided, "iMaxHarbourSpaceProvided"); // WTP, ray, new Harbour System - START
+	pXML->GetChildXmlValByName(&m_iMaxBarracksSpaceProvided, "iMaxBarracksSpaceProvided"); // WTP, ray, new Barracks System - START
 	pXML->GetChildXmlValByName(&m_fVisibilityPriority, "fVisibilityPriority");
 	pXML->SetVariableListTagPair(&m_aiLandPlotYieldChange, "LandPlotYieldChanges", NUM_YIELD_TYPES, 0); // R&R, ray, Landplot Yields
 	pXML->SetVariableListTagPair(&m_aiSeaPlotYieldChange, "SeaPlotYieldChanges", NUM_YIELD_TYPES, 0);
@@ -5565,15 +5668,15 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 
 bool CvBuildingInfo::readPass2(CvXMLLoadUtility* pXML)
 {
-	m_iIndexOf_NextBuildingType_In_SpecialBuilding = GC.getInfoTypeForString(getType());
+	m_eIndexOf_NextBuildingType_In_SpecialBuilding = getIndexForType<BuildingTypes>(getType());
 	if(getSpecialBuildingType() != NO_SPECIALBUILDING)
 	{
 		for(int i=0;i<GC.getNumBuildingInfos();i++)
 		{
-			BuildingTypes eLoopBuilding = (BuildingTypes) ((m_iIndexOf_NextBuildingType_In_SpecialBuilding + i + 1) % GC.getNumBuildingInfos());
+			BuildingTypes eLoopBuilding = (BuildingTypes) ((m_eIndexOf_NextBuildingType_In_SpecialBuilding + i + 1) % GC.getNumBuildingInfos());
 			if(GC.getBuildingInfo(eLoopBuilding).getSpecialBuildingType() == getSpecialBuildingType())
 			{
-				m_iIndexOf_NextBuildingType_In_SpecialBuilding = eLoopBuilding;
+				m_eIndexOf_NextBuildingType_In_SpecialBuilding = eLoopBuilding;
 				break;
 			}
 		}
@@ -5626,6 +5729,10 @@ int CvSpecialBuildingInfo::getFontButtonIndex() const
 	return m_iFontButtonIndex;
 }
 // Arrays
+const InfoArray<BuildingTypes, int>& CvSpecialBuildingInfo::getBuildings() const
+{
+	return m_buildings;
+}
 int CvSpecialBuildingInfo::getProductionTraits(int i) const
 {
 	FAssertMsg(i < GC.getNumTraitInfos(), "Index out of bounds");
@@ -5650,6 +5757,24 @@ bool CvSpecialBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_aiProductionTraits, "ProductionTraits", GC.getNumTraitInfos(), 0);
 	pXML->GetChildXmlValByName(m_szNatureObject, "NatureObject");	// TAC - Nature Objects - koma13
 	return true;
+}
+void CvSpecialBuildingInfo::postXmlReadSetup()
+{
+	EnumMap<SpecialBuildingTypes, EnumMap<BuildingTypes, int, -1> > em;
+
+	for (BuildingTypes eBuilding = FIRST_BUILDING; eBuilding < NUM_BUILDING_TYPES; ++eBuilding)
+	{
+		CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+		SpecialBuildingTypes eSpecial = static_cast<SpecialBuildingTypes>(kBuilding.getSpecialBuildingType());
+		if (eSpecial != NO_SPECIALBUILDING)
+		{
+			em[eSpecial].set(eBuilding, kBuilding.getSpecialBuildingPriority());
+		}
+	}
+	for (SpecialBuildingTypes eSpecialBuilding = em.FIRST; eSpecialBuilding <= em.LAST; ++eSpecialBuilding)
+	{
+		GC.getSpecialBuildingInfo(eSpecialBuilding).m_buildings.assignFrom(em[eSpecialBuilding]);
+	}
 }
 //======================================================================================================
 //					CvBuildingClassInfo
@@ -8099,6 +8224,9 @@ m_iGoodyUniqueRange(0),
 m_iFeatureGrowthProbability(0),
 m_iUpgradeTime(0),
 m_iDefenseModifier(0),
+m_iFoodModifierForCity(0), // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+m_iHammersModifierForCity(0), // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+m_iToolsModifierForCity(0), // WTP, ray, Improvements give Bonus to their City - PART 2 - START
 m_iPillageGold(0),
 m_iImprovementPillage(NO_IMPROVEMENT),
 m_iImprovementUpgrade(NO_IMPROVEMENT),
@@ -8115,6 +8243,8 @@ m_bUpgradeRequiresFortify(false),
 m_bActsAsCity(true),
 m_bFort(true), // R&R, ray, Monasteries and Forts
 m_bMonastery(true), // R&R, ray, Monasteries and Forts
+m_bCanal(true), // WTP, ray, Canal - START
+m_bNotAllowedNextToSameAsItself(false), // WTP, ray, Not allowed next to itself - START
 m_bHillsMakesValid(false),
 m_bRiverSideMakesValid(false),
 m_bRequiresFlatlands(false),
@@ -8188,6 +8318,22 @@ int CvImprovementInfo::getDefenseModifier() const
 {
 	return m_iDefenseModifier;
 }
+
+// WTP, ray, Improvements give Bonus to their City - PART 2 - START
+int CvImprovementInfo::getFoodModifierForCity() const
+{
+	return m_iFoodModifierForCity;
+}
+int CvImprovementInfo::getHammersModifierForCity() const
+{
+	return m_iHammersModifierForCity;
+}
+int CvImprovementInfo::getToolsModifierForCity() const
+{
+	return m_iToolsModifierForCity;
+}
+// WTP, ray, Improvements give Bonus to their City - PART 2 - END
+
 int CvImprovementInfo::getPillageGold() const
 {
 	return m_iPillageGold;
@@ -8267,6 +8413,21 @@ bool CvImprovementInfo::isMonastery() const
 	return m_bMonastery;
 }
 // R&R, ray, Monasteries and Forts- END
+
+// WTP, ray, Canal - START
+bool CvImprovementInfo::isCanal() const
+{
+	return m_bCanal;
+}
+// WTP, ray, Canal - END
+
+// WTP, ray, Not allowed next to itself - START
+bool CvImprovementInfo::isNotAllowedNextToSameAsItself() const
+{
+	return m_bNotAllowedNextToSameAsItself;
+}
+// WTP, ray, Not allowed next to itself - END
+
 bool CvImprovementInfo::isHillsMakesValid() const
 {
 	return m_bHillsMakesValid;
@@ -8449,6 +8610,9 @@ void CvImprovementInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_iFeatureGrowthProbability);
 	stream->Read(&m_iUpgradeTime);
 	stream->Read(&m_iDefenseModifier);
+	stream->Read(&m_iFoodModifierForCity); // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	stream->Read(&m_iHammersModifierForCity); // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	stream->Read(&m_iToolsModifierForCity); // WTP, ray, Improvements give Bonus to their City - PART 2 - START
 	stream->Read(&m_iPillageGold);
 	stream->Read(&m_iImprovementPillage);
 	stream->Read(&m_iImprovementUpgrade);
@@ -8464,6 +8628,8 @@ void CvImprovementInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_bActsAsCity);
 	stream->Read(&m_bFort); // R&R, ray, Monasteries and Forts
 	stream->Read(&m_bMonastery); // R&R, ray, Monasteries and Forts
+	stream->Read(&m_bCanal); // WTP, ray, Canal - START
+	stream->Read(&m_bNotAllowedNextToSameAsItself);// WTP, ray, Not allowed next to itself - START
 	stream->Read(&m_bHillsMakesValid);
 	stream->Read(&m_bRiverSideMakesValid);
 	stream->Read(&m_bRequiresFlatlands);
@@ -8529,6 +8695,9 @@ void CvImprovementInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iFeatureGrowthProbability);
 	stream->Write(m_iUpgradeTime);
 	stream->Write(m_iDefenseModifier);
+	stream->Write(m_iFoodModifierForCity); // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	stream->Write(m_iHammersModifierForCity); // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	stream->Write(m_iToolsModifierForCity); // WTP, ray, Improvements give Bonus to their City - PART 2 - START
 	stream->Write(m_iPillageGold);
 	stream->Write(m_iImprovementPillage);
 	stream->Write(m_iImprovementUpgrade);
@@ -8544,6 +8713,8 @@ void CvImprovementInfo::write(FDataStreamBase* stream)
 	stream->Write(m_bActsAsCity);
 	stream->Write(m_bFort); // R&R, ray, Monasteries and Forts
 	stream->Write(m_bMonastery); // R&R, ray, Monasteries and Forts
+	stream->Write(m_bCanal); // WTP, ray, Canal - START
+	stream->Write(m_bNotAllowedNextToSameAsItself);// WTP, ray, Not allowed next to itself - START
 	stream->Write(m_bHillsMakesValid);
 	stream->Write(m_bRiverSideMakesValid);
 	stream->Write(m_bRequiresFlatlands);
@@ -8596,6 +8767,8 @@ bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bActsAsCity, "bActsAsCity");
 	pXML->GetChildXmlValByName(&m_bFort, "bFort"); // R&R, ray, Monasteries and Forts
 	pXML->GetChildXmlValByName(&m_bMonastery, "bMonastery"); // R&R, ray, Monasteries and Forts
+	pXML->GetChildXmlValByName(&m_bCanal, "bCanal"); // WTP, ray, Canal - START
+	pXML->GetChildXmlValByName(&m_bNotAllowedNextToSameAsItself, "bNotAllowedNextToSameAsItself"); // WTP, ray, Not allowed next to itself - START
 	pXML->GetChildXmlValByName(&m_bHillsMakesValid, "bHillsMakesValid");
 	pXML->GetChildXmlValByName(&m_bRiverSideMakesValid, "bRiverSideMakesValid");
 	pXML->GetChildXmlValByName(&m_bRequiresFlatlands, "bRequiresFlatlands");
@@ -8614,6 +8787,9 @@ bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iFeatureGrowthProbability, "iFeatureGrowth");
 	pXML->GetChildXmlValByName(&m_iUpgradeTime, "iUpgradeTime");
 	pXML->GetChildXmlValByName(&m_iDefenseModifier, "iDefenseModifier");
+	pXML->GetChildXmlValByName(&m_iFoodModifierForCity, "iFoodModifierForCity"); // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	pXML->GetChildXmlValByName(&m_iHammersModifierForCity, "iHammersModifierForCity"); // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	pXML->GetChildXmlValByName(&m_iToolsModifierForCity, "iToolsModifierForCity"); // WTP, ray, Improvements give Bonus to their City - PART 2 - START
 	pXML->GetChildXmlValByName(&m_iPillageGold, "iPillageGold");
 	pXML->GetChildXmlValByName(&m_bOutsideBorders, "bOutsideBorders");
 	// Super Forts begin *XML*
@@ -8701,6 +8877,7 @@ bool CvImprovementInfo::readPass2(CvXMLLoadUtility* pXML)
 //------------------------------------------------------------------------------------------------------
 CvBonusInfo::CvBonusInfo() :
 m_iChar(0),
+m_iHealthEffectFromRessource(0), // WTP, ray, Health Overhaul
 m_iAIObjective(0),
 m_iMinAreaSize(0),
 m_iMinLatitude(0),
@@ -8724,6 +8901,10 @@ m_bHills(false),
 m_bOcean(false), //TAC Whaling, ray
 m_bFlatlands(false),
 m_bNoRiverSide(false),
+m_bRiverSideOnly(false), // Ray, adding 2 more XML tags to control bonus placement
+m_bCoastalLandOnly(false), // Ray, adding 2 more XML tags to control bonus placement
+m_bOnlySouthernHemisphere(false), //ray, Norther and Southern Hemisphere, using hint of f1rpo 
+m_bOnlyNorthernHemisphere(false), //ray, Norther and Southern Hemisphere, using hint of f1rpo 
 m_bUseLSystem(false),
 m_bWhalingboatWorkable(false), //TAC Whaling, ray
 m_bFishingboatWorkable(false), // R&R, ray, High Sea Fishing
@@ -8757,6 +8938,12 @@ void CvBonusInfo::setChar(int i)
 {
 	m_iChar = i;
 }
+// WTP, ray, Health Overhaul - START
+int CvBonusInfo::getHealthEffectFromRessource() const
+{
+	return m_iHealthEffectFromRessource;
+}
+// WTP, ray, Health Overhaul - END
 int CvBonusInfo::getAIObjective() const
 {
 	return m_iAIObjective;
@@ -8849,6 +9036,30 @@ bool CvBonusInfo::isNoRiverSide() const
 {
 	return m_bNoRiverSide;
 }
+
+// Ray, adding 2 more XML tags to control bonus placement - START
+bool CvBonusInfo::isRiverSideOnly() const
+{
+	return m_bRiverSideOnly;
+}
+bool CvBonusInfo::isCoastalLandOnly() const
+{
+	return m_bCoastalLandOnly;
+}
+// Ray, adding 2 more XML tags to control bonus placement - END
+
+
+//ray, Norther and Southern Hemisphere, using hint of f1rpo - START
+bool CvBonusInfo::isOnlySouthernHemisphere() const
+{
+	return m_bOnlySouthernHemisphere;
+}
+bool CvBonusInfo::isOnlyNorthernHemisphere() const
+{
+	return m_bOnlyNorthernHemisphere;
+}
+//ray, Norther and Southern Hemisphere, using hint of f1rpo - START
+
 //TAC Whaling, ray
 bool CvBonusInfo::isWhalingboatWorkable() const
 {
@@ -8875,7 +9086,7 @@ void CvBonusInfo::setArtDefineTag(const char* szVal)
 {
 	m_szArtDefineTag = szVal;
 }
-//TAC Whaling, ray
+
 int CvBonusInfo::getNumYieldChanges() const
 {
 	int iNumYieldChanges = 0;
@@ -8904,7 +9115,6 @@ std::vector<int> CvBonusInfo::getYieldChangesArray()
 
 	return aiYields;
 }
-//EndTAC Whaling, ray
 
 // Arrays
 int CvBonusInfo::getYieldChange(int i) const
@@ -8964,6 +9174,7 @@ void CvBonusInfo::read(FDataStreamBase* stream)
 	uint uiFlag=0;
 	stream->Read(&uiFlag);		// flag for expansion
 	stream->Read(&m_iChar);
+	stream->Read(&m_iHealthEffectFromRessource);	// WTP, ray, Health Overhaul
 	stream->Read(&m_iAIObjective);
 	stream->Read(&m_iMinAreaSize);
 	stream->Read(&m_iMinLatitude);
@@ -8987,6 +9198,10 @@ void CvBonusInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_bOcean); //TAC Whaling, ray
 	stream->Read(&m_bFlatlands);
 	stream->Read(&m_bNoRiverSide);
+	stream->Read(&m_bRiverSideOnly); // Ray, adding 2 more XML tags to control bonus placement
+	stream->Read(&m_bCoastalLandOnly); // Ray, adding 2 more XML tags to control bonus placement
+	stream->Read(&m_bOnlySouthernHemisphere); //ray, Norther and Southern Hemisphere, using hint of f1rpo
+	stream->Read(&m_bOnlyNorthernHemisphere); //ray, Norther and Southern Hemisphere, using hint of f1rpo
 	stream->Read(&m_bWhalingboatWorkable); //TAC Whaling, ray
 	stream->Read(&m_bFishingboatWorkable); //TAC Whaling, ray
 	stream->Read(&m_bUseLSystem);
@@ -9014,6 +9229,7 @@ void CvBonusInfo::write(FDataStreamBase* stream)
 	uint uiFlag=0;
 	stream->Write(uiFlag);		// flag for expansion
 	stream->Write(m_iChar);
+	stream->Write(m_iHealthEffectFromRessource);	// WTP, ray, Health Overhaul
 	stream->Write(m_iAIObjective);
 	stream->Write(m_iMinAreaSize);
 	stream->Write(m_iMinLatitude);
@@ -9037,6 +9253,10 @@ void CvBonusInfo::write(FDataStreamBase* stream)
 	stream->Write(m_bOcean); //TAC Whaling, ray
 	stream->Write(m_bFlatlands);
 	stream->Write(m_bNoRiverSide);
+	stream->Write(m_bRiverSideOnly); // Ray, adding 2 more XML tags to control bonus placement
+	stream->Write(m_bCoastalLandOnly); // Ray, adding 2 more XML tags to control bonus placement
+	stream->Write(m_bOnlySouthernHemisphere); //ray, Norther and Southern Hemisphere, using hint of f1rpo
+	stream->Write(m_bOnlyNorthernHemisphere); //ray, Norther and Southern Hemisphere, using hint of f1rpo
 	stream->Write(m_bWhalingboatWorkable); //TAC Whaling, ray
 	stream->Write(m_bFishingboatWorkable); // R&R, ray, High Sea Fishing
 	stream->Write(m_bUseLSystem);
@@ -9060,6 +9280,7 @@ bool CvBonusInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName( szTextVal, "BuildingType");
 	m_iBuilding = GC.getInfoTypeForString(szTextVal);
 	pXML->SetVariableListTagPair(&m_aiYieldChange, "YieldChanges", NUM_YIELD_TYPES, 0);
+	pXML->GetChildXmlValByName(&m_iHealthEffectFromRessource, "iHealthEffectFromRessource");	// WTP, ray, Health Overhaul
 	pXML->GetChildXmlValByName(&m_iAIObjective, "iAIObjective");
 	pXML->GetChildXmlValByName(&m_iMinAreaSize, "iMinAreaSize");
 	pXML->GetChildXmlValByName(&m_iMinLatitude, "iMinLatitude");
@@ -9088,6 +9309,10 @@ bool CvBonusInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bOcean, "bOcean"); //TAC Whaling, ray
 	pXML->GetChildXmlValByName(&m_bFlatlands, "bFlatlands");
 	pXML->GetChildXmlValByName(&m_bNoRiverSide, "bNoRiverSide");
+	pXML->GetChildXmlValByName(&m_bRiverSideOnly, "bRiverSideOnly"); // Ray, adding 2 more XML tags to control bonus placement
+	pXML->GetChildXmlValByName(&m_bCoastalLandOnly, "bCoastalLandOnly"); // Ray, adding 2 more XML tags to control bonus placement
+	pXML->GetChildXmlValByName(&m_bOnlySouthernHemisphere, "bOnlySouthernHemisphere"); //ray, Norther and Southern Hemisphere, using hint of f1rpo
+	pXML->GetChildXmlValByName(&m_bOnlyNorthernHemisphere, "bOnlyNorthernHemisphere"); //ray, Norther and Southern Hemisphere, using hint of f1rpo
 	pXML->GetChildXmlValByName(&m_bWhalingboatWorkable, "bWhalingboatWorkable"); //TAC Whaling, ray
 	pXML->GetChildXmlValByName(&m_bFishingboatWorkable, "bFishingboatWorkable"); // R&R, ray, High Sea Fishing
 	pXML->GetChildXmlValByName(&m_bUseLSystem, "bUseLSystem");
@@ -9119,11 +9344,25 @@ m_iTurnDamage(0),
 m_bGeneratedEveryRound(false),
 // R&R, Robert Surcouf, Damage on Storm plots, End
 m_bNoCoast(false),
+m_bOnlyCoastalLand(false), //WTP, Feature settings enhancements
 m_bNoRiver(false),
 m_bNoAdjacent(false),
 m_bRequiresFlatlands(false),
+m_bRequiresHills(false), //WTP, Feature settings enhancements
+m_bRequiresPeaks(false), //WTP, Feature settings enhancements
 m_bRequiresRiver(false),
 m_bImpassable(false),
+// ray, Streams Feature - START
+m_bNorthMovementBonus(false), 
+m_bSouthMovementBonus(false), 
+m_bEastMovementBonus(false), 
+m_bWestMovementBonus(false), 
+m_bNorthEastMovementBonus(false), 
+m_bNorthWestMovementBonus(false), 
+m_bSouthEastMovementBonus(false), 
+m_bSouthWestMovementBonus(false), 
+// ray, Streams Feature - END
+
 m_bNoCity(false),
 m_bNoImprovement(false),
 m_bVisibleAlways(false),
@@ -9191,6 +9430,13 @@ bool CvFeatureInfo::isNoCoast() const
 {
 	return m_bNoCoast;
 }
+
+//WTP, Feature settings enhancements
+bool CvFeatureInfo::isOnlyCoastalLand() const
+{
+	return m_bOnlyCoastalLand;
+}
+
 bool CvFeatureInfo::isNoRiver() const
 {
 	return m_bNoRiver;
@@ -9203,6 +9449,51 @@ bool CvFeatureInfo::isRequiresFlatlands() const
 {
 	return m_bRequiresFlatlands;
 }
+
+// ray, Streams Feature
+bool CvFeatureInfo::isNorthMovementBonus() const
+{
+	return m_bNorthMovementBonus;
+}
+bool CvFeatureInfo::isSouthMovementBonus() const
+{
+	return m_bSouthMovementBonus;
+}
+bool CvFeatureInfo::isEastMovementBonus() const
+{
+	return m_bEastMovementBonus;
+}
+bool CvFeatureInfo::isWestMovementBonus() const
+{
+	return m_bWestMovementBonus;
+}
+bool CvFeatureInfo::isNorthEastMovementBonus() const
+{
+	return m_bNorthEastMovementBonus;
+}
+bool CvFeatureInfo::isNorthWestMovementBonus() const
+{
+	return m_bNorthWestMovementBonus;
+}
+bool CvFeatureInfo::isSouthEastMovementBonus() const
+{
+	return m_bSouthEastMovementBonus;
+}
+bool CvFeatureInfo::isSouthWestMovementBonus() const
+{
+	return m_bSouthWestMovementBonus;
+}
+
+//WTP, Feature settings enhancements
+bool CvFeatureInfo::isRequiresHills() const
+{
+	return m_bRequiresHills;
+}
+bool CvFeatureInfo::isRequiresPeaks() const
+{
+	return m_bRequiresPeaks;
+}
+
 bool CvFeatureInfo::isRequiresRiver() const
 {
 	return m_bRequiresRiver;
@@ -9316,11 +9607,24 @@ bool CvFeatureInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iDisappearanceProbability, "iDisappearance");
 	pXML->GetChildXmlValByName(&m_iGrowthProbability, "iGrowth");
 	pXML->GetChildXmlValByName(&m_bNoCoast, "bNoCoast");
+	pXML->GetChildXmlValByName(&m_bOnlyCoastalLand, "bOnlyCoastalLand"); //WTP, Feature settings enhancements
 	pXML->GetChildXmlValByName(&m_bNoRiver, "bNoRiver");
 	pXML->GetChildXmlValByName(&m_bNoAdjacent, "bNoAdjacent");
 	pXML->GetChildXmlValByName(&m_bRequiresFlatlands, "bRequiresFlatlands");
+	pXML->GetChildXmlValByName(&m_bRequiresHills, "bRequiresHills"); //WTP, Feature settings enhancements
+	pXML->GetChildXmlValByName(&m_bRequiresPeaks, "bRequiresPeaks"); //WTP, Feature settings enhancements
 	pXML->GetChildXmlValByName(&m_bRequiresRiver, "bRequiresRiver");
 	pXML->GetChildXmlValByName(&m_bImpassable, "bImpassable");
+	// ray, Streams Feature - START
+	pXML->GetChildXmlValByName(&m_bNorthMovementBonus, "bNorthMovementBonus");
+	pXML->GetChildXmlValByName(&m_bSouthMovementBonus, "bSouthMovementBonus");
+	pXML->GetChildXmlValByName(&m_bEastMovementBonus, "bEastMovementBonus");
+	pXML->GetChildXmlValByName(&m_bWestMovementBonus, "bWestMovementBonus");
+	pXML->GetChildXmlValByName(&m_bNorthEastMovementBonus, "bNorthEastMovementBonus");
+	pXML->GetChildXmlValByName(&m_bNorthWestMovementBonus, "bNorthWestMovementBonus");
+	pXML->GetChildXmlValByName(&m_bSouthEastMovementBonus, "bSouthEastMovementBonus");
+	pXML->GetChildXmlValByName(&m_bSouthWestMovementBonus, "bSouthWestMovementBonus");
+	// ray, Streams Feature - END
 	pXML->GetChildXmlValByName(&m_bNoCity, "bNoCity");
 	pXML->GetChildXmlValByName(&m_bNoImprovement, "bNoImprovement");
 	pXML->GetChildXmlValByName(&m_bVisibleAlways, "bVisibleAlways");
@@ -9393,6 +9697,7 @@ m_iWaterTextureIndex(-1),
 m_iPowerValue(0),
 m_iAssetValue(0),
 m_bCargo(false),
+m_bIgnoredForStorageCapacity(false), // ray, making special storage capacity rules for Yields XML configurable
 m_bIsExportYield(false), // auto traderoute - Nightinggale
 // R&R, Androrc,  Livestock Breeding
 m_bLivestock(false)
@@ -9591,7 +9896,12 @@ bool CvYieldInfo::isCargo() const
 {
 	return m_bCargo;
 }
-
+// ray, making special storage capacity rules for Yields XML configurable - START
+bool CvYieldInfo::isIgnoredForStorageCapacity() const
+{
+	return m_bIgnoredForStorageCapacity;
+}
+// ray, making special storage capacity rules for Yields XML configurable - END
 // R&R, Androrc, Livestock Breeding
 bool CvYieldInfo::isLivestock() const
 {
@@ -9652,6 +9962,7 @@ bool CvYieldInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iPowerValue, "iPower");
 	pXML->GetChildXmlValByName(&m_iAssetValue, "iAsset");
 	pXML->GetChildXmlValByName(&m_bCargo, "bCargo");
+	pXML->GetChildXmlValByName(&m_bIgnoredForStorageCapacity, "bIgnoredForStorageCapacity"); // ray, making special storage capacity rules for Yields XML configurable
 
 	pXML->GetChildXmlValByName(&m_bIsExportYield, "bIsExportYield"); // auto traderoute - Nightinggale
 	// R&R, Androrc, Livestock Breeding
@@ -9685,6 +9996,7 @@ m_bWater(false),
 m_bImpassable(false),
 m_bFound(false),
 m_bFoundCoast(false),
+m_bBadCityLocation(false),// WTP, ray, Health Overhaul
 m_iWorldSoundscapeScriptId(0),
 m_aiYields(NULL),
 m_aiRiverYieldIncrease(NULL),
@@ -9740,6 +10052,14 @@ bool CvTerrainInfo::isFoundCoast() const
 {
 	return m_bFoundCoast;
 }
+
+// WTP, ray, Health Overhaul - START
+bool CvTerrainInfo::isBadCityLocation() const
+{
+	return m_bBadCityLocation;
+}
+// WTP, ray, Health Overhaul - END
+
 const char* CvTerrainInfo::getArtDefineTag() const
 {
 	return m_szArtDefineTag;
@@ -9787,6 +10107,7 @@ bool CvTerrainInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_bImpassable, "bImpassable");
 	pXML->GetChildXmlValByName(&m_bFound, "bFound");
 	pXML->GetChildXmlValByName(&m_bFoundCoast, "bFoundCoast");
+	pXML->GetChildXmlValByName(&m_bBadCityLocation, "bBadCityLocation"); // WTP, ray, Health Overhaul
 	pXML->GetChildXmlValByName(&m_iMovementCost, "iMovement");
 	pXML->GetChildXmlValByName(&m_iSeeFromLevel, "iSeeFrom");
 	pXML->GetChildXmlValByName(&m_iSeeThroughLevel, "iSeeThrough");
@@ -9831,7 +10152,7 @@ bool CvTerrainInfo::canHavePlotType(PlotTypes ePlotType) const
 	case PLOT_OCEAN:
 		return isWater();
 	}
-	BOOST_STATIC_ASSERT(NUM_PLOT_TYPES == 4);
+	BOOST_STATIC_ASSERT(NUM_PLOT_TYPES == static_cast<PlotTypes>(4));
 	return false;
 }
 
@@ -10870,7 +11191,12 @@ CvTraitInfo::CvTraitInfo() :
 	m_iTaxRateThresholdModifier(0),
 	m_iMaxTaxRateThresholdDecrease(0), // R&R, ray, new Attribute in Traits
 	m_iMercantileFactor(0),
+	m_iAfricaSellProfitModifierInPercent(0), // WTP, Africa and Port Royal Profit Modifiers - START
+	m_iPortRoyalSellProfitModifierInPercent(0), // WTP, Africa and Port Royal Profit Modifiers - START
+	m_iDomesticMarketProfitModifierInPercent(0), // WTP, ray, Domestic Market Profit Modifier
 	m_iTreasureModifier(0),
+	m_iGoodUniqueGoodyChanceModifierLand(0), // WTP, ray, Unique Goody Chance Modifiers - START
+	m_iGoodUniqueGoodyChanceModifierWater(0), // WTP, ray, Unique Goody Chance Modifiers - START
 	m_iUnhappinessFromSlavesModifier(0), // WTP, ray, Happiness - START
 	m_iChiefGoldModifier(0),
 	m_iNativeAttitudeChange(0),
@@ -10879,13 +11205,19 @@ CvTraitInfo::CvTraitInfo() :
 	m_iCityDefense(0),
 	m_iLandPriceDiscount(0),
 	m_iRecruitPriceDiscount(0),
+	m_iRecruitPriceDiscountAfrica(0), // WTP, ray, Recruit Price Discounts Africa and Port Royal
+	m_iRecruitPriceDiscountPortRoyal(0), // WTP, ray, Recruit Price Discounts Africa and Port Royal
 	m_iEuropeTravelTimeModifier(0),
 	m_iImmigrationThresholdModifier(0),
 	m_iPopGrowthThresholdModifier(0),		// Schmiddie, 7 new variables for traits for Europeans, START
 	m_iCultureLevelModifier(0),
 	m_iPioneerSpeedModifier(0),
 	m_iImprovementPriceModifier(0),
+	m_iImprovementGrowthTimeModifier(0), // WTP, ray, Improvement Growth Modifier
 	m_iLearningByDoingModifier(0),
+	m_iLearningByDoingFreeModifier(0), // WTP, ray, adding modifiers for other LBD features - START
+	m_iLearningByDoingRunawayModifier(0), // WTP, ray, adding modifiers for other LBD features - START
+	m_iLearningByDoingRevoltModifier(0), // WTP, ray, adding modifiers for other LBD features - START
 	m_iSpecialistPriceModifier(0),
 	m_iStorageCapacityModifier(0),		// Schmiddie, 7 new variables for traits for Europeans, END
 	m_aiYieldModifier(NULL),
@@ -10957,10 +11289,40 @@ int CvTraitInfo::getMercantileFactor() const
 {
 	return m_iMercantileFactor;
 }
+
 int CvTraitInfo::getTreasureModifier() const
 {
 	return m_iTreasureModifier;
 }
+
+// WTP, Africa and Port Royal Profit Modifiers - START
+int CvTraitInfo::getAfricaSellProfitModifierInPercent() const
+{
+	return m_iAfricaSellProfitModifierInPercent;
+}
+int CvTraitInfo::getPortRoyalSellProfitModifierInPercent() const
+{
+	return m_iPortRoyalSellProfitModifierInPercent;
+}
+// WTP, Africa and Port Royal Profit Modifiers - END
+
+// WTP, ray, Domestic Market Profit Modifier - START
+int CvTraitInfo::getDomesticMarketProfitModifierInPercent() const
+{
+	return m_iDomesticMarketProfitModifierInPercent;
+}
+// WTP, ray, Domestic Market Profit Modifier - END
+
+// WTP, ray, Unique Goody Chance Modifiers - START
+int CvTraitInfo::getGoodUniqueGoodyChanceModifierLand() const
+{
+	return m_iGoodUniqueGoodyChanceModifierLand;
+}
+int CvTraitInfo::getGoodUniqueGoodyChanceModifierWater() const
+{
+	return m_iGoodUniqueGoodyChanceModifierWater;
+}
+// WTP, ray, Unique Goody Chance Modifiers - END
 // WTP, ray, Happiness - START
 int CvTraitInfo::getUnhappinessFromSlavesModifier() const
 {
@@ -11024,6 +11386,18 @@ int CvTraitInfo::getRecruitPriceDiscount() const
 	return m_iRecruitPriceDiscount;
 }
 
+// WTP, ray, Recruit Price Discounts Africa and Port Royal - START
+int CvTraitInfo::getRecruitPriceDiscountAfrica() const
+{
+	return m_iRecruitPriceDiscountAfrica;
+}
+
+int CvTraitInfo::getRecruitPriceDiscountPortRoyal() const
+{
+	return m_iRecruitPriceDiscountPortRoyal;
+}
+// WTP, ray, Recruit Price Discounts Africa and Port Royal - END
+
 int CvTraitInfo::getEuropeTravelTimeModifier() const
 {
 	return m_iEuropeTravelTimeModifier;
@@ -11054,10 +11428,34 @@ int CvTraitInfo::getImprovementPriceModifier() const
 	return m_iImprovementPriceModifier;
 }
 
+// WTP, ray, Improvement Growth Modifier - START
+int CvTraitInfo::getImprovementGrowthTimeModifier() const
+{
+	return m_iImprovementGrowthTimeModifier ;
+}
+// WTP, ray, Improvement Growth Modifier - END
+
 int CvTraitInfo::getLearningByDoingModifier() const
 {
 	return m_iLearningByDoingModifier;
 }
+
+// WTP, ray, adding modifiers for other LBD features - START
+int CvTraitInfo::getLearningByDoingFreeModifier() const
+{
+	return m_iLearningByDoingFreeModifier;
+}
+
+int CvTraitInfo::getLearningByDoingRunawayModifier() const
+{
+	return m_iLearningByDoingRunawayModifier;
+}
+
+int CvTraitInfo::getLearningByDoingRevoltModifier() const
+{
+	return m_iLearningByDoingRevoltModifier;
+}
+// WTP, ray, adding modifiers for other LBD features - END
 
 int CvTraitInfo::getSpecialistPriceModifier() const
 {
@@ -11189,7 +11587,12 @@ void CvTraitInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_iTaxRateThresholdModifier);
 	stream->Read(&m_iMaxTaxRateThresholdDecrease); // R&R, ray, new Attribute in Traits
 	stream->Read(&m_iMercantileFactor);
+	stream->Read(&m_iAfricaSellProfitModifierInPercent); // WTP, Africa and Port Royal Profit Modifiers - START
+	stream->Read(&m_iPortRoyalSellProfitModifierInPercent); // WTP, Africa and Port Royal Profit Modifiers - START
+	stream->Read(&m_iDomesticMarketProfitModifierInPercent); // WTP, ray, Domestic Market Profit Modifier
 	stream->Read(&m_iTreasureModifier);
+	stream->Read(&m_iGoodUniqueGoodyChanceModifierLand); // WTP, ray, Unique Goody Chance Modifiers - START
+	stream->Read(&m_iGoodUniqueGoodyChanceModifierWater); // WTP, ray, Unique Goody Chance Modifiers - START
 	stream->Read(&m_iUnhappinessFromSlavesModifier); // WTP, ray, Happiness - START
 	stream->Read(&m_iChiefGoldModifier);
 	stream->Read(&m_iNativeAttitudeChange);
@@ -11197,14 +11600,20 @@ void CvTraitInfo::read(FDataStreamBase* stream)
 	stream->Read(&m_iKingAttitudeChange); // R&R, ray, new Attribute in Traits
 	stream->Read(&m_iCityDefense);
 	stream->Read(&m_iLandPriceDiscount);
-	stream->Read(&m_iRecruitPriceDiscount);
+	stream->Read(&m_iRecruitPriceDiscount); 
+	stream->Read(&m_iRecruitPriceDiscountAfrica); // WTP, ray, Recruit Price Discounts Africa and Port Royal
+	stream->Read(&m_iRecruitPriceDiscountPortRoyal); // WTP, ray, Recruit Price Discounts Africa and Port Royal
 	stream->Read(&m_iEuropeTravelTimeModifier);
 	stream->Read(&m_iImmigrationThresholdModifier);
 	stream->Read(&m_iPopGrowthThresholdModifier);		// Schmiddie, 7 new variables for traits for Europeans, START
 	stream->Read(&m_iCultureLevelModifier);
 	stream->Read(&m_iPioneerSpeedModifier);
 	stream->Read(&m_iImprovementPriceModifier);
+	stream->Read(&m_iImprovementGrowthTimeModifier);  // WTP, ray, Improvement Growth Modifier
 	stream->Read(&m_iLearningByDoingModifier);
+	stream->Read(&m_iLearningByDoingFreeModifier); // WTP, ray, adding modifiers for other LBD features - START
+	stream->Read(&m_iLearningByDoingRunawayModifier); // WTP, ray, adding modifiers for other LBD features - START
+	stream->Read(&m_iLearningByDoingRevoltModifier); // WTP, ray, adding modifiers for other LBD features - START
 	stream->Read(&m_iSpecialistPriceModifier);
 	stream->Read(&m_iStorageCapacityModifier);		// Schmiddie, 7 new variables for traits for Europeans, END
 	stream->ReadString(m_szShortDescription);
@@ -11297,7 +11706,12 @@ void CvTraitInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iTaxRateThresholdModifier);
 	stream->Write(m_iMaxTaxRateThresholdDecrease); // R&R, ray, new Attribute in Traits
 	stream->Write(m_iMercantileFactor);
+	stream->Write(m_iAfricaSellProfitModifierInPercent); // WTP, Africa and Port Royal Profit Modifiers - START
+	stream->Write(m_iPortRoyalSellProfitModifierInPercent); // WTP, Africa and Port Royal Profit Modifiers - START
+	stream->Write(m_iDomesticMarketProfitModifierInPercent); // WTP, ray, Domestic Market Profit Modifier
 	stream->Write(m_iTreasureModifier);
+	stream->Write(m_iGoodUniqueGoodyChanceModifierLand); // WTP, ray, Unique Goody Chance Modifiers - START
+	stream->Write(m_iGoodUniqueGoodyChanceModifierWater); // WTP, ray, Unique Goody Chance Modifiers - START
 	stream->Write(m_iUnhappinessFromSlavesModifier); // WTP, ray, Happiness - START
 	stream->Write(m_iChiefGoldModifier);
 	stream->Write(m_iNativeAttitudeChange);
@@ -11306,13 +11720,19 @@ void CvTraitInfo::write(FDataStreamBase* stream)
 	stream->Write(m_iCityDefense);
 	stream->Write(m_iLandPriceDiscount);
 	stream->Write(m_iRecruitPriceDiscount);
+	stream->Write(m_iRecruitPriceDiscountAfrica); // WTP, ray, Recruit Price Discounts Africa and Port Royal
+	stream->Write(m_iRecruitPriceDiscountPortRoyal); // WTP, ray, Recruit Price Discounts Africa and Port Royal
 	stream->Write(m_iEuropeTravelTimeModifier);
 	stream->Write(m_iImmigrationThresholdModifier);
 	stream->Write(m_iPopGrowthThresholdModifier);		// Schmiddie, 7 new variables for traits for Europeans, START
 	stream->Write(m_iCultureLevelModifier);
 	stream->Write(m_iPioneerSpeedModifier);
 	stream->Write(m_iImprovementPriceModifier);
+	stream->Write(m_iImprovementGrowthTimeModifier); // WTP, ray, Improvement Growth Modifier
 	stream->Write(m_iLearningByDoingModifier);
+	stream->Write(m_iLearningByDoingFreeModifier); // WTP, ray, adding modifiers for other LBD features - START
+	stream->Write(m_iLearningByDoingRunawayModifier); // WTP, ray, adding modifiers for other LBD features - START
+	stream->Write(m_iLearningByDoingRevoltModifier); // WTP, ray, adding modifiers for other LBD features - STAR
 	stream->Write(m_iSpecialistPriceModifier);
 	stream->Write(m_iStorageCapacityModifier);		// Schmiddie, 7 new variables for traits for Europeans, END
 	stream->WriteString(m_szShortDescription);
@@ -11361,7 +11781,12 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iTaxRateThresholdModifier, "iTaxRateThresholdModifier");
 	pXML->GetChildXmlValByName(&m_iMaxTaxRateThresholdDecrease, "iMaxTaxRateThresholdDecrease"); // R&R, ray, new Attribute in Traits
 	pXML->GetChildXmlValByName(&m_iMercantileFactor, "iMercantileFactor");
+	pXML->GetChildXmlValByName(&m_iAfricaSellProfitModifierInPercent, "iAfricaSellProfitModifierInPercent"); // WTP, Africa and Port Royal Profit Modifiers - START
+	pXML->GetChildXmlValByName(&m_iPortRoyalSellProfitModifierInPercent, "iPortRoyalSellProfitModifierInPercent"); // WTP, Africa and Port Royal Profit Modifiers - START
+	pXML->GetChildXmlValByName(&m_iDomesticMarketProfitModifierInPercent, "iDomesticMarketProfitModifierInPercent"); // WTP, ray, Domestic Market Profit Modifier
 	pXML->GetChildXmlValByName(&m_iTreasureModifier, "iTreasureModifier");
+	pXML->GetChildXmlValByName(&m_iGoodUniqueGoodyChanceModifierLand, "iGoodUniqueGoodyChanceModifierLand"); // WTP, ray, Unique Goody Chance Modifiers - START
+	pXML->GetChildXmlValByName(&m_iGoodUniqueGoodyChanceModifierWater, "iGoodUniqueGoodyChanceModifierWater"); // WTP, ray, Unique Goody Chance Modifiers - START
 	pXML->GetChildXmlValByName(&m_iUnhappinessFromSlavesModifier, "iUnhappinessFromSlavesModifier"); // WTP, ray, Happiness - START
 	pXML->GetChildXmlValByName(&m_iChiefGoldModifier, "iChiefGoldModifier");
 	pXML->GetChildXmlValByName(&m_iNativeAttitudeChange, "iNativeAttitudeChange");
@@ -11370,16 +11795,21 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iCityDefense, "iCityDefense");
 	pXML->GetChildXmlValByName(&m_iLandPriceDiscount, "iLandPriceDiscount");
 	pXML->GetChildXmlValByName(&m_iRecruitPriceDiscount, "iRecruitPriceDiscount");
+	pXML->GetChildXmlValByName(&m_iRecruitPriceDiscountAfrica, "iRecruitPriceDiscountAfrica"); // WTP, ray, Recruit Price Discounts Africa and Port Royal
+	pXML->GetChildXmlValByName(&m_iRecruitPriceDiscountPortRoyal, "iRecruitPriceDiscountPortRoyal"); // WTP, ray, Recruit Price Discounts Africa and Port Royal
 	pXML->GetChildXmlValByName(&m_iEuropeTravelTimeModifier, "iEuropeTravelTimeModifier");
 	pXML->GetChildXmlValByName(&m_iImmigrationThresholdModifier, "iImmigrationThresholdModifier");
 	pXML->GetChildXmlValByName(&m_iPopGrowthThresholdModifier, "iPopGrowthThresholdModifier");		// Schmiddie, 7 new variables for traits for Europeans, START
 	pXML->GetChildXmlValByName(&m_iCultureLevelModifier, "iCultureLevelModifier");
 	pXML->GetChildXmlValByName(&m_iPioneerSpeedModifier, "iPioneerSpeedModifier");
 	pXML->GetChildXmlValByName(&m_iImprovementPriceModifier, "iImprovementPriceModifier");
+	pXML->GetChildXmlValByName(&m_iImprovementGrowthTimeModifier, "iImprovementGrowthTimeModifier"); // WTP, ray, Improvement Growth Modifier
 	pXML->GetChildXmlValByName(&m_iLearningByDoingModifier, "iLearningByDoingModifier");
+	pXML->GetChildXmlValByName(&m_iLearningByDoingFreeModifier, "iLearningByDoingFreeModifier"); // WTP, ray, adding modifiers for other LBD features - START
+	pXML->GetChildXmlValByName(&m_iLearningByDoingRunawayModifier, "iLearningByDoingRunawayModifier"); // WTP, ray, adding modifiers for other LBD features - START
+	pXML->GetChildXmlValByName(&m_iLearningByDoingRevoltModifier, "iLearningByDoingRevoltModifier"); // WTP, ray, adding modifiers for other LBD features - START
 	pXML->GetChildXmlValByName(&m_iSpecialistPriceModifier, "iSpecialistPriceModifier");
 	pXML->GetChildXmlValByName(&m_iStorageCapacityModifier, "iStorageCapacityModifier");		// Schmiddie, 7 new variables for traits for Europeans, END
-
 	pXML->SetVariableListTagPair(&m_aiGoodyFactor, "GoodyFactors", GC.getNumGoodyInfos(), 1);
 	pXML->SetVariableListTagPair(&m_aiBuildingProductionModifier, "BuildingProductionModifiers", GC.getNumBuildingClassInfos(), 0);
 	pXML->SetVariableListTagPair(&m_aiBuildingRequiredYieldModifier, "BuildingRequiredYieldModifiers", NUM_YIELD_TYPES, 0);
@@ -14668,7 +15098,7 @@ void CvEventTriggerInfo::verifyTriggerSettings(const InfoArray<T>& kArray) const
 {
 	for (int i = 0; i < kArray.getLength(); ++i)
 	{
-		const T eVar = kArray.getWithTemplate(i, (T)0);
+		const T eVar = kArray.get0(i);
 
 		const char* szError = NULL;
 
@@ -15611,6 +16041,16 @@ std::string CvMainMenuInfo::getScene() const
 }
 std::string CvMainMenuInfo::getSoundtrack() const
 {
+	/// GameFont XML control - start - Nightinggale
+	static bool bGameFontSet = false;
+	if (!bGameFontSet)
+	{
+		// setup GameFont, but only the first time the main menu is reached
+		bGameFontSet = true;
+		GC.setupGameFontChars();
+	}
+	/// GameFont XML control - end - Nightinggale
+
 	return m_szSoundtrack;
 }
 std::string CvMainMenuInfo::getLoading() const
@@ -16161,6 +16601,21 @@ int CvUnitInfo::getBerthSize() const
 	return m_iBerthSize;
 }
 // PatchMod: Berth size END
+
+// WTP, ray, new Harbour System - START
+int CvUnitInfo::getHarbourSpaceNeeded() const
+{
+	return m_iHarbourSpaceNeeded;
+}
+// WTP, ray, new Harbour System - END
+
+// WTP, ray, new Barracks System - START
+int CvUnitInfo::getBarracksSpaceNeeded() const
+{
+	return m_iBarracksSpaceNeeded;
+}
+// WTP, ray, new Harbour System - END
+
 // PatchMod: Achievements START
 CvAchieveInfo::CvAchieveInfo() :
 	m_bActive(false),
@@ -16388,6 +16843,10 @@ bool CvTradeScreenInfo::read(CvXMLLoadUtility* pXML)
 ///
 /// CivEffect
 ///
+int CivEffectInfo::getLearningByDoingModifier() const
+{
+	return m_iLearningByDoingModifier;
+}
 
 CivEffectInfo::CivEffectInfo(bool bAutogenerateAllow)
 	// allow
@@ -16397,6 +16856,9 @@ CivEffectInfo::CivEffectInfo(bool bAutogenerateAllow)
 
 	// growth
 	, m_iNumUnitsOnDockChange(0)
+
+	// unit
+	, m_iLearningByDoingModifier(0)
 {
 	if (bAutogenerateAllow)
 	{
@@ -16410,45 +16872,57 @@ CivEffectInfo::CivEffectInfo(bool bAutogenerateAllow)
 		// Since the array all have 1 as default, the task for this CivEffect is to provide -1
 		//   whenever there is a positive value in a CivEffect
 
-		BonusArray          <int> ja_Bonuses       (1);
-		BuildArray          <int> ja_Builds        (1);
-		BuildingClassArray  <int> ja_Buildings     (1);
-		CivicArray          <int> ja_Civics        (1);
-		UnitClassArray      <int> ja_Immigrants    (1);
-		ImprovementArray    <int> ja_Improvements  (1);
-		ProfessionArray     <int> ja_Professions   (1);
-		PromotionArray      <int> ja_Promotions    (1);
-		RouteArray          <int> ja_Routes        (1);
-		UnitClassArray      <int> ja_Units         (1);
-		YieldArray          <int> ja_Yields        (1);
+		EnumMap<BonusTypes          , int> Bonuses;
+		EnumMap<BuildTypes          , int> Builds;
+		EnumMap<BuildingClassTypes  , int> Buildings;
+		EnumMap<CivicTypes          , int> Civics;
+		EnumMap<UnitClassTypes      , int> Immigrants;
+		EnumMap<ImprovementTypes    , int> Improvements;
+		EnumMap<ProfessionTypes     , int> Professions;
+		EnumMap<PromotionTypes      , int> Promotions;
+		EnumMap<RouteTypes          , int> Routes;
+		EnumMap<UnitClassTypes      , int> Units;
+		EnumMap<YieldTypes          , int> Yields;
+
+		Bonuses             .setAll(1);
+		Builds              .setAll(1);
+		Buildings           .setAll(1);
+		Civics              .setAll(1);
+		Immigrants          .setAll(1);
+		Improvements        .setAll(1);
+		Professions         .setAll(1);
+		Promotions          .setAll(1);
+		Routes              .setAll(1);
+		Units               .setAll(1);
+		Yields              .setAll(1);
 
 		for (CivEffectTypes eCivEffect = FIRST_CIV_EFFECT; eCivEffect < NUM_CIV_EFFECT_TYPES; ++eCivEffect)
 		{
 			const CivEffectInfo& kInfo = GC.getCivEffectInfo(eCivEffect);
-			ja_Bonuses         .generateInitCivEffect(kInfo.getAllowedBonuses());
-			ja_Builds          .generateInitCivEffect(kInfo.getAllowedBuilds());
-			ja_Buildings       .generateInitCivEffect(kInfo.getAllowedBuildingClasses());
-			ja_Civics          .generateInitCivEffect(kInfo.getAllowedCivics());
-			ja_Immigrants      .generateInitCivEffect(kInfo.getAllowedImmigrants());
-			ja_Improvements    .generateInitCivEffect(kInfo.getAllowedImprovements());
-			ja_Professions     .generateInitCivEffect(kInfo.getAllowedProfessions());
-			ja_Promotions      .generateInitCivEffect(kInfo.getAllowedPromotions());
-			ja_Routes          .generateInitCivEffect(kInfo.getAllowedRoutes());
-			ja_Units           .generateInitCivEffect(kInfo.getAllowedUnitClasses());
-			ja_Yields          .generateInitCivEffect(kInfo.getAllowedYields());
+			Bonuses         .generateInitCivEffect(kInfo.getAllowedBonuses());
+			Builds          .generateInitCivEffect(kInfo.getAllowedBuilds());
+			Buildings       .generateInitCivEffect(kInfo.getAllowedBuildingClasses());
+			Civics          .generateInitCivEffect(kInfo.getAllowedCivics());
+			Immigrants      .generateInitCivEffect(kInfo.getAllowedImmigrants());
+			Improvements    .generateInitCivEffect(kInfo.getAllowedImprovements());
+			Professions     .generateInitCivEffect(kInfo.getAllowedProfessions());
+			Promotions      .generateInitCivEffect(kInfo.getAllowedPromotions());
+			Routes          .generateInitCivEffect(kInfo.getAllowedRoutes());
+			Units           .generateInitCivEffect(kInfo.getAllowedUnitClasses());
+			Yields          .generateInitCivEffect(kInfo.getAllowedYields());
 		}
 
-		m_info_AllowBonuses         .assign(&ja_Bonuses);
-		m_info_AllowBuilds          .assign(&ja_Builds);
-		m_info_AllowBuildings       .assign(&ja_Buildings);
-		m_info_AllowCivics          .assign(&ja_Civics);
-		m_info_AllowImmigrants      .assign(&ja_Immigrants);
-		m_info_AllowImprovements    .assign(&ja_Improvements);
-		m_info_AllowProfessions     .assign(&ja_Professions);
-		m_info_AllowPromotions      .assign(&ja_Promotions);
-		m_info_AllowRoutes          .assign(&ja_Routes);
-		m_info_AllowUnits           .assign(&ja_Units);
-		m_info_AllowYields          .assign(&ja_Yields);
+		m_info_AllowBonuses         .assignFrom(Bonuses);
+		m_info_AllowBuilds          .assignFrom(Builds);
+		m_info_AllowBuildings       .assignFrom(Buildings);
+		m_info_AllowCivics          .assignFrom(Civics);
+		m_info_AllowImmigrants      .assignFrom(Immigrants);
+		m_info_AllowImprovements    .assignFrom(Improvements);
+		m_info_AllowProfessions     .assignFrom(Professions);
+		m_info_AllowPromotions      .assignFrom(Promotions);
+		m_info_AllowRoutes          .assignFrom(Routes);
+		m_info_AllowUnits           .assignFrom(Units);
+		m_info_AllowYields          .assignFrom(Yields);
 	}
 }
 
@@ -16492,7 +16966,8 @@ bool CivEffectInfo::read(CvXMLLoadUtility* pXML)
 
 	if (gDLL->getXMLIFace()->SetToChildByTagName(pXML->GetXML(), "TagGroupGrowth"))
 	{
-		pXML->GetChildXmlValByName(&m_iNumUnitsOnDockChange, "iNumUnitsOnDockChange");
+		pXML->GetChildXmlValByName(&m_iLearningByDoingModifier , "iLearningByDoingModifier"     );
+		pXML->GetChildXmlValByName(&m_iNumUnitsOnDockChange    , "iNumUnitsOnDockChange"        );
 
 		gDLL->getXMLIFace()->SetToParent(pXML->GetXML());
 	}

@@ -362,6 +362,8 @@ public:
 	// R&R, ray , MYCP partially based on code of Aymerick - END
 	int getSpecialBuilding() const;
 	int getCombatChange() const;
+	int getBombardRateChangeProfession() const; // WTP, ray, Cannons to Professions - START
+	int getBarracksSpaceNeededChange() const;	// WTP, ray, new Barracks System - START
 	int getMovesChange() const;
 	int getWorkRate() const;
 	int getMissionaryRate() const;
@@ -408,6 +410,8 @@ protected:
 	// R&R, ray , MYCP partially based on code of Aymerick - END
 	int m_iSpecialBuilding;
 	int m_iCombatChange;
+	int m_iBombardRateChangeProfession;// WTP, ray, Cannons to Professions - START
+	int m_iBarracksSpaceNeededChange; // WTP, ray, new Barracks System - START
 	int m_iMovesChange;
 	int m_iWorkRate;
 	int m_iMissionaryRate;
@@ -668,12 +672,9 @@ public:
 	DllExport CvUnitInfo();
 	virtual ~CvUnitInfo();
 
-	// PatchMod: Berth size START
-protected:
-	int m_iBerthSize;
-public:
-	int getBerthSize() const;
-	// PatchMod: Berth size END
+	int getBerthSize() const; // PatchMod: Berth size START
+	int getHarbourSpaceNeeded() const; // WTP, ray, new Harbour System - START
+	int getBarracksSpaceNeeded() const; // WTP, ray, new Barracks System - START
 
 /** NBMOD EDU **/
     int NBMOD_GetTeachLevel() const;
@@ -761,6 +762,9 @@ public:
 	DllExport bool isMechUnit() const;
 	bool isLineOfSight() const;
 	bool isHiddenNationality() const;
+	bool isSlaveShip() const; // WTP, ray Slave Ship
+	bool isTreasureShip() const;// WTP, ray Treasure Ship
+	bool isTroopShip() const;// WTP, ray Troop Ship
 	bool isAlwaysHostile() const;
 	bool isTreasure() const;
 	// R&R, ray, Changes for Treasures, START
@@ -778,6 +782,7 @@ public:
 	// WTP, ray, LbD Slaves Revolt and Free - END
 
 	bool isCapturesCargo() const;
+	int getCaptureShipsChanceIncrease() const; 
 	// TAC Capturing Ships - ray
 	bool isCapturesShips() const;
 	// TAC Capturing Ships - ray -END
@@ -809,7 +814,7 @@ public:
 	int getDomainModifier(int i) const;
 	int getYieldModifier(int i) const;
 	// R&R, Androrc, Domestic Market -- modified by Nightinggale - start
-	const InfoArray<YieldTypes, IntTypes>& getYieldDemands() const;
+	const InfoArray<YieldTypes, int>& getYieldDemands() const;
 	// R&R, Androrc, Domestic Market -- modified by Nightinggale - end
 	int getBonusYieldChange(int i) const;
 	int getYieldChange(int i) const;
@@ -860,6 +865,10 @@ public:
 
 	//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
 protected:
+
+	int m_iBerthSize; // PatchMod: Berth size START
+	int m_iHarbourSpaceNeeded; // WTP, ray, new Harbour System - START
+	int m_iBarracksSpaceNeeded; // WTP, ray, new Barracks System - START
 
     /** NBMOD EDU **/
     int m_iTeachLevel;
@@ -940,6 +949,9 @@ protected:
 	bool m_bMechanized;
 	bool m_bLineOfSight;
 	bool m_bHiddenNationality;
+	bool m_bSlaveShip; // WTP, ray Slave Ship
+	bool m_bTreasureShip; // WTP, ray Treasure Ship
+	bool m_bTroopShip; // WTP, ray Treasure Ship
 	bool m_bAlwaysHostile;
 	bool m_bTreasure;
 	// R&R, ray, Changes for Treasures, START
@@ -957,6 +969,7 @@ protected:
 	bool m_bCapturesCargo;
 	// TAC Capturing Ships - ray
 	bool m_bCapturesShips;
+	int m_iCaptureShipsChanceIncrease; // WTP, ray, Capture Ship chance increase - START
 	// TAC Capturing Ships - ray - END
 	bool m_bLandYieldChanges;
 	bool m_bWaterYieldChanges;
@@ -984,7 +997,7 @@ protected:
 	int* m_aiDomainModifier;
 	int* m_aiYieldModifier;
 	// R&R, Androrc, Domestic Market -- modified by Nightinggale - start
-	InfoArray<YieldTypes, IntTypes> m_info_YieldDemands;
+	InfoArray<YieldTypes, int> m_info_YieldDemands;
 	// R&R, Androrc, Domestic Market -- modified by Nightinggale - end
 	int* m_aiBonusYieldChange;
 	int* m_aiYieldChange;
@@ -1261,6 +1274,7 @@ public:
 	DllExport int getFreeStartEra() const;
 	int getMaxStartEra() const;
 	int getFreePromotion() const;
+	int getRouteTypeCreated() const; //ray, removing hardcoded Roads for Buildings
 	int getAIWeight() const;
 	int getHurryCostModifier() const;
 	int getAdvancedStartCost() const;
@@ -1278,9 +1292,11 @@ public:
 	int getMilitaryProductionModifier() const;
 	int getAssetValue() const;
 	int getPowerValue() const;
-	int getYieldStorage() const;
+	int getYieldStorage() const; 
+	int getMaxHarbourSpaceProvided() const; // WTP, ray, new Harbour System - START
+	int getMaxBarracksSpaceProvided() const; // WTP, ray, new Barracks System - START
 	int getSpecialBuildingType() const;
-	inline int getIndexOf_NextBuildingType_In_SpecialBuilding() const		{ return m_iIndexOf_NextBuildingType_In_SpecialBuilding; }
+	inline BuildingTypes getIndexOf_NextBuildingType_In_SpecialBuilding() const		{ return m_eIndexOf_NextBuildingType_In_SpecialBuilding; }
 	int getConquestProbability() const;
 	int getHealRateChange() const;
 	int getDefenseModifier() const;
@@ -1300,8 +1316,9 @@ public:
 	bool isNeverCapture() const;
 	bool isCenterInCity() const;
 	int getDomesticMarketModifier() const { return m_iDomesticMarketModifier; }
+	int getEntertainmentGoldModifier() const { return m_iEntertainmentGoldModifier; } // ray, Balancing of Entertainment Buildings in XML
 	// R&R, Androrc, Domestic Market -- modified by Nightinggale - start
-	const InfoArray<YieldTypes, IntTypes>& getYieldDemands() const;
+	const InfoArray<YieldTypes, int>& getYieldDemands() const;
 	// R&R, Androrc, Domestic Market -- modified by Nightinggale - end
 	const char* getConstructSound() const;
 	void setConstructSound(const char* szVal);
@@ -1332,7 +1349,7 @@ public:
 	const InfoArray<TerrainTypes>& getAIRequiredCatchmentAreaTerrains() const;
 	const InfoArray<FeatureTypes>& getAIRequiredCatchmentAreaFeatures() const;
 	const InfoArray<PlotTypes   >& AI_getRequiredCatchmentAreaPlotTypes() const;
-	const InfoArray<UnitClassTypes, IntTypes>& AI_getUnitClassWeight() const;
+	const InfoArray<UnitClassTypes, int>& AI_getUnitClassWeight() const;
 	//WTP, Nightinggale - Terrain locator - end
 	int getYieldCost(int i) const;
 
@@ -1363,6 +1380,7 @@ protected:
 	int m_iFreeStartEra;
 	int m_iMaxStartEra;
 	int m_iFreePromotion;
+	int m_iRouteTypeCreated; //ray, removing hardcoded Roads for Buildings
 	int m_iAIWeight;
 	int m_iHurryCostModifier;
 	int m_iAdvancedStartCost;
@@ -1381,8 +1399,10 @@ protected:
 	int m_iAssetValue;
 	int m_iPowerValue;
 	int m_iYieldStorage;
+	int m_iMaxHarbourSpaceProvided; // WTP, ray, new Harbour System - START
+	int m_iMaxBarracksSpaceProvided; // WTP, ray, new Barracks System - START
 	int m_iSpecialBuildingType;
-	int m_iIndexOf_NextBuildingType_In_SpecialBuilding;
+	BuildingTypes m_eIndexOf_NextBuildingType_In_SpecialBuilding;
 	int m_iConquestProbability;
 	int m_iHealRateChange;
 	int m_iDefenseModifier;
@@ -1401,8 +1421,9 @@ protected:
 	bool m_bNeverCapture;
 	bool m_bCenterInCity;
 	int m_iDomesticMarketModifier;
+	int m_iEntertainmentGoldModifier; // ray, Balancing of Entertainment Buildings in XML
 	// R&R, Androrc, Domestic Market -- modified by Nightinggale - start
-	InfoArray<YieldTypes, IntTypes> m_info_YieldDemands;
+	InfoArray<YieldTypes, int> m_info_YieldDemands;
 	// R&R, Androrc, Domestic Market -- modified by Nightinggale - end
 	CvString m_szConstructSound;
 	CvString m_szArtDefineTag;
@@ -1425,7 +1446,7 @@ protected:
 	InfoArray<TerrainTypes> m_info_AIRequiredCatchmentAreaTerrains;
 	InfoArray<FeatureTypes> m_info_AIRequiredCatchmentAreaFeatures;
 	InfoArray<PlotTypes>    m_info_AIRequiredCatchmentAreaPlotTypes;
-	InfoArray<UnitClassTypes, IntTypes> m_info_AIUnitClassWeight;
+	InfoArray<UnitClassTypes, int> m_info_AIUnitClassWeight;
 	//WTP, Nightinggale - Terrain locator - end
 	int* m_aiYieldCost;
 	bool* m_abBuildingClassNeededInCity;
@@ -1443,6 +1464,8 @@ class CvSpecialBuildingInfo :
 {
 	//---------------------------------------PUBLIC INTERFACE---------------------------------
 public:
+	friend class CvSpecialBuildingInfo;
+
 	CvSpecialBuildingInfo();
 	virtual ~CvSpecialBuildingInfo();
 	bool isValid() const;
@@ -1451,17 +1474,22 @@ public:
 	DllExport int getFontButtonIndex() const;
 
 	// Arrays
+	const InfoArray<BuildingTypes, int>& getBuildings() const;
+
 	int getProductionTraits(int i) const;
 
 	const char* getNatureObject() const;	// TAC - Nature Objects - koma13
 
 	bool read(CvXMLLoadUtility* pXML);
+
+	static void postXmlReadSetup();
 	//---------------------------------------PROTECTED MEMBER VARIABLES---------------------------------
 protected:
 	bool m_bValid;
 	int m_iChar;
 	int m_iFontButtonIndex;
 	// Arrays
+	InfoArray<BuildingTypes, int> m_buildings;
 	int* m_aiProductionTraits;
 	CvString m_szNatureObject;	// TAC - Nature Objects - koma13
 };
@@ -1647,6 +1675,8 @@ public:
 	int getFreeYields(int i) const;
 	int getTeachUnitClassWeight(int i) const;
 
+	template<typename Ta, typename Tb> Ta getCivSpecificForClass(Tb eVar) const;
+
 	DllExport bool isLeaders(int i) const;
 	bool isCivilizationFreeBuildingClass(int i) const;
 	bool isValidProfession(int i) const;
@@ -1812,6 +1842,32 @@ protected:
 	bool m_bRevolution;
 	CvString m_szMovie;
 };
+
+template<typename Ta, typename Tb>
+inline Ta CvCivilizationInfo::getCivSpecificForClass(Tb eVar) const
+{
+	// WARNING
+	// do not access member data from this call
+	// InfoArray calls this while the this pointer is NULL
+	// As such treat it as static even though it isn't due to the specialized functions
+	const bool bTypeCheck = boost::is_same<Ta, Tb>::value;
+	BOOST_STATIC_ASSERT(bTypeCheck);
+	return (Ta)eVar;
+}
+
+template<>
+inline BuildingTypes CvCivilizationInfo::getCivSpecificForClass(BuildingClassTypes eVar) const
+{
+	FAssertMsg(this != NULL, "InfoArray: BuildingClass->Unit conversion done on a NULL civ pointer");
+	return (BuildingTypes)getCivilizationBuildings(eVar);
+}
+
+template<>
+inline UnitTypes CvCivilizationInfo::getCivSpecificForClass(UnitClassTypes eVar) const
+{
+	FAssertMsg(this != NULL, "InfoArray: UnitClass->Unit conversion done on a NULL civ pointer");
+	return (UnitTypes)getCivilizationUnits(eVar);
+}
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //
@@ -2311,6 +2367,9 @@ public:
 	int getFeatureGrowthProbability() const;
 	int getUpgradeTime() const;
 	int getDefenseModifier() const;
+	int getFoodModifierForCity() const; // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	int getHammersModifierForCity() const; // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	int getToolsModifierForCity() const; // WTP, ray, Improvements give Bonus to their City - PART 2 - START
 	int getPillageGold() const;
 	int getImprovementPillage() const;
 	void setImprovementPillage(int i);
@@ -2329,6 +2388,8 @@ public:
 	bool isActsAsCity() const;
 	bool isFort() const; // R&R, ray, Monasteries and Forts
 	bool isMonastery() const; // R&R, ray, Monasteries and Forts
+	bool isCanal() const; // WTP, ray, Canal
+	bool isNotAllowedNextToSameAsItself() const; // WTP, ray, Not allowed next to itself - START
 	bool isHillsMakesValid() const;
 	bool isRiverSideMakesValid() const;
 	bool isRequiresFlatlands() const;
@@ -2383,6 +2444,9 @@ protected:
 	int m_iFeatureGrowthProbability;
 	int m_iUpgradeTime;
 	int m_iDefenseModifier;
+	int m_iFoodModifierForCity;  // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	int m_iHammersModifierForCity;  // WTP, ray, Improvements give Bonus to their City - PART 2 - START
+	int m_iToolsModifierForCity;  // WTP, ray, Improvements give Bonus to their City - PART 2 - START
 	int m_iPillageGold;
 	int m_iImprovementPillage;
 	int m_iImprovementUpgrade;
@@ -2399,6 +2463,8 @@ protected:
 	bool m_bActsAsCity;
 	bool m_bFort; // R&R, ray, Monasteries and Forts
 	bool m_bMonastery; // R&R, ray, Monasteries and Forts
+	bool m_bCanal; // WTP, ray, Canal - START
+	bool m_bNotAllowedNextToSameAsItself; // WTP, ray, Not allowed next to itself - START
 	bool m_bHillsMakesValid;
 	bool m_bRiverSideMakesValid;
 	bool m_bRequiresFlatlands;
@@ -2444,6 +2510,7 @@ public:
 	virtual ~CvBonusInfo();
 	DllExport int getChar() const;
 	DllExport void setChar(int i);
+	int getHealthEffectFromRessource() const; // WTP, ray, Health from specific Bonus Ressources
 	int getAIObjective() const;
 	int getMinAreaSize() const;
 	int getMinLatitude() const;
@@ -2473,6 +2540,10 @@ public:
 	bool isFishingboatWorkable() const; // R&R, ray, High Sea Fishing
 	bool isFlatlands() const;
 	bool isNoRiverSide() const;
+	bool isRiverSideOnly() const; // Ray, adding 2 more XML tags to control bonus placement
+	bool isCoastalLandOnly() const; // Ray, adding 2 more XML tags to control bonus placement
+	bool isOnlySouthernHemisphere() const;
+	bool isOnlyNorthernHemisphere() const;
 	DllExport bool useLSystem() const;
 	const char* getArtDefineTag() const;
 	void setArtDefineTag(const char* szVal);
@@ -2499,6 +2570,7 @@ public:
 	//---------------------------------------PUBLIC MEMBER VARIABLES---------------------------------
 protected:
 	int m_iChar;
+	int m_iHealthEffectFromRessource; // WTP, ray, Health from specific Bonus Ressources
 	int m_iAIObjective;
 	int m_iMinAreaSize;
 	int m_iMinLatitude;
@@ -2522,6 +2594,10 @@ protected:
 	bool m_bOcean; //TAC Whaling, ray
 	bool m_bFlatlands;
 	bool m_bNoRiverSide;
+	bool m_bRiverSideOnly; // Ray, adding 2 more XML tags to control bonus placement
+	bool m_bCoastalLandOnly; // Ray, adding 2 more XML tags to control bonus placement
+	bool m_bOnlySouthernHemisphere; //ray, Norther and Southern Hemisphere, using hint of f1rpo
+	bool m_bOnlyNorthernHemisphere; //ray, Norther and Southern Hemisphere, using hint of f1rpo
 	bool m_bUseLSystem;
 	bool m_bWhalingboatWorkable; //TAC Whaling, ray
 	bool m_bFishingboatWorkable; // R&R, ray, High Sea Fishing
@@ -2561,11 +2637,26 @@ public:
 	bool isGeneratedEveryRound() const;
 	// R&R, Robert Surcouf, Damage on Storm plots, End
 	bool isNoCoast() const;
+	bool isOnlyCoastalLand() const; //WTP, Feature settings enhancements
 	bool isNoRiver() const;
 	bool isNoAdjacent() const;
 	bool isRequiresFlatlands() const;
+	bool isRequiresHills() const; //WTP, Feature settings enhancements
+	bool isRequiresPeaks() const; //WTP, Feature settings enhancements
 	bool isRequiresRiver() const;
 	bool isImpassable() const;
+
+	// ray, Streams Feature - START
+	bool isNorthMovementBonus() const;
+	bool isSouthMovementBonus() const;
+	bool isEastMovementBonus() const;
+	bool isWestMovementBonus() const;
+	bool isNorthEastMovementBonus() const;
+	bool isNorthWestMovementBonus() const;
+	bool isSouthEastMovementBonus() const;
+	bool isSouthWestMovementBonus() const;
+	// ray, Streams Feature - END
+
 	bool isNoCity() const;
 	bool isNoImprovement() const;
 	bool isVisibleAlways() const;
@@ -2600,11 +2691,26 @@ protected:
 	bool m_bGeneratedEveryRound;
 	// R&R, Robert Surcouf, Damage on Storm plots, End
 	bool m_bNoCoast;
+	bool m_bOnlyCoastalLand; //WTP, Feature settings enhancements
 	bool m_bNoRiver;
 	bool m_bNoAdjacent;
 	bool m_bRequiresFlatlands;
+	bool m_bRequiresHills; //WTP, Feature settings enhancements
+	bool m_bRequiresPeaks; //WTP, Feature settings enhancements
 	bool m_bRequiresRiver;
 	bool m_bImpassable;
+
+	// ray, Streams Feature - START
+	bool m_bNorthMovementBonus;
+	bool m_bSouthMovementBonus;
+	bool m_bEastMovementBonus;
+	bool m_bWestMovementBonus;
+	bool m_bNorthEastMovementBonus;
+	bool m_bNorthWestMovementBonus;
+	bool m_bSouthEastMovementBonus;
+	bool m_bSouthWestMovementBonus;
+	// ray, Streams Feature - END
+
 	bool m_bNoCity;
 	bool m_bNoImprovement;
 	bool m_bVisibleAlways;
@@ -2686,6 +2792,7 @@ public:
 	int getAssetValue() const;
 
 	bool isCargo() const;
+	bool isIgnoredForStorageCapacity() const; // ray, making special storage capacity rules for Yields XML configurable
 
 	bool isExportYield() const {return m_bIsExportYield;} // auto traderoute - Nightinggale
 
@@ -2744,6 +2851,7 @@ protected:
 	int m_iAssetValue;
 
 	bool m_bCargo;
+	bool m_bIgnoredForStorageCapacity; // ray, making special storage capacity rules for Yields XML configurable
 	bool m_bIsExportYield; // auto traderoute - Nightinggale
 
 	// R&R, Androrc, Livestock Breeding
@@ -2777,6 +2885,7 @@ public:
 	bool isImpassable() const;
 	bool isFound() const;
 	bool isFoundCoast() const;
+	bool isBadCityLocation() const; // WTP, ray, Health Overhaul
 
 	DllExport const char* getArtDefineTag() const;
 	void setArtDefineTag(const char* szTag);
@@ -2805,6 +2914,7 @@ protected:
 	bool m_bImpassable;
 	bool m_bFound;
 	bool m_bFoundCoast;
+	bool m_bBadCityLocation; // WTP, ray, Health Overhaul
 	int m_iWorldSoundscapeScriptId;
 	// Arrays
 	int* m_aiYields;
@@ -3157,7 +3267,12 @@ public:
 	int getTaxRateThresholdModifier() const;
 	int getMaxTaxRateThresholdDecrease() const; // R&R, ray, new Attribute in Traits
 	int getMercantileFactor() const;
+	int getAfricaSellProfitModifierInPercent() const; // WTP, Africa and Port Royal Profit Modifiers - START
+	int getPortRoyalSellProfitModifierInPercent() const; // WTP, Africa and Port Royal Profit Modifiers - START
+	int getDomesticMarketProfitModifierInPercent() const; // WTP, ray, Domestic Market Profit Modifier
 	int getTreasureModifier() const;
+	int getGoodUniqueGoodyChanceModifierLand() const; // WTP, ray, Unique Goody Chance Modifiers - START
+	int getGoodUniqueGoodyChanceModifierWater() const; // WTP, ray, Unique Goody Chance Modifiers - START
 	int getUnhappinessFromSlavesModifier() const; // WTP, ray, Happiness - START
 	int getChiefGoldModifier() const;
 	int getNativeAttitudeChange() const;
@@ -3166,13 +3281,19 @@ public:
 	int getCityDefense() const;
 	int getLandPriceDiscount() const;
 	int getRecruitPriceDiscount() const;
+	int getRecruitPriceDiscountAfrica() const; // WTP, ray, Recruit Price Discounts Africa and Port Royal
+	int getRecruitPriceDiscountPortRoyal() const; // WTP, ray, Recruit Price Discounts Africa and Port Royal
 	int getEuropeTravelTimeModifier() const;
 	int getImmigrationThresholdModifier() const;
 	int getPopGrowthThresholdModifier() const;		// Schmiddie, 7 new variables for traits for Europeans, START
 	int getCultureLevelModifier() const;
 	int getPioneerSpeedModifier() const;
 	int getImprovementPriceModifier() const;
+	int getImprovementGrowthTimeModifier() const; // WTP, ray, Improvement Growth Modifier
 	int getLearningByDoingModifier() const;
+	int getLearningByDoingFreeModifier() const; // WTP, ray, adding modifiers for other LBD features - START
+	int getLearningByDoingRunawayModifier() const; // WTP, ray, adding modifiers for other LBD features - START
+	int getLearningByDoingRevoltModifier() const; // WTP, ray, adding modifiers for other LBD features - START
 	int getSpecialistPriceModifier() const;
 	int getStorageCapacityModifier() const;		// Schmiddie, 7 new variables for traits for Europeans, END
 
@@ -3217,7 +3338,12 @@ protected:
 	int m_iTaxRateThresholdModifier;
 	int m_iMaxTaxRateThresholdDecrease; // R&R, ray, new Attribute in Traits
 	int m_iMercantileFactor;
+	int m_iAfricaSellProfitModifierInPercent; // WTP, Africa and Port Royal Profit Modifiers - START
+	int m_iPortRoyalSellProfitModifierInPercent; // WTP, Africa and Port Royal Profit Modifiers - START
+	int m_iDomesticMarketProfitModifierInPercent; // WTP, ray, Domestic Market Profit Modifier
 	int m_iTreasureModifier;
+	int m_iGoodUniqueGoodyChanceModifierLand; // WTP, ray, Unique Goody Chance Modifiers - START
+	int m_iGoodUniqueGoodyChanceModifierWater; // WTP, ray, Unique Goody Chance Modifiers - START
 	int m_iUnhappinessFromSlavesModifier; // WTP, ray, Happiness - START
 	int m_iChiefGoldModifier;
 	int m_iNativeAttitudeChange;
@@ -3226,13 +3352,19 @@ protected:
 	int m_iCityDefense;
 	int m_iLandPriceDiscount;
 	int m_iRecruitPriceDiscount;
+	int m_iRecruitPriceDiscountAfrica; // WTP, ray, Recruit Price Discounts Africa and Port Royal
+	int m_iRecruitPriceDiscountPortRoyal; // WTP, ray, Recruit Price Discounts Africa and Port Royal
 	int m_iEuropeTravelTimeModifier;
 	int m_iImmigrationThresholdModifier;
 	int m_iPopGrowthThresholdModifier;		// Schmiddie, 7 new variables for traits for Europeans, START
 	int m_iCultureLevelModifier;
 	int m_iPioneerSpeedModifier;
 	int m_iImprovementPriceModifier;
+	int m_iImprovementGrowthTimeModifier;  // WTP, ray, Improvement Growth Modifier
 	int m_iLearningByDoingModifier;
+	int m_iLearningByDoingFreeModifier; // WTP, ray, adding modifiers for other LBD features - START
+	int m_iLearningByDoingRunawayModifier; // WTP, ray, adding modifiers for other LBD features - START
+	int m_iLearningByDoingRevoltModifier; // WTP, ray, adding modifiers for other LBD features - START
 	int m_iSpecialistPriceModifier;
 	int m_iStorageCapacityModifier;		// Schmiddie, 7 new variables for traits for Europeans, END
 
@@ -4827,18 +4959,18 @@ public:
 	~CivEffectInfo();
 
 	// allow
-	inline const InfoArray<BonusTypes        , AllowTypes>& getAllowedBonuses              () const { return m_info_AllowBonuses      ; }
-	inline const InfoArray<BuildTypes        , AllowTypes>& getAllowedBuilds               () const { return m_info_AllowBuilds       ; }
-	inline const InfoArray<BuildingClassTypes, AllowTypes>& getAllowedBuildingClasses      () const { return m_info_AllowBuildings    ; }
-	inline const InfoArray<CivicTypes        , AllowTypes>& getAllowedCivics               () const { return m_info_AllowCivics       ; }
-	inline const InfoArray<CivCategoryTypes  , AllowTypes>& getAllowConqueringCity         () const { return m_info_AllowConqueringCity;}
-	inline const InfoArray<UnitClassTypes    , AllowTypes>& getAllowedImmigrants           () const { return m_info_AllowImmigrants   ; }
-	inline const InfoArray<ImprovementTypes  , AllowTypes>& getAllowedImprovements         () const { return m_info_AllowImprovements ; }
-	inline const InfoArray<ProfessionTypes   , AllowTypes>& getAllowedProfessions          () const { return m_info_AllowProfessions  ; }
-	inline const InfoArray<PromotionTypes    , AllowTypes>& getAllowedPromotions           () const { return m_info_AllowPromotions   ; }
-	inline const InfoArray<RouteTypes        , AllowTypes>& getAllowedRoutes               () const { return m_info_AllowRoutes       ; }
-	inline const InfoArray<UnitClassTypes    , AllowTypes>& getAllowedUnitClasses          () const { return m_info_AllowUnits        ; }
-	inline const InfoArray<YieldTypes        , AllowTypes>& getAllowedYields               () const { return m_info_AllowYields       ; }
+	inline const InfoArray<BonusTypes        , int>& getAllowedBonuses              () const { return m_info_AllowBonuses      ; }
+	inline const InfoArray<BuildTypes        , int>& getAllowedBuilds               () const { return m_info_AllowBuilds       ; }
+	inline const InfoArray<BuildingClassTypes, int>& getAllowedBuildingClasses      () const { return m_info_AllowBuildings    ; }
+	inline const InfoArray<CivicTypes        , int>& getAllowedCivics               () const { return m_info_AllowCivics       ; }
+	inline const InfoArray<CivCategoryTypes  , int>& getAllowConqueringCity         () const { return m_info_AllowConqueringCity;}
+	inline const InfoArray<UnitClassTypes    , int>& getAllowedImmigrants           () const { return m_info_AllowImmigrants   ; }
+	inline const InfoArray<ImprovementTypes  , int>& getAllowedImprovements         () const { return m_info_AllowImprovements ; }
+	inline const InfoArray<ProfessionTypes   , int>& getAllowedProfessions          () const { return m_info_AllowProfessions  ; }
+	inline const InfoArray<PromotionTypes    , int>& getAllowedPromotions           () const { return m_info_AllowPromotions   ; }
+	inline const InfoArray<RouteTypes        , int>& getAllowedRoutes               () const { return m_info_AllowRoutes       ; }
+	inline const InfoArray<UnitClassTypes    , int>& getAllowedUnitClasses          () const { return m_info_AllowUnits        ; }
+	inline const InfoArray<YieldTypes        , int>& getAllowedYields               () const { return m_info_AllowYields       ; }
 	
 	inline const bool getAllowFoundCity                    () const { return m_iAllowFoundCity        ; }
 
@@ -4846,29 +4978,30 @@ public:
 	inline int getCanUseDomesticMarket                     () const { return m_iCanUseDomesticMarket  ; }
 
 	// growth
+	int getLearningByDoingModifier                         () const;
 	inline int getNumUnitsOnDockChange                     () const { return m_iNumUnitsOnDockChange  ; }
 
 	// unit
-	inline const InfoArray<PromotionTypes, AllowTypes>                 & getFreePromotions              () const { return m_info_FreePromotions              ; }
-	inline const InfoArray<ProfessionTypes, PromotionTypes, AllowTypes>& getFreePromotionsForProfessions() const { return m_info_FreePromotionsForProfessions; }
-	inline const InfoArray<UnitCombatTypes, PromotionTypes, AllowTypes>& getFreePromotionsForUnitCombats() const { return m_info_FreePromotionsForUnitCombats; }
+	inline const InfoArray<PromotionTypes, int>                 & getFreePromotions              () const { return m_info_FreePromotions              ; }
+	inline const InfoArray<ProfessionTypes, PromotionTypes, int>& getFreePromotionsForProfessions() const { return m_info_FreePromotionsForProfessions; }
+	inline const InfoArray<UnitCombatTypes, PromotionTypes, int>& getFreePromotionsForUnitCombats() const { return m_info_FreePromotionsForUnitCombats; }
 
 	bool read(CvXMLLoadUtility* pXML);
 
 protected:
 	// allow
-	InfoArray<BonusTypes        , AllowTypes> m_info_AllowBonuses;
-	InfoArray<BuildTypes        , AllowTypes> m_info_AllowBuilds;
-	InfoArray<BuildingClassTypes, AllowTypes> m_info_AllowBuildings;
-	InfoArray<CivicTypes        , AllowTypes> m_info_AllowCivics;
-	InfoArray<CivCategoryTypes  , AllowTypes> m_info_AllowConqueringCity;
-	InfoArray<UnitClassTypes    , AllowTypes> m_info_AllowImmigrants;
-	InfoArray<ImprovementTypes  , AllowTypes> m_info_AllowImprovements;
-	InfoArray<ProfessionTypes   , AllowTypes> m_info_AllowProfessions;
-	InfoArray<PromotionTypes    , AllowTypes> m_info_AllowPromotions;
-	InfoArray<RouteTypes        , AllowTypes> m_info_AllowRoutes;
-	InfoArray<UnitClassTypes    , AllowTypes> m_info_AllowUnits;
-	InfoArray<YieldTypes        , AllowTypes> m_info_AllowYields;
+	InfoArray<BonusTypes        , int> m_info_AllowBonuses;
+	InfoArray<BuildTypes        , int> m_info_AllowBuilds;
+	InfoArray<BuildingClassTypes, int> m_info_AllowBuildings;
+	InfoArray<CivicTypes        , int> m_info_AllowCivics;
+	InfoArray<CivCategoryTypes  , int> m_info_AllowConqueringCity;
+	InfoArray<UnitClassTypes    , int> m_info_AllowImmigrants;
+	InfoArray<ImprovementTypes  , int> m_info_AllowImprovements;
+	InfoArray<ProfessionTypes   , int> m_info_AllowProfessions;
+	InfoArray<PromotionTypes    , int> m_info_AllowPromotions;
+	InfoArray<RouteTypes        , int> m_info_AllowRoutes;
+	InfoArray<UnitClassTypes    , int> m_info_AllowUnits;
+	InfoArray<YieldTypes        , int> m_info_AllowYields;
 	
 	int m_iAllowFoundCity;
 
@@ -4876,12 +5009,13 @@ protected:
 	int m_iCanUseDomesticMarket;
 
 	// growth
+	int m_iLearningByDoingModifier;
 	int m_iNumUnitsOnDockChange;
 
 	// unit
-	InfoArray<                 PromotionTypes, AllowTypes> m_info_FreePromotions;
-	InfoArray<ProfessionTypes, PromotionTypes, AllowTypes> m_info_FreePromotionsForProfessions;
-	InfoArray<UnitCombatTypes, PromotionTypes, AllowTypes> m_info_FreePromotionsForUnitCombats;
+	InfoArray<                 PromotionTypes, int> m_info_FreePromotions;
+	InfoArray<ProfessionTypes, PromotionTypes, int> m_info_FreePromotionsForProfessions;
+	InfoArray<UnitCombatTypes, PromotionTypes, int> m_info_FreePromotionsForUnitCombats;
 };
 
 

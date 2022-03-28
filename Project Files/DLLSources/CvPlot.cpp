@@ -536,12 +536,20 @@ void CvPlot::doImprovement()
 void CvPlot::upgradeImprovement(ImprovementTypes eImprovementUpgrade, int iUpgradeRate)
 {
 	changeUpgradeProgress(iUpgradeRate);
+	// WTP, ray, Improvement Growth Modifier - START
+	int iUpgradeDuration = GC.getGameINLINE().getImprovementUpgradeTime(getImprovementType());
 
-	if (getUpgradeProgress() >= GC.getGameINLINE().getImprovementUpgradeTime(getImprovementType()))
+	if (getOwnerINLINE() != NO_PLAYER)
+	{
+		int iUpgradeDurationModifier = GET_PLAYER(getOwnerINLINE()).getImprovementUpgradeDurationModifier();
+		iUpgradeDuration = iUpgradeDuration * (100 + iUpgradeDurationModifier) / 100;
+	}
+
+	if (getUpgradeProgress() >= iUpgradeDuration)
 	{
 		setImprovementType(eImprovementUpgrade);
 	}
-
+	// WTP, ray, Improvement Growth Modifier - END
 }
 
 void CvPlot::doImprovementUpgrade()
@@ -999,30 +1007,29 @@ bool CvPlot::isCoastalLand(int iMinWaterSize) const
 //WTP, ray, Large Rivers - START
 // this checks if the adjacent water tiles are just Large Rivers
 // needed to prevent that Buildings for bigger ships can be built - anything that can not enter Large Rivers
-bool CvPlot::hasAnyOtherWaterPlotsThanJustLargeRivers() const
+bool CvPlot::hasDeepWaterCoast() const
 {
 	PROFILE_FUNC();
 
-	// now we check if there is any plot adjacent that is Water but not Large Rivers
-	// if we find any Water Plot that is not Large Rivers, this is not just Large Rivers
+	// now we check if we find any Water Plot that is COAST
+	// all others, like e.g. Large Rivers, Lakes, Ice Lakes, Shallow Coast, ... would be problematic
 	for (int iI = 0; iI < NUM_DIRECTION_TYPES; ++iI)
 	{
 		CvPlot* pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
 
 		if (pAdjacentPlot != NULL)
 		{
-			if (pAdjacentPlot->isWater() && pAdjacentPlot->getTerrainType() != TERRAIN_LARGE_RIVERS)
+			if (pAdjacentPlot->isWater() && pAdjacentPlot->getTerrainType() == TERRAIN_COAST)
 			{
 					return true;
 			}
 		}
 	}
 
-	// otherwise it is Coastal LAnds and all Water Plots need to be Large Rivers
+	// otherwise it is just Water Plots we want to avoid
 	return false;
 }
 //WTP, ray, Large Rivers - END
-
 
 bool CvPlot::isAdjacentWaterPassable(CvPlot* pPlot) const
 {
@@ -1119,7 +1126,7 @@ bool CvPlot::isLake() const
 
 	return false;*/
 
-	return (getTerrainType() == TERRAIN_LAKE);
+	return (getTerrainType() == TERRAIN_LAKE || getTerrainType() == TERRAIN_ICE_LAKE);
 	//WTP, ray, Lakes - END
 }
 
@@ -1214,6 +1221,18 @@ bool CvPlot::isRiver() const
 	return (getRiverCrossingCount() > 0);
 }
 
+// WTP, ray, Health Overhaul - START
+bool CvPlot::isFreshWater() const
+{
+	// no Water Plots themselves
+	if (isWater())
+	{
+		return false;
+	}
+
+	return (isRiver() || hasNearbyPlotWith(TERRAIN_LARGE_RIVERS) || hasNearbyPlotWith(TERRAIN_LAKE) || hasNearbyPlotWith(TERRAIN_ICE_LAKE));
+}
+// WTP, ray, Health Overhaul - END
 
 bool CvPlot::isRiverConnection(DirectionTypes eDirection) const
 {
@@ -1805,6 +1824,24 @@ bool CvPlot::canHaveBonus(BonusTypes eBonus, bool bIgnoreLatitude) const
 		}
 	}
 
+	// Ray, adding 2 more XML tags to control bonus placement - START
+	if (GC.getBonusInfo(eBonus).isRiverSideOnly())
+	{
+		if (!isRiverSide())
+		{
+			return false;
+		}
+	}
+
+	if (GC.getBonusInfo(eBonus).isCoastalLandOnly())
+	{
+		if (!isCoastalLand())
+		{
+			return false;
+		}
+	}
+	// Ray, adding 2 more XML tags to control bonus placement - END
+
 	if (GC.getBonusInfo(eBonus).getMinAreaSize() != -1)
 	{
 		if (area()->getNumTiles() < GC.getBonusInfo(eBonus).getMinAreaSize())
@@ -1827,19 +1864,44 @@ bool CvPlot::canHaveBonus(BonusTypes eBonus, bool bIgnoreLatitude) const
 	}
 
 	//TAC Whaling, ray
-	if (isWater() && !GC.getBonusInfo(eBonus).isOcean())
+	//WTP, ray we correct the logic
+	if (GC.getBonusInfo(eBonus).isWhalingboatWorkable())
 	{
-		if (!isPotentialCityWork())
+		// We check that it is not adjacent to coast, because that may bring it in 2 Plot reach of CityRadius
+		// Thus we do not want to be adjacent to any Coast - the rest is already caught by XML, since it can only be placed on Ocean
+		CvPlot* pAdjacentPlot;
+		for (int iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
 		{
-			return false;
+			pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+			if (pAdjacentPlot != NULL && (pAdjacentPlot->getTerrainType() == TERRAIN_COAST || pAdjacentPlot->getTerrainType() == TERRAIN_SHALLOW_COAST))
+			{
+				return false;
+			}
 		}
 	}
 
-	/*if (!isPotentialCityWork())
+	// ray, deactivate Hemisphere Restrictions
+	// if this Game Option is activated the checks inside are not executed - thus Hemisphere Restrictions for Ressources is lifted
+	if(!GC.getGameINLINE().isOption(GAMEOPTION_DEACTIVATE_HEMISPHERE_RESTRICTIONS))
 	{
-		return false;
-	}*/
-	//End TAC Whaling, ray
+		//ray, Norther and Southern Hemisphere, using hint of f1rpo - START
+		if (GC.getBonusInfo(eBonus).isOnlySouthernHemisphere())
+		{
+			if (!isSouthernHemisphere())
+			{
+				return false;
+			}
+		}
+
+		if (GC.getBonusInfo(eBonus).isOnlyNorthernHemisphere())
+		{
+			if (!isNorthernHemisphere())
+			{
+				return false;
+			}
+		}
+		//ray, Norther and Southern Hemisphere, using hint of f1rpo - END
+	}
 
 	return true;
 }
@@ -1881,6 +1943,28 @@ bool CvPlot::canHaveImprovement(ImprovementTypes eImprovement, TeamTypes eTeam, 
 
 	// R&R, ray, Improving AI logic for Improvements
 	if (eImprovement != NO_IMPROVEMENT && getBonusType() != NO_BONUS && eTeam != NO_TEAM && !GET_TEAM(eTeam).isHuman())
+	{
+		bool improvementDoesMatchBonus = false;
+		CvBonusInfo& kBonus = GC.getBonusInfo(getBonusType());
+		CvImprovementInfo& kImprovement = GC.getImprovementInfo(eImprovement);
+
+		for (int xx = 0; xx < NUM_YIELD_TYPES && !improvementDoesMatchBonus; ++xx)
+		{
+			if(kBonus.getYieldChange(xx) > 0 && kImprovement.getYieldIncrease(xx) > 0)
+			{
+				improvementDoesMatchBonus = true;
+			}
+		}
+
+		if (improvementDoesMatchBonus == false)
+		{
+			return false;
+		}
+	}
+
+	// ray, making sure that water Improvements match
+	// e.g. no Fishing on Fur Animals - later also no Fishing on Feather Birds
+	if (eImprovement != NO_IMPROVEMENT && getBonusType() != NO_BONUS && GC.getImprovementInfo(eImprovement).isWater())
 	{
 		bool improvementDoesMatchBonus = false;
 		CvBonusInfo& kBonus = GC.getBonusInfo(getBonusType());
@@ -1947,6 +2031,53 @@ bool CvPlot::canHaveImprovement(ImprovementTypes eImprovement, TeamTypes eTeam, 
 	{
 		return false;
 	}
+
+	// WTP, ray, Not allowed next to itself - START
+	if (GC.getImprovementInfo(eImprovement).isNotAllowedNextToSameAsItself())
+	{
+		for (int iI = 0; iI < NUM_DIRECTION_TYPES; iI++)
+		{
+			CvPlot* pAdjacentPlot = plotDirection(getX_INLINE(), getY_INLINE(), ((DirectionTypes)iI));
+			if (pAdjacentPlot != NULL)
+			{
+				// we catch ourselves
+				if (pAdjacentPlot->getImprovementType() == eImprovement)
+				{
+					return false;
+				}
+				// now let us also consider our growing improvements
+				ImprovementTypes eOurGrowingImprovement = (ImprovementTypes) GC.getImprovementInfo(eImprovement).getImprovementUpgrade();
+				if (eOurGrowingImprovement != NO_IMPROVEMENT && eOurGrowingImprovement == eImprovement)
+				{
+					return false;
+				}
+			}
+		}
+	}
+	// WTP, ray, Not allowed next to itself - END
+
+	// WTP, ray, small adjustment for Goodies spwawning hostile Units - START
+	// we do not want them to be spawned on Peaks, the graphics look really ugly there and it is bad for gameplay
+	// Hills should still be allowed
+	if (GC.getImprovementInfo(eImprovement).isGoodyForSpawningHostileAnimals() || GC.getImprovementInfo(eImprovement).isGoodyForSpawningHostileNatives() || GC.getImprovementInfo(eImprovement).isGoodyForSpawningHostileCriminals())
+	{
+		if (isPeak())
+		{
+			return false;
+		}
+	}
+	// WTP, ray, small adjustment for Goodies spwawning hostile Units - END
+
+	// WTP, ray, Canal - START
+	if (GC.getImprovementInfo(eImprovement).isCanal())
+	{
+		// we do not want to allow endless long canals, only next to Water Plots
+		if (isCoastalLand())
+		{
+			bValid = true;
+		}
+	}
+	// WTP, ray, Canal - END
 
 	if (GC.getImprovementInfo(eImprovement).isHillsMakesValid() && (isHills() || isPeak()))
 	{
@@ -2022,7 +2153,6 @@ bool CvPlot::canHaveImprovement(ImprovementTypes eImprovement, TeamTypes eTeam, 
 
 	return true;
 }
-
 
 bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible) const
 {
@@ -2104,7 +2234,8 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 			}
 
 			// Super Forts begin *AI_worker* - prevent forts from being built over when outside culture range
-			if (GC.getImprovementInfo(getImprovementType()).isActsAsCity())
+			// WTP, ray, Canal -- also adjust here to prevent canals destroying other Improvements
+			if (GC.getImprovementInfo(getImprovementType()).isActsAsCity() || GC.getImprovementInfo(getImprovementType()).isCanal())
 			{
 				if (!isWithinCultureRange(ePlayer) && !(getCultureRangeForts(ePlayer) > 1))
 				{
@@ -2178,8 +2309,9 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 			//R&R, ray, preventing exploit to build directly next to a Native Village in own culture - END
 
 
-			//R&R, vetiarvind, Super Forts begin *AI_worker* - prevent workers from two different players from building a fort in the same plot 
-			if(GC.getImprovementInfo(eImprovement).isActsAsCity())
+			//R&R, vetiarvind, Super Forts begin *AI_worker* - prevent workers from two different players from building a fort in the same plot
+			// WTP, ray, Canal - also adjust here
+			if(GC.getImprovementInfo(eImprovement).isActsAsCity() || GC.getImprovementInfo(eImprovement).isCanal())
 			{
 				CLLNode<IDInfo>* pUnitNode = headUnitNode();
 				CvUnit* pLoopUnit;
@@ -2195,7 +2327,8 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 							ImprovementTypes eImprovementBuild = (ImprovementTypes)(GC.getBuildInfo(pLoopUnit->getBuildType()).getImprovement());
 							if(eImprovementBuild != NO_IMPROVEMENT)
 							{
-								if(GC.getImprovementInfo(eImprovementBuild).isActsAsCity())
+								// WTP, ray, Canal - also adjust here
+								if(GC.getImprovementInfo(eImprovementBuild).isActsAsCity()  || GC.getImprovementInfo(eImprovement).isCanal())
 								{
 									return false;
 								}
@@ -2320,6 +2453,7 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 		{
 			return false;
 		}
+
 		// only inside own borders
 		if (GET_PLAYER(ePlayer).getTeam() != getTeam())
 		{
@@ -2336,6 +2470,12 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 	FeatureTypes eResultFeature = (FeatureTypes)(GC.getBuildInfo(eBuild).getResultFeature());
 	if (eResultFeature != NO_FEATURE)
 	{
+		//no reforrestation on City Plots
+		if (isCity())
+		{
+			return false;
+		}
+
 		// check if there is not already Feature
 		if (getFeatureType() != NO_FEATURE)
 		{
@@ -2353,7 +2493,8 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 		}
 
 		// make sure the terrain in question can have the wanted feature
-		if (!GC.getFeatureInfo(eResultFeature).isTerrain(getTerrainType()))
+		// ray, RaR, we additionally check for "needs River" here
+		if (!GC.getFeatureInfo(eResultFeature).isTerrain(getTerrainType()) || (GC.getFeatureInfo(eResultFeature).isRequiresRiver() && !isRiver()))
 		{
 			return false;
 		}
@@ -3263,7 +3404,10 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 
 	bool bHasTerrainCost = (iRegularCost > 0);
 
-	iRegularCost = std::min(iRegularCost, pUnit->baseMoves()) * GC.getMOVE_DENOMINATOR();
+	// ray, new Movement Calculation - START
+	// this needs to be prevented because the Unit will otherwise not get full Terrain Cost
+	// iRegularCost = std::min(iRegularCost, pUnit->baseMoves()) * GC.getMOVE_DENOMINATOR();
+	iRegularCost = iRegularCost * GC.getMOVE_DENOMINATOR();
 
 	if (bHasTerrainCost)
 	{
@@ -3274,6 +3418,125 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 		}
 	}
 
+	// ray, Streams Feature
+	// we now check if this is a "Stream Feature" with the same movement Bonus
+	// we only check for Water Plots with Features of course - this plot and also from plot
+	if (isWater() && getFeatureType() != NO_FEATURE && pFromPlot->getFeatureType() != NO_FEATURE)
+	{
+		bool hasSameStreamFeature = false;
+		CvFeatureInfo& eThisFeature = GC.getFeatureInfo(getFeatureType());
+		CvFeatureInfo& eFromFeature = GC.getFeatureInfo(pFromPlot->getFeatureType());
+
+		//to check if Movementis against Stream
+		bool bMovementAgainstStream = false;
+
+		// get Movement direction
+		int xThisPlot = getX_INLINE();
+		int yThisPlot = getY_INLINE();
+		int xFromPlot = pFromPlot->getX_INLINE();
+		int yFromPlot = pFromPlot->getY_INLINE();
+
+		bool bMovementNorth = yThisPlot > yFromPlot;
+		bool bMovementSouth = yThisPlot < yFromPlot;
+		bool bMovementEast = xThisPlot > xFromPlot;
+		bool bMovementWest = xThisPlot < xFromPlot;
+
+		while (!hasSameStreamFeature)
+		{
+			if (eThisFeature.isNorthMovementBonus() && eFromFeature.isNorthMovementBonus())
+			{
+				hasSameStreamFeature = true;
+				if (!bMovementNorth)
+				{
+					bMovementAgainstStream = true;
+				}
+
+				break;
+			}
+			else if (eThisFeature.isSouthMovementBonus() && eFromFeature.isSouthMovementBonus())
+			{
+				hasSameStreamFeature = true;
+				if (!bMovementSouth)
+				{
+					bMovementAgainstStream = true;
+				}
+				break;
+			}
+			else if (eThisFeature.isEastMovementBonus() && eFromFeature.isEastMovementBonus())
+			{
+				hasSameStreamFeature = true;
+				if (!bMovementEast)
+				{
+					bMovementAgainstStream = true;
+				}
+				break;
+			}
+			else if (eThisFeature.isWestMovementBonus() && eFromFeature.isWestMovementBonus())
+			{
+				hasSameStreamFeature = true;
+				if (!bMovementWest)
+				{
+					bMovementAgainstStream = true;
+				}
+				break;
+			}
+			else if (eThisFeature.isNorthEastMovementBonus() && eFromFeature.isNorthEastMovementBonus())
+			{
+				hasSameStreamFeature = true;
+				if (bMovementSouth || bMovementWest)
+				{
+					bMovementAgainstStream = true;
+				}
+				break;
+			}
+			else if (eThisFeature.isNorthWestMovementBonus() && eFromFeature.isNorthWestMovementBonus())
+			{
+				hasSameStreamFeature = true;
+				if (bMovementSouth || bMovementEast)
+				{
+					bMovementAgainstStream = true;
+				}
+				break;
+			}
+			else if (eThisFeature.isSouthEastMovementBonus() && eFromFeature.isSouthEastMovementBonus())
+			{
+				hasSameStreamFeature = true;
+				if (bMovementNorth || bMovementWest)
+				{
+					bMovementAgainstStream = true;
+				}
+				break;
+			}
+			else if (eThisFeature.isSouthWestMovementBonus() && eFromFeature.isSouthWestMovementBonus())
+			{
+				hasSameStreamFeature = true;
+				if (bMovementNorth || bMovementEast)
+				{
+					bMovementAgainstStream = true;
+				}
+				break;
+			}	  
+			// nothing found, we stop
+			break;
+		}
+		
+		// if we have found a Stream of the same Type, we reduce Moevement by half
+		if (hasSameStreamFeature)
+		{
+			// Movement against Stream
+			if (bMovementAgainstStream)
+			{
+				iRegularCost *= 2;
+			}
+
+			// Movement with Stream
+			else
+			{
+				iRegularCost /= 2;
+			}
+		}
+	}
+
 	if (pFromPlot->isValidRoute(pUnit) && isValidRoute(pUnit))
 	{
 		iRouteCost = std::max((GC.getRouteInfo(pFromPlot->getRouteType()).getMovementCost()),
@@ -3281,6 +3544,7 @@ int CvPlot::movementCost(const CvUnit* pUnit, const CvPlot* pFromPlot) const
 		iRouteFlatCost = std::max((GC.getRouteInfo(pFromPlot->getRouteType()).getFlatMovementCost() * pUnit->baseMoves()),
 			                   (GC.getRouteInfo(getRouteType()).getFlatMovementCost() * pUnit->baseMoves()));
 	}
+
 	else
 	{
 		iRouteCost = MAX_INT;
@@ -3820,7 +4084,8 @@ bool CvPlot::isCity(bool bCheckImprovement, TeamTypes eForTeam) const
 {
 	if (bCheckImprovement && NO_IMPROVEMENT != getImprovementType())
 	{
-		if (GC.getImprovementInfo(getImprovementType()).isActsAsCity())
+		// WTP, ray, Canal - also adjust here
+		if (GC.getImprovementInfo(getImprovementType()).isActsAsCity() || GC.getImprovementInfo(getImprovementType()).isCanal())
 		{
 			if (NO_TEAM == eForTeam || (NO_TEAM == getTeam() && GC.getImprovementInfo(getImprovementType()).isOutsideBorders()) || GET_TEAM(eForTeam).isFriendlyTerritory(getTeam()))
 			{
@@ -3912,6 +4177,16 @@ bool CvPlot::isFort() const
 bool CvPlot::isMonastery() const
 {
 	if (getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(getImprovementType()).isMonastery())
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool CvPlot::isCanal() const
+{
+	if (getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(getImprovementType()).isCanal())
 	{
 		return true;
 	}
@@ -4021,12 +4296,14 @@ bool CvPlot::canHaveFeature(FeatureTypes eFeature) const
 		return true;
 	}
 
-	if (getFeatureType() != NO_FEATURE)
+	//ray, ensure that Storms do not destroy other Features - improvement
+	if (getFeatureType() != NO_FEATURE && !GC.getFeatureInfo(getFeatureType()).isGeneratedEveryRound())
 	{
 		return false;
 	}
 
-	if (isPeak())
+	//WTP, Feature settings enhancements - see below
+	if (isPeak() && !GC.getFeatureInfo(eFeature).isRequiresPeaks())
 	{
 		return false;
 	}
@@ -4046,6 +4323,12 @@ bool CvPlot::canHaveFeature(FeatureTypes eFeature) const
 		return false;
 	}
 
+	//WTP, Feature settings enhancements
+	if (GC.getFeatureInfo(eFeature).isOnlyCoastalLand() && !isCoastalLand())
+	{
+		return false;
+	}
+
 	if (GC.getFeatureInfo(eFeature).isNoRiver() && isRiver())
 	{
 		return false;
@@ -4055,6 +4338,17 @@ bool CvPlot::canHaveFeature(FeatureTypes eFeature) const
 	{
 		return false;
 	}
+
+	//WTP, Feature settings enhancements
+	if (GC.getFeatureInfo(eFeature).isRequiresHills() && !isHills())
+	{
+		return false;
+	}
+	if (GC.getFeatureInfo(eFeature).isRequiresPeaks() && !isPeak())
+	{
+		return false;
+	}
+
 
 	if (GC.getFeatureInfo(eFeature).isNoAdjacent())
 	{
@@ -4132,6 +4426,15 @@ bool CvPlot::isValidDomainForAction(UnitTypes eUnit) const
 	switch (kUnitInfo.getDomainType())
 	{
 	case DOMAIN_SEA:
+
+		// WTP, ray, Canal - START
+		// in Canals, which are actually on land plots, we do not want to have any Ships bigger than Coastal Ships or Fishing Boats
+		if (!isWater() && !kUnitInfo.getTerrainImpassable(TERRAIN_OCEAN) && !(kUnitInfo.isGatherBoat() && kUnitInfo.getHarbourSpaceNeeded() == 1) && getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(getImprovementType()).isCanal())
+		{
+			return false;
+		}
+		// WTP, ray, Canal - END
+
 		return (isWater() || kUnitInfo.isCanMoveAllTerrain());
 		break;
 
@@ -4186,8 +4489,16 @@ int CvPlot::getIndex() const
 	return ((getY_INLINE() * GC.getMapINLINE().getGridWidthINLINE()) + getX_INLINE());
 }
 
-
+//ray, Norther and Southern Hemisphere, using hint of f1rpo 
+// rewriten, now calls "getSignedLattitude" with abs - see below
 int CvPlot::getLatitude() const
+{
+   return abs(getSignedLatitude());
+}
+
+//ray, Norther and Southern Hemisphere, using hint of f1rpo
+// old getLatitude without abs - thus now "getSignedLattitude"
+int CvPlot::getSignedLatitude() const
 {
 	int iLatitude;
 
@@ -4202,7 +4513,19 @@ int CvPlot::getLatitude() const
 
 	iLatitude = ((iLatitude * (GC.getMapINLINE().getTopLatitude() - GC.getMapINLINE().getBottomLatitude())) / 100);
 
-	return abs(iLatitude + GC.getMapINLINE().getBottomLatitude());
+	return iLatitude + GC.getMapINLINE().getBottomLatitude();
+}
+
+//ray, Norther and Southern Hemisphere, using hint of f1rpo
+bool CvPlot::isSouthernHemisphere() const
+{
+   return !isNorthernHemisphere(); // as Nightinggale suggested
+}
+
+//ray, Norther and Southern Hemisphere, using hint of f1rpo
+bool CvPlot::isNorthernHemisphere() const
+{
+   return (getSignedLatitude() > 0);
 }
 
 
@@ -4443,7 +4766,7 @@ CvArea* CvPlot::getAdjacentSeaArea() const
 
 //WTP, Nightinggale - Terrain locator - start
 template <typename T>
-bool CvPlot::hasNearbyPlotWith(const InfoArray<T>& kInfo, int iRange, bool bEmptyReturnVal) const
+bool CvPlot::hasNearbyPlotWith(const InfoArray1<T>& kInfo, int iRange, bool bEmptyReturnVal) const
 {
 	const int iLength = kInfo.getLength();
 	if (iLength == 0)
@@ -4469,7 +4792,7 @@ bool CvPlot::hasNearbyPlotWith(const InfoArray<T>& kInfo, int iRange, bool bEmpt
 			}
 			for (int i = 0; i < iLength; ++i)
 			{
-				if (eVal == kInfo.getWithTemplate(i, eVal))
+				if (eVal == kInfo.get0(i))
 				{
 					return true;
 				}
@@ -4584,7 +4907,19 @@ int CvPlot::getUpgradeTimeLeft(ImprovementTypes eImprovement, PlayerTypes ePlaye
 	int iUpgradeRate;
 	int iTurnsLeft;
 
-	iUpgradeLeft = (GC.getGameINLINE().getImprovementUpgradeTime(eImprovement) - ((getImprovementType() == eImprovement) ? getUpgradeProgress() : 0));
+	// WTP, ray, Improvement Growth Modifier - START
+	int iNormalImprovementUpgradeTime = GC.getGameINLINE().getImprovementUpgradeTime(eImprovement);
+	int iUpgradeDurationModifier = GET_PLAYER(ePlayer).getImprovementUpgradeDurationModifier();
+	int iModifiedImprovementUpgradeTime = (iNormalImprovementUpgradeTime * (100 + iUpgradeDurationModifier)) / 100;
+	int iUpgradeProgress = 0;
+	if (getImprovementType() == eImprovement)
+	{
+		iUpgradeProgress = getUpgradeProgress();
+	}
+
+	//iUpgradeLeft = (GC.getGameINLINE().getImprovementUpgradeTime(eImprovement) - ((getImprovementType() == eImprovement) ? getUpgradeProgress() : 0));
+	iUpgradeLeft = iModifiedImprovementUpgradeTime - iUpgradeProgress;
+	// WTP, ray, Improvement Growth Modifier - END
 
 	if (ePlayer == NO_PLAYER)
 	{
@@ -4599,12 +4934,10 @@ int CvPlot::getUpgradeTimeLeft(ImprovementTypes eImprovement, PlayerTypes ePlaye
 	}
 
 	iTurnsLeft = (iUpgradeLeft / iUpgradeRate);
-
 	if ((iTurnsLeft * iUpgradeRate) < iUpgradeLeft)
 	{
 		iTurnsLeft++;
 	}
-
 	return std::max(1, iTurnsLeft);
 }
 
@@ -5255,7 +5588,7 @@ void CvPlot::setPlotType(PlotTypes eNewValue, bool bRecalculate, bool bRebuildGr
 					// setTerrainType(((TerrainTypes)(GC.getDefineINT("SHALLOW_WATER_TERRAIN"))), bRecalculate, bRebuildGraphics);
 					//WTP, ray, Lakes
 					//we do not want to change Lakes to Coast either
-					if (getTerrainType() != TERRAIN_LARGE_RIVERS && getTerrainType() != TERRAIN_LAKE)
+					if (getTerrainType() != TERRAIN_LARGE_RIVERS && getTerrainType() != TERRAIN_LAKE && getTerrainType() != TERRAIN_ICE_LAKE && getTerrainType() != TERRAIN_SHALLOW_COAST)
 					{
 						setTerrainType(((TerrainTypes)(GC.getDefineINT("SHALLOW_WATER_TERRAIN"))), bRecalculate, bRebuildGraphics);
 					}
@@ -5291,7 +5624,7 @@ void CvPlot::setPlotType(PlotTypes eNewValue, bool bRecalculate, bool bRebuildGr
 								//WTP, ray, Large Rivers - START
 								//we do not want to change Large Rivers to Coast, only Ocean
 								// pLoopPlot->setTerrainType(((TerrainTypes)(GC.getDefineINT("SHALLOW_WATER_TERRAIN"))), bRecalculate, bRebuildGraphics);
-								if (pLoopPlot->getTerrainType() != TERRAIN_LARGE_RIVERS && getTerrainType() != TERRAIN_LAKE)
+								if (pLoopPlot->getTerrainType() != TERRAIN_LARGE_RIVERS && getTerrainType() != TERRAIN_LAKE && getTerrainType() != TERRAIN_ICE_LAKE && getTerrainType() != TERRAIN_SHALLOW_COAST)
 								{
 									pLoopPlot->setTerrainType(((TerrainTypes)(GC.getDefineINT("SHALLOW_WATER_TERRAIN"))), bRecalculate, bRebuildGraphics);
 								}
@@ -5497,7 +5830,11 @@ void CvPlot::setCoastline(bool bRecalculate, bool bRebuildGraphics)
 		CvPlot* pLoopPlot = kMap.plotINLINE(iLoopX, iLoopY);
 		if (pLoopPlot != NULL && !pLoopPlot->isWater())
 		{
-			setTerrainType(TERRAIN_COAST, bRecalculate, bRebuildGraphics);
+			//WTP, ray preventing Shallow Coast explicity set on Maps to be transformed into Coast
+			if(getTerrainType() != TERRAIN_SHALLOW_COAST)
+			{
+				setTerrainType(TERRAIN_COAST, bRecalculate, bRebuildGraphics);
+			}
 			return;
 		}
 	}
@@ -6415,7 +6752,11 @@ int CvPlot::calculatePotentialYield(YieldTypes eYield, PlayerTypes ePlayer, Impr
 				{
 					if (!bDisplay || pWorkingCity->isRevealed(eTeam, false))
 					{
-						iYield += pWorkingCity->getLandPlotYield(eYield);
+						// ray, small improvement to LandPlotYieldChanges, SeaPlotYieldChanges, RiverPlotYieldChanges of Buildings
+						if (iYield > 0)
+						{
+							iYield += pWorkingCity->getLandPlotYield(eYield);
+						}
 					}
 				}
 			}
@@ -6433,7 +6774,11 @@ int CvPlot::calculatePotentialYield(YieldTypes eYield, PlayerTypes ePlayer, Impr
 				{
 					if (!bDisplay || pWorkingCity->isRevealed(eTeam, false))
 					{
-						iYield += pWorkingCity->getSeaPlotYield(eYield);
+						// ray, small improvement to LandPlotYieldChanges, SeaPlotYieldChanges, RiverPlotYieldChanges of Buildings
+						if (iYield > 0 || eYield == YIELD_FOOD)
+						{
+							iYield += pWorkingCity->getSeaPlotYield(eYield);
+						}
 					}
 				}
 			}
@@ -6448,7 +6793,11 @@ int CvPlot::calculatePotentialYield(YieldTypes eYield, PlayerTypes ePlayer, Impr
 				{
 					if (!bDisplay || pWorkingCity->isRevealed(eTeam, false))
 					{
-						iYield += pWorkingCity->getRiverPlotYield(eYield);
+						// ray, small improvement to LandPlotYieldChanges, SeaPlotYieldChanges, RiverPlotYieldChanges of Buildings
+						if (iYield > 0)
+						{
+							iYield += pWorkingCity->getRiverPlotYield(eYield);
+						}
 					}
 				}
 			}
@@ -7423,7 +7772,7 @@ bool CvPlot::isRevealed(TeamTypes eTeam, bool bDebug) const
 		return true;
 	}
 
-	return m_pab_Revealed.get(eTeam);
+	return m_em_bRevealed.get(eTeam);
 }
 
 
@@ -7438,7 +7787,7 @@ void CvPlot::setRevealed(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly, Tea
 
 	if (isRevealed(eTeam, false) != bNewValue)
 	{
-		m_pab_Revealed.set(eTeam, bNewValue);
+		m_em_bRevealed.set(eTeam, bNewValue);
 
 		if (area())
 		{
@@ -8093,7 +8442,7 @@ int CvPlot::getCultureRangeCities(PlayerTypes eOwnerIndex, CultureLevelTypes eRa
 	FAssert(eRangeIndex >= 0);
 	FAssert(eRangeIndex < GC.getNumCultureLevelInfos());
 
-	return m_em2_iCultureRangeCities.get(eOwnerIndex, eRangeIndex);
+	return m_em2_iCultureRangeCities[eOwnerIndex].get(eRangeIndex);
 }
 
 
@@ -8116,7 +8465,7 @@ void CvPlot::changeCultureRangeCities(PlayerTypes eOwnerIndex, CultureLevelTypes
 	{
 		bOldCultureRangeCities = isCultureRangeCity(eOwnerIndex, eRangeIndex);
 
-		m_em2_iCultureRangeCities.add(eOwnerIndex, eRangeIndex, iChange);
+		m_em2_iCultureRangeCities[eOwnerIndex].add(eRangeIndex, iChange);
 
 		if (bOldCultureRangeCities != isCultureRangeCity(eOwnerIndex, eRangeIndex))
 		{
@@ -8133,7 +8482,7 @@ int CvPlot::getInvisibleVisibilityCount(TeamTypes eTeam, InvisibleTypes eInvisib
 	FAssertMsg(eInvisible >= 0, "eInvisible is expected to be non-negative (invalid Index)");
 	FAssertMsg(eInvisible < GC.getNumInvisibleInfos(), "eInvisible is expected to be within maximum bounds (invalid Index)");
 
-	return m_em2_iInvisibleVisibilityCount.get(eTeam, eInvisible);
+	return m_em2_iInvisibleVisibilityCount[eTeam].get(eInvisible);
 }
 
 
@@ -8156,7 +8505,7 @@ void CvPlot::changeInvisibleVisibilityCount(TeamTypes eTeam, InvisibleTypes eInv
 	{
 		bOldInvisibleVisible = isInvisibleVisible(eTeam, eInvisible);
 
-		m_em2_iInvisibleVisibilityCount.add(eTeam, eInvisible, iChange);
+		m_em2_iInvisibleVisibilityCount[eTeam].add(eInvisible, iChange);
 
 		if (bOldInvisibleVisible != isInvisibleVisible(eTeam, eInvisible))
 		{
@@ -8334,7 +8683,8 @@ void CvPlot::doFeature()
 							iProbability = 0;
 							
 							// R&R, Robert Surcouf, Damage on Storm plots, Start
-							if (GC.getFeatureInfo((FeatureTypes)iI).isGeneratedEveryRound())
+							//ray, ensure that Storms do not destroy other Features - so either there is no Feature or it is also a Storm or Wind Feature
+							if (GC.getFeatureInfo((FeatureTypes)iI).isGeneratedEveryRound() && (getFeatureType() == NO_FEATURE) || (getFeatureType() != NO_FEATURE &&  GC.getFeatureInfo(getFeatureType()).isGeneratedEveryRound()))
 							{
 								iProbability += GC.getFeatureInfo((FeatureTypes)iI).getAppearanceProbability();
 							
@@ -8779,7 +9129,11 @@ int CvPlot::calculateMaxYield(YieldTypes eYield) const
 			CvBuildingInfo& building = GC.getBuildingInfo((BuildingTypes)iBuilding);
 			iBuildingYield = building.getLandPlotYieldChange(eYield);
 		}
-		iMaxYield += iBuildingYield;
+		// ray, small improvement to LandPlotYieldChanges, SeaPlotYieldChanges, RiverPlotYieldChanges of Buildings
+		if(iMaxYield > 0)
+		{
+			iMaxYield += iBuildingYield;
+		}
 	}
 	// R&R, ray, Landplot Yields - END
 
@@ -8791,7 +9145,11 @@ int CvPlot::calculateMaxYield(YieldTypes eYield) const
 			CvBuildingInfo& building = GC.getBuildingInfo((BuildingTypes)iBuilding);
 			iBuildingYield = building.getSeaPlotYieldChange(eYield);
 		}
-		iMaxYield += iBuildingYield;
+		// ray, small improvement to LandPlotYieldChanges, SeaPlotYieldChanges, RiverPlotYieldChanges of Buildings
+		if(iMaxYield > 0 || eYield == YIELD_FOOD)
+		{
+			iMaxYield += iBuildingYield;
+		}
 	}
 
 	if (isRiver())
@@ -8802,7 +9160,11 @@ int CvPlot::calculateMaxYield(YieldTypes eYield) const
 			CvBuildingInfo& building = GC.getBuildingInfo((BuildingTypes)iBuilding);
 			iBuildingYield = std::max(building.getRiverPlotYieldChange(eYield), iBuildingYield);
 		}
-		iMaxYield += iBuildingYield;
+		// ray, small improvement to LandPlotYieldChanges, SeaPlotYieldChanges, RiverPlotYieldChanges of Buildings
+		if(iMaxYield > 0)
+		{
+			iMaxYield += iBuildingYield;
+		}
 	}
 
 	int iExtraYieldThreshold = 0;

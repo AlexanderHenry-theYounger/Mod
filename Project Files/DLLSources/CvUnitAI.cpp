@@ -8104,6 +8104,13 @@ bool CvUnitAI::AI_unloadWhereNeeded(int iMaxPath)
 					int iValue = 100000;
 					int iNumAIUnits = pArea->getNumAIUnits(getOwnerINLINE(), AI_getUnitAIType()) - ((pArea == area()) ? iCount : 0);
 					FAssert(iNumAIUnits >= 0);
+
+					// dirty dirty workaround to avoid a crash
+					// TODO make a proper fix
+					if (iNumAIUnits < 0)
+					{
+						iNumAIUnits = 0;
+					}
 					
 					iValue *= 1 + pArea->getNumCities();
 					iValue /= 1 + iNumAIUnits;
@@ -12581,11 +12588,11 @@ bool CvUnitAI::AI_exploreRessource()
 					BonusTypes eBonus = pLoopPlot->getBonusType();
 					if (isWhalingBoat())
 					{
-						if (pLoopPlot->waterArea()->getNumBonuses((BonusTypes)GC.getDefineINT("BONUS_WHALE")) == 0)
+						if ((pLoopPlot->waterArea()->getNumBonuses((BonusTypes)GC.getDefineINT("BONUS_WHALE")) + pLoopPlot->waterArea()->getNumBonuses((BonusTypes)GC.getDefineINT("BONUS_WHALE2"))) == 0)
 						{
 							iPlotValue = 100;
 						}
-						else if (eBonus == (BonusTypes)GC.getDefineINT("BONUS_WHALE"))
+						else if (eBonus == (BonusTypes)GC.getDefineINT("BONUS_WHALE") || eBonus == (BonusTypes)GC.getDefineINT("BONUS_WHALE2"))
 						{
 							iPlotValue += 300;
 						}
@@ -12593,11 +12600,11 @@ bool CvUnitAI::AI_exploreRessource()
 					// R&R, ray, High Sea Fishing - START
 					else if (isFishingBoat())
 					{
-						if (pLoopPlot->waterArea()->getNumBonuses((BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH")) == 0)
+						if ((pLoopPlot->waterArea()->getNumBonuses((BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH")) + pLoopPlot->waterArea()->getNumBonuses((BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH2")) + pLoopPlot->waterArea()->getNumBonuses((BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH3")) + pLoopPlot->waterArea()->getNumBonuses((BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH4"))) == 0)
 						{
 							iPlotValue = 100;
 						}
-						else if (eBonus == (BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH"))
+						else if (eBonus == (BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH") || eBonus == (BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH2") || eBonus == (BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH3") || eBonus == (BonusTypes)GC.getDefineINT("BONUS_HIGH_SEA_FISH4"))
 						{
 							iPlotValue += 300;
 						}

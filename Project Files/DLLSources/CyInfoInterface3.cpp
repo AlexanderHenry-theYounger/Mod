@@ -50,6 +50,7 @@ void CyInfoPythonInterface3()
 		.def("getPowerValue", &CvYieldInfo::getPowerValue, "int ()")
 		.def("getAssetValue", &CvYieldInfo::getAssetValue, "int ()")
 		.def("isCargo", &CvYieldInfo::isCargo, "bool ()")
+		.def("isIgnoredForStorageCapacity", &CvYieldInfo::isIgnoredForStorageCapacity, "bool ()") // ray, making special storage capacity rules for Yields XML configurable
 		;
 	python::class_<CvTerrainInfo, boost::noncopyable, python::bases<CvInfoBase> >("CvTerrainInfo")
 		.def("getMovementCost", &CvTerrainInfo::getMovementCost, "int ()")
@@ -61,6 +62,8 @@ void CyInfoPythonInterface3()
 		.def("isImpassable", &CvTerrainInfo::isImpassable, "bool ()")
 		.def("isFound", &CvTerrainInfo::isFound, "bool ()")
 		.def("isFoundCoast", &CvTerrainInfo::isFoundCoast, "bool ()")
+		.def("isBadCityLocation", &CvTerrainInfo::isBadCityLocation, "bool ()") // WTP, ray, Health Overhaul
+
 		// Arrays
 		.def("getYield", &CvTerrainInfo::getYield, "int (int i)")
 		.def("getRiverYieldIncrease", &CvTerrainInfo::getRiverYieldIncrease, "int (int i)")
@@ -157,7 +160,12 @@ void CyInfoPythonInterface3()
 		.def("getTaxRateThresholdModifier", &CvTraitInfo::getTaxRateThresholdModifier, "int ()")
 		.def("getMaxTaxRateThresholdDecrease", &CvTraitInfo::getMaxTaxRateThresholdDecrease, "int ()") // R&R, ray, new Attribute in Traits 
 		.def("getMercantileFactor", &CvTraitInfo::getMercantileFactor, "int ()")
+		.def("getAfricaSellProfitModifierInPercent", &CvTraitInfo::getAfricaSellProfitModifierInPercent, "int ()") // WTP, Africa and Port Royal Profit Modifiers - START
+		.def("getPortRoyalSellProfitModifierInPercent", &CvTraitInfo::getPortRoyalSellProfitModifierInPercent, "int ()") // WTP, Africa and Port Royal Profit Modifiers - START
+		.def("getDomesticMarketProfitModifierInPercent", &CvTraitInfo::getDomesticMarketProfitModifierInPercent, "int ()") // WTP, ray, Domestic Market Profit Modifier
 		.def("getTreasureModifier", &CvTraitInfo::getTreasureModifier, "int ()")
+		.def("getGoodUniqueGoodyChanceModifierLand", &CvTraitInfo::getGoodUniqueGoodyChanceModifierLand, "int ()") // WTP, ray, Unique Goody Chance Modifiers - START
+		.def("getGoodUniqueGoodyChanceModifierWater", &CvTraitInfo::getGoodUniqueGoodyChanceModifierWater, "int ()") // WTP, ray, Unique Goody Chance Modifiers - START
 		.def("getChiefGoldModifier", &CvTraitInfo::getChiefGoldModifier, "int ()")
 		.def("getShortDescription", &CvTraitInfo::getShortDescription, "int (int i)")
 		.def("getCityExtraYield", &CvTraitInfo::getCityExtraYield, "int (int i)")
@@ -170,13 +178,19 @@ void CyInfoPythonInterface3()
 		.def("getCityDefense", &CvTraitInfo::getCityDefense, "int ()")
 		.def("getLandPriceDiscount", &CvTraitInfo::getLandPriceDiscount, "int ()")
 		.def("getRecruitPriceDiscount", &CvTraitInfo::getRecruitPriceDiscount, "int ()")
+		.def("getRecruitPriceDiscountAfrica", &CvTraitInfo::getRecruitPriceDiscountAfrica, "int ()") // WTP, ray, Recruit Price Discounts Africa and Port Royal
+		.def("getRecruitPriceDiscountPortRoyal", &CvTraitInfo::getRecruitPriceDiscountPortRoyal, "int ()") // WTP, ray, Recruit Price Discounts Africa and Port Royal
 		.def("getEuropeTravelTimeModifier", &CvTraitInfo::getEuropeTravelTimeModifier, "int ()")
 		.def("getImmigrationThresholdModifier", &CvTraitInfo::getImmigrationThresholdModifier, "int ()")
 		.def("getPopGrowthThresholdModifier", &CvTraitInfo::getPopGrowthThresholdModifier, "int ()")		// Schmiddie, 7 new variables for traits for Europeans, START
 		.def("getCultureLevelModifier", &CvTraitInfo::getCultureLevelModifier, "int ()")
 		.def("getPioneerSpeedModifier", &CvTraitInfo::getPioneerSpeedModifier, "int ()")
 		.def("getImprovementPriceModifier", &CvTraitInfo::getImprovementPriceModifier, "int ()")
-		.def("getLearningByDoingModifier", &CvTraitInfo::getLearningByDoingModifier, "int ()")
+		.def("getImprovementGrowthTimeModifier", &CvTraitInfo::getImprovementGrowthTimeModifier, "int ()") // WTP, ray, Improvement Growth Modifier
+		.def("getLearningByDoingModifier", &CvTraitInfo::getLearningByDoingModifier, "int ()") 
+		.def("getLearningByDoingFreeModifier", &CvTraitInfo::getLearningByDoingFreeModifier, "int ()") // WTP, ray, adding modifiers for other LBD features - START
+		.def("getLearningByDoingRunawayModifier", &CvTraitInfo::getLearningByDoingRunawayModifier, "int ()") // WTP, ray, adding modifiers for other LBD features - START
+		.def("getLearningByDoingRevoltModifier", &CvTraitInfo::getLearningByDoingRevoltModifier, "int ()") // WTP, ray, adding modifiers for other LBD features - START
 		.def("getSpecialistPriceModifier", &CvTraitInfo::getSpecialistPriceModifier, "int ()")
 		.def("getStorageCapacityModifier", &CvTraitInfo::getStorageCapacityModifier, "int ()")		// Schmiddie, 7 new variables for traits for Europeans, END
 		.def("getYieldModifier", &CvTraitInfo::getYieldModifier, "int (int)")
@@ -490,7 +504,8 @@ void CyInfoPythonInterface3()
 		//.def("getYieldConsumed", &CvProfessionInfo::getYieldConsumed, "int ()")
 		// R&R, ray , MYCP partially based on code of Aymerick - END
 		.def("getSpecialBuilding", &CvProfessionInfo::getSpecialBuilding, "int ()")
-		.def("getCombatChange", &CvProfessionInfo::getCombatChange, "int ()")
+		.def("getCombatChange", &CvProfessionInfo::getCombatChange, "int ()") 
+		.def("getBombardRateChangeProfession", &CvProfessionInfo::getBombardRateChangeProfession, "int ()") // WTP, ray, Cannons to Professions - START
 		.def("getMovesChange", &CvProfessionInfo::getMovesChange, "int ()")
 		.def("getWorkRate", &CvProfessionInfo::getWorkRate, "int ()")
 		.def("getMissionaryRate", &CvProfessionInfo::getMissionaryRate, "int ()")
